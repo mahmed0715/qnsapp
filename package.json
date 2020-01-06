@@ -1,0 +1,42 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "shake": "adb shell input keyevent 82"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "expo": "^33.0.0",
+    "expo-constants": "^6.0.0",
+    "expo-font": "^6.0.1",
+    "native-base": "^2.13.4",
+    "querystring": "^0.2.0",
+    "react": "16.8.3",
+    "react-dom": "^16.8.6",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react-native-animatable": "^1.3.2",
+    "react-native-app-intro-slider": "^3.0.0",
+    "react-native-modal": "^11.3.1",
+    "react-native-slider": "^0.11.0",
+    "react-native-svg-icon": "^0.8.1",
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.1",
+    "react-navigation-redux-helpers": "^3.0.2",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.1",
+    "redux-form": "^8.2.6",
+    "redux-form-validators": "^3.3.2",
+    "redux-persist": "^5.10.0",
+    "redux-thunk": "^2.3.0",
+    "expo-av": "~5.0.2"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.1.1",
+    "redux-logger": "^3.0.6"
+  },
+  "private": true
+}

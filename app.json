@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "QNS App",
+    "slug": "qnsapp",
+    "description": "Quran and Hadith book App",
+    "privacy": "public",
+    "sdkVersion": "33.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/icon.png",
+    "splash": {
+      "image": "./app/assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#7f70e7"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "app/assets/*"
+    ],
+    "android": {
+      "package": "org.qnsbd.qnsapp"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "org.qnsbd.qnsapp"
+    }
+  }
+}
