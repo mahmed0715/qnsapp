@@ -46,8 +46,8 @@ class Home extends React.Component {
                 <Text>Quran Majid</Text>
               </TouchableHighlight>
               <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Al-Bukhari'})}}>
-                <Text>Sohih Al-Bukhari</Text>
+              onPress={()=>{this.props.navigation.navigate('BukhariList', {title: 'Sohih Al-Bukhari'})}}>
+                <Text> Al-Bukhari</Text>
               </TouchableHighlight>
               <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} 
               onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Al-Muslim'})}}>

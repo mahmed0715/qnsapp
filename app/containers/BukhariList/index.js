@@ -17,7 +17,7 @@ import {
 } from 'native-base';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchQuranList} from "../../actions/common";
+import {fetchBukhariList} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import Player from '../../components/Player';
@@ -61,7 +61,7 @@ return (
 )
   }
 }
-class QuranList extends React.Component {
+class BukhariList extends React.Component {
   constructor(props) {
     super(props);
     this.player = React.createRef();
@@ -76,9 +76,9 @@ class QuranList extends React.Component {
     pause ? this.player.pause(context) : this.player.play(context);
   }
   async componentWillMount(){
-    if(!this.props.quranList || !this.props.quranList.length){
+    if(!this.props.bukhariList || !this.props.bukhariList.length){
       console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchQuranList({});
+      this.props.fetchBukhariList({});
     }
   }
   _keyExtractor = item => item.id.toString();
@@ -155,7 +155,7 @@ class QuranList extends React.Component {
 }
 const mapStateToProps = (state) => {   
   return {
-    quranList: state.common.quranList,
+    bukhariList: state.common.bukhariList,
   };
 };
 
@@ -165,4 +165,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // Exports
-export default connect(mapStateToProps, mapDispatchToProps)(QuranList);
+export default connect(mapStateToProps, mapDispatchToProps)(BukhariList);

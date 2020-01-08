@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, Animated, Easing } from 'react-native'
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation'
 
-import { SignIn, SignUp, Forgotpassword, Home, Drawer, Settings, QuranList, QuranDetails } from "../containers";
+import { SignIn, SignUp, Forgotpassword, Home, Drawer, Settings, QuranList, BukhariList, QuranDetails } from "../containers";
 import { Colors, Screens } from "../constants";
 
 const transitionConfig = () => ({
@@ -46,6 +46,9 @@ const DrawerStack = createDrawerNavigator({
   [Screens.QuranList.route]: { 
     screen: QuranList 
   },
+  [Screens.BukhariList.route]: { 
+    screen: BukhariList 
+  },
   [Screens.QuranDetails.route]: { 
     screen: QuranDetails
   },
@@ -85,6 +88,7 @@ const LoginStack = createStackNavigator({
 // Quran navigation stack
 const QuranStack = createStackNavigator({
   [Screens.QuranList.route]: { screen: QuranList },
+  [Screens.BukhariList.route]: { screen: BukhariList },
   [Screens.QuranDetails.route]: { screen: QuranDetails}
 }, {
   headerMode: 'none',

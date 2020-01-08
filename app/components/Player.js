@@ -452,7 +452,7 @@ componentWillMount(){
 		);
 	}
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {  
 	return {
 	  quranList: state.common.quranList
 	};
