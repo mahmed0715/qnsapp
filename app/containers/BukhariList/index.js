@@ -83,15 +83,16 @@ class BukhariList extends React.Component {
   }
   _keyExtractor = item => item.id.toString();
 
-  _renderItem = ( {item: surah} ) => {
+  _renderItem = ( {item: hadith_books} ) => {
     // console.log('render item', surah);
     return (
-     <ListItem onPress={()=>{this.props.navigation.navigate('QuranDetails', { id: surah.id, title: `Surah ${surah.name}` })}}>
+     <ListItem onPress={()=>{this.props.navigation.navigate('QuranDetails', { id: hadith_books.id, title: `Surah ${hadith_books.book_name}` })}}>
         <Left style={{maxWidth:30}}>
-          <Text>{surah.id}</Text>
+          <Text>{hadith_books.id}</Text>
         </Left>
        <Body>
-          <Text>{surah.book_name}</Text>
+          <Text>{hadith_books.book_name}</Text>
+          <Text>({hadith_books.hadith_end-hadith_books.hadith_start+1})</Text>
        </Body>
        
 {/* <Right> 
