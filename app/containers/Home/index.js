@@ -6,6 +6,7 @@ import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
 import imgs from '../../assets/images';
 import axios from 'axios';
+import {fetchBukhariList} from "../../actions/common";
 import {fetchQuranList} from "../../actions/common";
 import url from '../../config/api';
 import {
@@ -28,6 +29,10 @@ class Home extends React.Component {
     super(props);
   }
   async componentWillMount(){
+    if(!this.props.bukhariList || !this.props.bukhariList.length){
+      console.log('dont have quran list, fetching');
+      this.props.fetchBukhariList({});
+    }
     if(!this.props.quranList || !this.props.quranList.length){
       console.log('dont have quran list, fetching');
       this.props.fetchQuranList({});
@@ -46,7 +51,7 @@ class Home extends React.Component {
                 <Text>Quran Majid</Text>
               </TouchableHighlight>
               <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Al-Bukhari'})}}>
+              onPress={()=>{this.props.navigation.navigate('BukhariList', {title: 'Sohih Al-Bukhari'})}}>
                 <Text>Sohih Al-Bukhari</Text>
               </TouchableHighlight>
               <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} 
@@ -70,16 +75,17 @@ class Home extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    quranList: state.common.quranList,
+    bukhariList: state.common.bukhariList,
     user: state.auth.user,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {  
   return {
+    fetchBukhariList: (query)=> dispatch(fetchBukhariList(query)),
     fetchQuranList: (query)=> dispatch(fetchQuranList(query))
    };
 };
 
 // Exports
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);;

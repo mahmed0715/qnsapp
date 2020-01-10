@@ -21,6 +21,9 @@ export default {
   QuranList : {
     route: 'QuranList'
   },
+  BukhariList : {
+    route: 'BukhariList'
+  },
   QuranDetails : {
     route: 'QuranDetails'
   },

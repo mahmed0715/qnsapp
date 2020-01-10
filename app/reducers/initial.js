@@ -3,7 +3,8 @@ export const initialState = {
 	common:{
 		isLoading: false,
 		showModal: false,
-		quranList: []
+		quranList: [],
+		bukhariList: [],
 	},
 	auth:{
 		user: {userId: 1, username: 'Anonymous', name: 'Anonymous', fullname: 'Anonymous'},
