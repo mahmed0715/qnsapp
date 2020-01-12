@@ -28,7 +28,7 @@ class QuranDetails extends React.Component {
   async componentWillMount(){
     if(!this.props.quranDetails || !this.props.quranDetails.length){
       console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchQuranDetails({id:this.props.navigation.getParam('id')});
+      this.props.fetchQuranDetails({id:this.props.navigation.getParam('id', 1)});
     }
   }
   _keyExtractor = item => item.id.toString();
@@ -43,7 +43,7 @@ class QuranDetails extends React.Component {
         </Left>
         <Body>
           <View> 
-            <Text>Surah {surah.verse_serial}</Text>
+            {/* <Text> {surah.verse_serial}</Text> */}
             <Text> {surah.detail}</Text>
           </View>
         </Body>
@@ -53,8 +53,7 @@ class QuranDetails extends React.Component {
     )
   };
   render(){
-    const id = this.props.navigation.getParam('id');
-
+   
     return (
       <Container style={appStyles.container}>
         <ImageBackground 
@@ -62,6 +61,7 @@ class QuranDetails extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
+
           <FlatList
           
         data={this.props.quranDetails}
@@ -88,6 +88,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchQuranDetails: (query)=> dispatch(fetchQuranDetails(query))
    };
 };
 

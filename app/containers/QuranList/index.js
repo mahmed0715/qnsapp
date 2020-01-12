@@ -76,10 +76,10 @@ class QuranList extends React.Component {
     pause ? this.player.pause(context) : this.player.play(context);
   }
   async componentWillMount(){
-    if(!this.props.quranDetails || !this.props.quranDetails.length){
-      console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchQuranDetails({});
-    }
+    // if(!this.props.quranDetails || !this.props.quranDetails.length){
+    //   console.log('dont have quran list in quran list screen, fetching');
+    //   this.props.fetchQuranDetails({});
+    // }
   }
   _keyExtractor = item => item.id.toString();
 
