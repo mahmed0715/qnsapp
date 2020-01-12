@@ -4,6 +4,7 @@ export const initialState = {
 		isLoading: false,
 		showModal: false,
 		quranList: [],
+		quranDetails: [],
 		bukhariList: [],
 	},
 	auth:{

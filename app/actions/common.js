@@ -19,6 +19,22 @@ export const fetchQuranList =  (payloads) =>  (dispatch) => {
   });
 }
 
+export const fetchQuranDetails =  (payloads) =>  (dispatch) => {  
+  dispatch({ type: ActionTypes.LOADING, isLoading: true });
+ return axios.get(url.apiBaseUrl + url.quranDetails+2)
+  .then(res => {
+   console.log("res quran list:", res.data);
+    dispatch({ type: ActionTypes.LOADING, isLoading: false });
+    res.data && res.data.translations && dispatch({ type: ActionTypes.QURANDETAILS, payload: res.data.translations });
+  })
+  .catch((error)=>{
+    console.log(error)
+    return error;
+  });
+}
+
+
+
 export const fetchBukhariList =  (payloads) =>  (dispatch) => {  
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
  return axios.get(url.apiBaseUrl + url.bukhariList)

@@ -17,7 +17,7 @@ import {
 } from 'native-base';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchQuranList} from "../../actions/common";
+import {fetchQuranDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import Player from '../../components/Player';
@@ -76,9 +76,9 @@ class QuranList extends React.Component {
     pause ? this.player.pause(context) : this.player.play(context);
   }
   async componentWillMount(){
-    if(!this.props.quranList || !this.props.quranList.length){
+    if(!this.props.quranDetails || !this.props.quranDetails.length){
       console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchQuranList({});
+      this.props.fetchQuranDetails({});
     }
   }
   _keyExtractor = item => item.id.toString();
@@ -161,6 +161,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchQuranDetails: (query)=> dispatch(fetchQuranDetails(query))
    };
 };
 

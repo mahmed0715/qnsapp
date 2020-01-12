@@ -23,6 +23,12 @@ const common = (state = initialState.common, action) => {
         quranList: action.payload,
       }
     }
+    case ActionTypes.QURANDETAILS: {
+      return {
+        ...state,
+        quranDetails: action.payload,
+      }
+    }
     case ActionTypes.BUKHARILIST: {
       return {
         ...state,

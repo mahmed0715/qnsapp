@@ -16,7 +16,7 @@ import {
 } from 'native-base';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchQuranList} from "../../actions/common";
+import {fetchQuranDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import Player from '../../components/Player';
@@ -26,9 +26,9 @@ class QuranDetails extends React.Component {
     this.player = React.createRef();
   }
   async componentWillMount(){
-    if(!this.props.quranList || !this.props.quranList.length){
+    if(!this.props.quranDetails || !this.props.quranDetails.length){
       console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchQuranList({});
+      this.props.fetchQuranDetails({id:this.props.navigation.getParam('id')});
     }
   }
   _keyExtractor = item => item.id.toString();
@@ -39,12 +39,12 @@ class QuranDetails extends React.Component {
      
       <ListItem>
         <Left style={{maxWidth: 35}}>
-          <Text>{surah.id}</Text>
+          <Text>{surah.verse_serial}</Text>
         </Left>
         <Body>
           <View> 
-            <Text>Surah {surah.name}</Text>
-            <Text>Makki  Verse {surah.verse}</Text>
+            <Text>Surah {surah.verse_serial}</Text>
+            <Text> {surah.detail}</Text>
           </View>
         </Body>
      
@@ -54,6 +54,7 @@ class QuranDetails extends React.Component {
   };
   render(){
     const id = this.props.navigation.getParam('id');
+
     return (
       <Container style={appStyles.container}>
         <ImageBackground 
@@ -63,17 +64,16 @@ class QuranDetails extends React.Component {
           <Content enableOnAndroid style={appStyles.content}>
           <FlatList
           
-        data={this.props.quranList}
+        data={this.props.quranDetails}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
       />
           
-          </Content>
-          <Footer>
-          <Player id={id} book={'quran'} onRef={ref => (this.player = ref)} />
-        </Footer>
+          
+     </Content>
+        
          </ImageBackground>
       </Container>
      
@@ -82,7 +82,7 @@ class QuranDetails extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    quranList: state.common.quranList,
+    quranDetails: state.common.quranDetails,
   };
 };
 
