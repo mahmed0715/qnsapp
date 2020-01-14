@@ -61,7 +61,7 @@ return (
 )
   }
 }
-class BukhariList extends React.Component {
+class BukhariDetails extends React.Component {
   constructor(props) {
     super(props);
     this.player = React.createRef();
@@ -76,23 +76,23 @@ class BukhariList extends React.Component {
     pause ? this.player.pause(context) : this.player.play(context);
   }
   async componentWillMount(){
-    //if(!this.props.bukhariDetails || !this.props.bukhariDetails.length){
-    //  console.log('dont have quran list in quran list screen, fetching');
-    //  this.props.fetchBukhariDetails({});
-    //}
+    if(!this.props.bukhariDetails || !this.props.bukhariDetails.length){
+      console.log('dont have quran list in quran list screen, fetching');
+      this.props.fetchBukhariDetails({});
+    }
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item: hadith_books} ) => {
     // console.log('render item', surah);
     return (
-     <ListItem onPress={()=>{this.props.navigation.navigate('BukhariDetails', { id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
+     <ListItem>
         <Left style={{maxWidth:30}}>
           <Text>{hadith_books.id}</Text>
         </Left>
        <Body>
-          <Text>{hadith_books.book_name}</Text>
-          <Text>({hadith_books.hadith_end-hadith_books.hadith_start+1})</Text>
+          <Text>{hadith_books.hadith_narrated}</Text>
+          <Text>({hadith_books.text_details})</Text>
        </Body>
        
 {/* <Right> 
@@ -112,7 +112,7 @@ class BukhariList extends React.Component {
           <Content enableOnAndroid style={appStyles.content}>
           <FlatList
           
-        data={this.props.bukhariList}
+        data={this.props.bukhariDetails}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
@@ -129,7 +129,7 @@ class BukhariList extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    bukhariList: state.common.bukhariList,
+    bukhariDetails: state.common.bukhariDetails,
   };
 };
 
@@ -140,4 +140,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // Exports
-export default connect(mapStateToProps, mapDispatchToProps)(BukhariList);
+export default connect(mapStateToProps, mapDispatchToProps)(BukhariDetails);

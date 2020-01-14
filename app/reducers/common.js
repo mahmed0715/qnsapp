@@ -35,6 +35,12 @@ const common = (state = initialState.common, action) => {
         bukhariList: action.payload,
       }
     }
+    case ActionTypes.BUKHARIDETAILS: {
+      return {
+        ...state,
+        bukhariDetails: action.payload,
+      }
+    }
    
     // Default
     default: {

@@ -21,7 +21,7 @@ export const fetchQuranList =  (payloads) =>  (dispatch) => {
 
 export const fetchQuranDetails =  (payloads) =>  (dispatch) => {  
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
- return axios.get(url.apiBaseUrl + url.quranDetails+2)
+ return axios.get(url.apiBaseUrl + url.quranDetails+1)
   .then(res => {
    console.log("res quran list:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
@@ -42,6 +42,22 @@ export const fetchBukhariList =  (payloads) =>  (dispatch) => {
    console.log("res quran list:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
     res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARILIST, payload: res.data.hadith_books });
+  })
+  .catch((error)=>{
+    console.log(error)
+    return error;
+  });
+}
+
+
+
+export const fetchBukhariDetails =  (payloads) =>  (dispatch) => {  
+  dispatch({ type: ActionTypes.LOADING, isLoading: true });
+ return axios.get(url.apiBaseUrl + url.bukhariDetails+1+'/'+1)
+  .then(res => {  
+   console.log("res quran list:", res.data);
+    dispatch({ type: ActionTypes.LOADING, isLoading: false });
+    res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARIDETAILS, payload: res.data.hadith_books });
   })
   .catch((error)=>{
     console.log(error)

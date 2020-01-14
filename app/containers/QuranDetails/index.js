@@ -43,7 +43,7 @@ class QuranDetails extends React.Component {
         </Left>
         <Body>
           <View> 
-            {/* <Text> {surah.verse_serial}</Text> */}
+            {<Text> {surah.text_simple}</Text> }
             <Text> {surah.detail}</Text>
           </View>
         </Body>
