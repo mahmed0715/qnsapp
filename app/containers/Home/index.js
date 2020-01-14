@@ -6,7 +6,6 @@ import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
 import imgs from '../../assets/images';
 import axios from 'axios';
-import {fetchBukhariList} from "../../actions/common";
 import {fetchQuranList} from "../../actions/common";
 import url from '../../config/api';
 import {
@@ -29,10 +28,6 @@ class Home extends React.Component {
     super(props);
   }
   async componentWillMount(){
-    if(!this.props.bukhariList || !this.props.bukhariList.length){
-      console.log('dont have quran list, fetching');
-      this.props.fetchBukhariList({});
-    }
     if(!this.props.quranList || !this.props.quranList.length){
       console.log('dont have quran list, fetching');
       this.props.fetchQuranList({});
@@ -82,7 +77,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {  
   return {
-    fetchBukhariList: (query)=> dispatch(fetchBukhariList(query)),
     fetchQuranList: (query)=> dispatch(fetchQuranList(query))
    };
 };
