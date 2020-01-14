@@ -135,11 +135,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-<<<<<<< HEAD
-    fetchBukhariDetails: (query)=> dispatch(fetchBukhariDetails(query))
-=======
     fetchBukhariList: (query)=> dispatch(fetchBukhariList(query))
->>>>>>> fc54709df036c59147e577f0bafb19c1e9b0b2c6
    };
 };
 
