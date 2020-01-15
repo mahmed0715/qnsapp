@@ -78,7 +78,7 @@ class BukhariDetails extends React.Component {
   async componentWillMount(){
     if(!this.props.bukhariDetails || !this.props.bukhariDetails.length){
       console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchBukhariDetails({});
+      this.props.fetchBukhariDetails({id:this.props.navigation.getParam('id')});
     }
   }
   _keyExtractor = item => item.id.toString();

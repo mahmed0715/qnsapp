@@ -19,9 +19,9 @@ export const fetchQuranList =  (payloads) =>  (dispatch) => {
   });
 }
 
-export const fetchQuranDetails =  (payloads) =>  (dispatch) => {  
+export const fetchQuranDetails =  (payloads) =>  (dispatch) => {   alert(object.id);
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
- return axios.get(url.apiBaseUrl + url.quranDetails+1)
+ return axios.get(url.apiBaseUrl + url.quranDetails(payloads))
   .then(res => {
    console.log("res quran list:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
