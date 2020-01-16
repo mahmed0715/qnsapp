@@ -25,11 +25,17 @@ class QuranDetails extends React.Component {
     super(props);
     this.player = React.createRef();
   }
-  async componentWillMount(){  alert(this.props.navigation.getParam('id'));
-    if(!this.props.quranDetails || !this.props.quranDetails.length){
+  componentDidMount(){  
+    //alert(this.props.navigation.getParam('id'));
+     console.log('got qurqan details', this.props.quranDetails);
+    //  if(!this.props.quranDetails || !this.props.quranDetails.length){
       console.log('dont have quran list in quran list screen, fetching');
       this.props.fetchQuranDetails({id:this.props.navigation.getParam('id')});
-    }
+    //  }
+  }
+  componentWillReceiveProps(){
+   // console.log(this.props.quranDetails);
+    //this.props.fetchQuranDetails({id:this.props.navigation.getParam('id')});
   }
   _keyExtractor = item => item.id.toString();
 
