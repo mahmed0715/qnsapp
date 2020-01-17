@@ -145,7 +145,9 @@ class QuranList extends React.Component {
           
           </Content>
           <Footer>
-          <Player book={'quran'} onRef={ref => (this.player = ref)} />
+
+            {/* just commented becaseu its getting slow, no need to load first one on load */}
+          {/* <Player book={'quran'} onRef={ref => (this.player = ref)} /> */}
         </Footer>
          </ImageBackground>
       </Container>

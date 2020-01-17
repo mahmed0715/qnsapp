@@ -26,8 +26,8 @@ const appReducer = combineReducers({
 
 // ============= IMPORTANT on DVELOPMENT mode 
 // clear storage when needed
-AsyncStorage.clear();
-
+// AsyncStorage.multiRemove(['common']);
+// persistStore().purge();
 
 // Middleware: Redux Thunk (Async/Await)
 const middleware = [thunk];
@@ -72,6 +72,9 @@ const store = createStore(
 
 // Middleware: Redux Persist Persister
 let persistor = persistStore(store);
+
+// debug only====================================================================================
+persistor.purge();
 
 // Exports
 export {
