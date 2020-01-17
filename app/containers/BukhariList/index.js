@@ -17,50 +17,11 @@ import {
 } from 'native-base';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchBukhariDetails} from "../../actions/common";
+import {fetchBukhariList} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import Player from '../../components/Player';
 
-class RightPlayer extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      playing: false
-    }
-    this.play = this.play.bind(this);
-  }
- 
-  play(){
-    this.setState({playing: !this.state.playing})
-    this.props.setCurrentlyPlaying(this.props.context);
-  }
-  render(){
-return (
-  
-  <View>
-  {this.props.currentlyPlaying && this.props.currentlyPlaying == this.props.context.id ? (
-    <Icon
-  size={38}
-  onPress={ this.play} 
-    style={{fontSize: 38}}
-      name="pause"
-      color="#56D5FA"
-    />
-  ) : (
-    <Icon
-  size={38}
-  onPress={this.play} 
-    style={{fontSize: 38}}
-      name="play-circle"
-      color="#56D5FA"
-    />
-  )}
-  </View>
-  
-)
-  }
-}
 class BukhariList extends React.Component {
   constructor(props) {
     super(props);
@@ -75,11 +36,11 @@ class BukhariList extends React.Component {
     this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
     pause ? this.player.pause(context) : this.player.play(context);
   }
-  async componentWillMount(){
-    //if(!this.props.bukhariDetails || !this.props.bukhariDetails.length){
-    //  console.log('dont have quran list in quran list screen, fetching');
-    //  this.props.fetchBukhariDetails({});
-    //}
+  componentDidMount(){
+    if(!this.props.bukhariList || !this.props.bukhariList.length){
+     console.log('dont have bukhari list fetching');
+     this.props.fetchBukhariList({id:1});
+    }
   }
   _keyExtractor = item => item.id.toString();
 
@@ -135,7 +96,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchBukhariDetails: (query)=> dispatch(fetchBukhariDetails(query))
+    fetchBukhariList: (query)=> dispatch(fetchBukhariList(query))
    };
 };
 

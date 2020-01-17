@@ -27,7 +27,6 @@ class QuranDetails extends React.Component {
     this.state = {id:props.navigation.getParam('id')}
   }
   componentWillMount(){  
-    //alert(this.props.navigation.getParam('id'));
     const id = this.props.navigation.getParam('id');
       
      console.log('got qurqan details did mount', JSON.stringify(this.props.quranDetails) , id);

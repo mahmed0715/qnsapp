@@ -22,64 +22,29 @@ import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import Player from '../../components/Player';
 
-class RightPlayer extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      playing: false
-    }
-    this.play = this.play.bind(this);
-  }
- 
-  play(){
-    this.setState({playing: !this.state.playing})
-    this.props.setCurrentlyPlaying(this.props.context);
-  }
-  render(){
-return (
-  
-  <View>
-  {this.props.currentlyPlaying && this.props.currentlyPlaying == this.props.context.id ? (
-    <Icon
-  size={38}
-  onPress={ this.play} 
-    style={{fontSize: 38}}
-      name="pause"
-      color="#56D5FA"
-    />
-  ) : (
-    <Icon
-  size={38}
-  onPress={this.play} 
-    style={{fontSize: 38}}
-      name="play-circle"
-      color="#56D5FA"
-    />
-  )}
-  </View>
-  
-)
-  }
-}
 class BukhariDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.player = React.createRef();
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1
     }
   }
-  setCurrentlyPlaying = (context, pause) => {
-    let {isPlaying}  = this.state;
-    this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
-    pause ? this.player.pause(context) : this.player.play(context);
-  }
-  async componentWillMount(){
+  
+  componentDidMount(){
+    const id = this.props.navigation.getParam('id');
     if(!this.props.bukhariDetails || !this.props.bukhariDetails.length){
       console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchBukhariDetails({id:this.props.navigation.getParam('id')});
+      this.props.fetchBukhariDetails({id:id});
     }
+  }
+  componentWillReceiveProps(nextProps){
+    console.log('nexprops:', nextProps.bukhariDetails);
+    const id = nextProps.navigation.getParam('id');
+    if(!nextProps.bukhariDetails){
+      console.log('dont have quran details in quran details screen, fetching');
+      this.props.fetchBukhariDetails({id: id});
+      }
   }
   _keyExtractor = item => item.id.toString();
 
