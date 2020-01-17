@@ -35,7 +35,7 @@ class Drawer extends React.Component {
   render() {
     const { navigation, user, language, state } = this.props;
     const currentRoute = getCurrentRoute(state);
-    console.log('current route:', currentRoute, this.listItems);
+    // console.log('current route:', currentRoute, this.listItems);
     const userName = this.props.user == null ? '' : this.props.user.name;
     return (
       <Container>

@@ -26,7 +26,7 @@ export const fetchQuranDetails =  (payloads) =>  (dispatch) => {
   .then(res => {
    console.log("res quran list:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
-    res.data && res.data.translations && dispatch({ type: ActionTypes.QURANDETAILS, payload: res.data.translations });
+    res.data && res.data.translations && dispatch({ type: ActionTypes.QURANDETAILS, payload: {[payloads.id]: res.data.translations} });
   })
   .catch((error)=>{
     console.log(error)

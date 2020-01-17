@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight} from 'react-native'
+import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight, ActivityIndicator} from 'react-native'
 import _ from 'lodash'; 
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
@@ -24,18 +24,25 @@ class QuranDetails extends React.Component {
   constructor(props) {
     super(props);
     this.player = React.createRef();
+    this.state = {id:props.navigation.getParam('id')}
   }
-  componentDidMount(){  
+  componentWillMount(){  
     //alert(this.props.navigation.getParam('id'));
-     console.log('got qurqan details', this.props.quranDetails);
-    //  if(!this.props.quranDetails || !this.props.quranDetails.length){
-      console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchQuranDetails({id:this.props.navigation.getParam('id')});
-    //  }
+    const id = this.props.navigation.getParam('id');
+      
+     console.log('got qurqan details did mount', JSON.stringify(this.props.quranDetails) , id);
+     if(!this.props.quranDetails || !this.props.quranDetails[id]){
+      console.log('dont have quran details in quran details screen, fetching');
+      this.props.fetchQuranDetails({id:id});
+      }
   }
-  componentWillReceiveProps(){
-   // console.log(this.props.quranDetails);
-    //this.props.fetchQuranDetails({id:this.props.navigation.getParam('id')});
+  componentWillReceiveProps(nextProps){
+    console.log('nexprops:', nextProps.quranDetails);
+    const id = nextProps.navigation.getParam('id');
+    if(!nextProps.quranDetails || !nextProps.quranDetails[id]){
+      console.log('dont have quran details in quran details screen, fetching');
+      this.props.fetchQuranDetails({id:id});
+      }
   }
   _keyExtractor = item => item.id.toString();
 
@@ -59,7 +66,7 @@ class QuranDetails extends React.Component {
     )
   };
   render(){
-   
+    const id = this.props.navigation.getParam('id');
     return (
       <Container style={appStyles.container}>
         <ImageBackground 
@@ -67,16 +74,18 @@ class QuranDetails extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
+{!this.props.quranDetails[id] ?
+(<ActivityIndicator />):
 
-          <FlatList
+          (<FlatList
           
-        data={this.props.quranDetails}
+        data={this.props.quranDetails[id]}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
-      />
-          
+      />)
+}
           
      </Content>
         

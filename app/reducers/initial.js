@@ -4,7 +4,7 @@ export const initialState = {
 		isLoading: false,
 		showModal: false,
 		quranList: [],
-		quranDetails: [],
+		quranDetails: {},
 		bukhariList: [],
 		bukhariDetails: [],
 	},

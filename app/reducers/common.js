@@ -24,9 +24,14 @@ const common = (state = initialState.common, action) => {
       }
     }
     case ActionTypes.QURANDETAILS: {
+      let newData = action.payload;
+      console.log('new data', newData);
+      console.log('state.qurandetails', state.quranDetails)
+      console.log('new state.qurandetails', Object.assign({}, newData))
       return {
         ...state,
-        quranDetails: action.payload,
+
+        quranDetails:Object.assign({}, state.quranDetails, newData),
       }
     }
     case ActionTypes.BUKHARILIST: {
