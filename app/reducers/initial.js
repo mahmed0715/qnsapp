@@ -6,7 +6,7 @@ export const initialState = {
 		quranList: [],
 		quranDetails: {},
 		bukhariList: [],
-		bukhariDetails: [],
+		bukhariDetails: {},
 	},
 	auth:{
 		user: {userId: 1, username: 'Anonymous', name: 'Anonymous', fullname: 'Anonymous'},

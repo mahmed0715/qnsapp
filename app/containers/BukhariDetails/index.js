@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight} from 'react-native'
+import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight, ActivityIndicator} from 'react-native'
 import _ from 'lodash'; 
 import { Layout, Colors, Screens } from '../../constants';
+import commonStyles from '../styles';
 import { Logo, Svgicon, Headers } from '../../components';
 import imgs from '../../assets/images';
 import {
@@ -33,7 +34,7 @@ class BukhariDetails extends React.Component {
   
   componentDidMount(){
     const id = this.props.navigation.getParam('id');
-    if(!this.props.bukhariDetails || !this.props.bukhariDetails.length){
+    if(!this.props.bukhariDetails || !this.props.bukhariDetails[id]){
       console.log('dont have quran list in quran list screen, fetching');
       this.props.fetchBukhariDetails({id:id});
     }
@@ -41,7 +42,7 @@ class BukhariDetails extends React.Component {
   componentWillReceiveProps(nextProps){
     console.log('nexprops:', nextProps.bukhariDetails);
     const id = nextProps.navigation.getParam('id');
-    if(!nextProps.bukhariDetails){
+    if(!nextProps.bukhariDetails[id]){
       console.log('dont have quran details in quran details screen, fetching');
       this.props.fetchBukhariDetails({id: id});
       }
@@ -68,6 +69,7 @@ class BukhariDetails extends React.Component {
     )
   };
   render(){
+    const id = this.props.navigation.getParam('id');
     return (
       <Container style={appStyles.container}>
         <ImageBackground 
@@ -75,14 +77,19 @@ class BukhariDetails extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
+          {!this.props.bukhariDetails[id]?
+          
+            (<View style={commonStyles.loading}>
+      <ActivityIndicator size='large' color="white" />
+    </View>):
           <FlatList
           
-        data={this.props.bukhariDetails}
+        data={this.props.bukhariDetails[id]}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
-      />
+      />}
           
           </Content>
          

@@ -54,11 +54,11 @@ export const fetchBukhariList =  (payloads) =>  (dispatch) => {
 
 export const fetchBukhariDetails =  (payloads) =>  (dispatch) => {  
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
- return axios.get(url.apiBaseUrl + url.bukhariDetails+1+'/'+1)
+ return axios.get(url.apiBaseUrl + url.bukhariDetails({id: payloads.id}))
   .then(res => {  
    console.log("res quran list:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
-    res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARIDETAILS, payload: res.data.hadith_books });
+    res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARIDETAILS, payload: {[payloads.id]: res.data.hadith_books }});
   })
   .catch((error)=>{
     console.log(error)

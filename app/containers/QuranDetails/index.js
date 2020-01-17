@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, Touchab
 import _ from 'lodash'; 
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
+import commonStyles from '../styles';
 import imgs from '../../assets/images';
 import {
   Container,
@@ -74,7 +75,10 @@ class QuranDetails extends React.Component {
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
 {!this.props.quranDetails[id] ?
-(<ActivityIndicator />):
+  (<View style={commonStyles.loading}>
+      <ActivityIndicator size='large' color="white" />
+    </View>)
+  :
 
           (<FlatList
           

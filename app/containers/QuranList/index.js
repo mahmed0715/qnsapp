@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight} from 'react-native'
+import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight,ActivityIndicator} from 'react-native'
 import _ from 'lodash'; 
+import commonStyles from '../styles';
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
 import imgs from '../../assets/images';
@@ -21,7 +22,7 @@ import {fetchQuranDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import Player from '../../components/Player';
-
+console.log('common styles',commonStyles)
 class RightPlayer extends React.Component {
   constructor(props){
     super(props);
@@ -134,6 +135,11 @@ class QuranList extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
+          {!this.props.quranList || !this.props.quranList.length?
+          (<View style={commonStyles.loading}>
+      <ActivityIndicator size='large' color="white" />
+    </View>)
+         :
           <FlatList
           
         data={this.props.quranList}
@@ -142,13 +148,13 @@ class QuranList extends React.Component {
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
       />
-          
+          }
           </Content>
-          <Footer>
+          {/* <Footer> */}
 
             {/* just commented becaseu its getting slow, no need to load first one on load */}
           {/* <Player book={'quran'} onRef={ref => (this.player = ref)} /> */}
-        </Footer>
+        {/* </Footer> */}
          </ImageBackground>
       </Container>
      

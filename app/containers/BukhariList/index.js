@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight} from 'react-native'
+import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight,ActivityIndicator} from 'react-native'
 import _ from 'lodash'; 
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
+import commonStyles from '../styles';
 import imgs from '../../assets/images';
 import {
   Container,
@@ -71,6 +72,11 @@ class BukhariList extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
+          {!this.props.bukhariList || !this.props.bukhariList.length?
+          
+            (<View style={commonStyles.loading}>
+      <ActivityIndicator size='large' color="white" />
+    </View>):
           <FlatList
           
         data={this.props.bukhariList}
@@ -79,7 +85,7 @@ class BukhariList extends React.Component {
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
       />
-          
+          }
           </Content>
          
          </ImageBackground>
