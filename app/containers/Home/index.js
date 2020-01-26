@@ -20,7 +20,7 @@ import {
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
 import appStyles from '../../theme/appStyles';
-import styles from './styles';
+// import styles from './styles';
 import AudioPlayer from '../../components/AudioPlayer';
 import Player from '../../components/Player';
 class Home extends React.Component {
@@ -36,29 +36,71 @@ class Home extends React.Component {
   render(){
     return (
       <Container style={appStyles.container}>
+      
         <ImageBackground 
             source={imgs.bg1} 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
-            <View style={{padding:16, flex: 1, flexDirection: 'row', flexWrap:'wrap'}}>
-              <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Quran Majid'})}}>
-                <Text>Quran Majid</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} 
-              onPress={()=>{this.props.navigation.navigate('BukhariList', {title: 'Sohih Al-Bukhari'})}}>
-                <Text>Sohih Al-Bukhari</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Al-Muslim'})}}>
-                <Text>Sohih Al-Muslim</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={{padding:16, margin: 20, borderWidth:2, borderColor:'white'}} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih-al-bukhari'})}}>
-                <Text>Sohih Jami-Tirmiji</Text>
-              </TouchableHighlight>
 
+            <View style={styles.container}>
+              <TouchableHighlight style={styles.item} onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Quran Majid'})}}>
+             <View>
+             <Image source={require('./../assets/images/book.png')}
+       style={{width: '90%',marginLeft:10, height: 160}} />
+             <Text style={{color:'white', textAlign:'center'}}>Quran Majid</Text>
+          </View>
+             </TouchableHighlight>
+              <TouchableHighlight style={styles.item} 
+              onPress={()=>{this.props.navigation.navigate('BukhariList', {title: 'Sohih Al-Bukhari'})}}>
+                <View>
+             <Image source={require('./../assets/images/book.png')}
+       style={{width: '90%',marginLeft:10, height: 160}} />
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Al-Bukhari</Text>
+          </View>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.item} 
+              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Al-Muslim'})}}>
+                 <View>
+             <Image source={require('./../assets/images/book.png')}
+       style={{width: '90%',marginLeft:10, height: 160}} />
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Al-Muslim</Text>
+          </View>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.item} 
+              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih-Jami-Tirmiji'})}}>
+                 <View>
+             <Image source={require('./../assets/images/book.png')}
+       style={{width: '90%',marginLeft:10, height: 160}} />
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Jami-Tirmiji</Text>
+          </View>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.item} 
+              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Sunan Abu Dawud'})}}>
+                 <View>
+             <Image source={require('./../assets/images/book.png')}
+       style={{width: '90%',marginLeft:10, height: 160}} />
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Sunan Abu Dawud</Text>
+          </View>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.item} 
+              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Ibn-Majah'})}}>
+                 <View>
+             <Image source={require('./../assets/images/book.png')}
+       style={{width: '90%',marginLeft:10, height: 160}} />
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Ibn-Majah</Text>
+          </View>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.item} 
+              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Sunan Nasai'})}}>
+                 <View>
+             <Image source={require('./../assets/images/book.png')}
+       style={{width: '90%',marginLeft:10, height: 160}} />
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Sunan Nasaih</Text>
+          </View>
+              </TouchableHighlight>
             </View>
+           
             {/* <AudioPlayer /> */}
             {/* <Player /> */}
           </Content>
@@ -81,5 +123,18 @@ const mapDispatchToProps = (dispatch) => {
    };
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start' // if you want to fill rows left to right
+  },
+  item: {
+    padding:5, margin: 5, borderWidth:1, borderColor:'white',
+    // flexBasis:200
+    width: '46%' // is 50% of container width
+  }
+})
 // Exports
 export default connect(mapStateToProps, mapDispatchToProps)(Home);;

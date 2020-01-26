@@ -21,6 +21,7 @@ import * as userActions from "../../actions/user";
 import {fetchQuranDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
+import theme from '../styles';
 import Player from '../../components/Player';
 console.log('common styles',commonStyles)
 class RightPlayer extends React.Component {
@@ -89,11 +90,11 @@ class QuranList extends React.Component {
     return (
      <ListItem onPress={()=>{this.props.navigation.navigate('QuranDetails', { id: surah.id, title: `Surah ${surah.name}` })}}>
         <Left style={{maxWidth:30}}>
-          <Text>{surah.id}</Text>
+          <Text style={theme.textColor}>{surah.id}</Text>
         </Left>
        <Body>
-          <Text>Surah {surah.name}{this.state.isPlaying}</Text>
-          <Text>({surah.meaning}) Verse {surah.verse_number}</Text>
+          <Text style={theme.textColor}>Surah {surah.name}{this.state.isPlaying}</Text>
+          <Text style={theme.textColor}>({surah.meaning}) Verse {surah.verse_number}</Text>
        </Body>
        <Right>
       

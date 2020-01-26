@@ -20,6 +20,7 @@ import * as userActions from "../../actions/user";
 import {fetchQuranDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
+import theme from '../styles';
 import Player from '../../components/Player';
 class QuranDetails extends React.Component {
   constructor(props) {
@@ -52,12 +53,12 @@ class QuranDetails extends React.Component {
      
       <ListItem>
         <Left style={{maxWidth: 35}}>
-          <Text>{surah.verse_serial}</Text>
+          <Text style={theme.textColor}>{surah.verse_serial}</Text>
         </Left>
         <Body>
           <View> 
-            {<Text> {surah.text_simple}</Text> }
-            <Text> {surah.detail}</Text>
+            {<Text style={theme.textColor}> {surah.text_simple}</Text> }
+            <Text style={theme.textColor}> {surah.detail}</Text>
           </View>
         </Body>
      

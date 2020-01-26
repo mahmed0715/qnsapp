@@ -6,6 +6,7 @@ const images = {
 	bg : require('./bg.jpg'),
 	languageBg : require('./language-bg.jpg'),
 	placeholder : require('./placeholder.png'),
+	book : require('../book.png'),
 };
 
 export default images;

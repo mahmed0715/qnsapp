@@ -1,5 +1,9 @@
 import {Colors,Layout} from '../constants/';
 export default {
+  textColor:{
+    color: 'white'
+  }
+  ,
   container: {
     flex: 1,
     backgroundColor: '#fff',

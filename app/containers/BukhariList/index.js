@@ -21,6 +21,7 @@ import * as userActions from "../../actions/user";
 import {fetchBukhariList} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
+import theme from '../styles';
 import Player from '../../components/Player';
 
 class BukhariList extends React.Component {
@@ -31,6 +32,7 @@ class BukhariList extends React.Component {
       isPlaying: false,
       currentlyPlaying: 1
     }
+    console.log(styles.textColor)
   }
   setCurrentlyPlaying = (context, pause) => {
     let {isPlaying}  = this.state;
@@ -50,11 +52,11 @@ class BukhariList extends React.Component {
     return (
      <ListItem onPress={()=>{this.props.navigation.navigate('BukhariDetails', { id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
         <Left style={{maxWidth:30}}>
-          <Text>{hadith_books.id}</Text>
+          <Text style={theme.textColor}>{hadith_books.id}</Text>
         </Left>
        <Body>
-          <Text>{hadith_books.book_name}</Text>
-          <Text>({hadith_books.hadith_end-hadith_books.hadith_start+1})</Text>
+          <Text style={theme.textColor}>{hadith_books.book_name}</Text>
+          <Text style={theme.textColor}>({hadith_books.hadith_end-hadith_books.hadith_start+1})</Text>
        </Body>
        
 {/* <Right> 

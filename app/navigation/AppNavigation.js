@@ -97,11 +97,22 @@ const QuranStack = createStackNavigator({
   initialRouteName: Screens.QuranList.route,
   transitionConfig: transitionConfig
 });
+// Quran navigation stack
+const BukhariStack = createStackNavigator({
+  [Screens.BukhariList.route]: { screen: BukhariList },
+  [Screens.BukhariDetails.route]: { screen: BukhariDetails}
+}, {
+  headerMode: 'none',
+  title: 'Quran Majid',
+  initialRouteName: Screens.BukhariList.route,
+  transitionConfig: transitionConfig
+});
 // Manifest of possible screens
 const PrimaryNav = createStackNavigator({
   [Screens.SignOutStack.route]: { screen: LoginStack },
   [Screens.SignInStack.route]: { screen: DrawerNavigation },
-  [Screens.QuranStack.route]: {screen: QuranStack}
+  [Screens.QuranStack.route]: {screen: QuranStack},
+  [Screens.BukhariStack.route]: {screen: BukhariStack}
 }, {
   headerMode: 'none',
   title: Screens.Title,

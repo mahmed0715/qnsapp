@@ -21,15 +21,19 @@ export default {
   QuranList : {
     route: 'QuranList'
   },
+  BukhariStack : {
+    route: 'BukhariStack'
+  },
+  QuranDetails : {
+    route: 'QuranDetails'
+  },
   BukhariList : {
     route: 'BukhariList'
   },
   BukhariDetails : {
     route: 'BukhariDetails'
   },
-  QuranDetails : {
-    route: 'QuranDetails'
-  },
+ 
   Settings : {
     route: 'Settings',
     icon:'settings',

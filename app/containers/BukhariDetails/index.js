@@ -21,6 +21,7 @@ import * as userActions from "../../actions/user";
 import {fetchBukhariDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
+import theme from '../styles';
 import Player from '../../components/Player';
 
 class BukhariDetails extends React.Component {
@@ -54,11 +55,11 @@ class BukhariDetails extends React.Component {
     return (
      <ListItem>
         <Left style={{maxWidth:30}}>
-          <Text>{hadith_books.id}</Text>
+          <Text style={theme.textColor}>{hadith_books.id}</Text>
         </Left>
        <Body>
-          <Text>{hadith_books.hadith_narrated}</Text>
-          <Text>({hadith_books.text_details})</Text>
+          <Text style={theme.textColor}>{hadith_books.hadith_narrated}</Text>
+          <Text style={theme.textColor}>({hadith_books.text_details})</Text>
        </Body>
        
 {/* <Right> 
