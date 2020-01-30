@@ -56,7 +56,7 @@ class Home extends React.Component {
                 <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
-             <Text style={{color:'white', textAlign:'center'}}>Sohih Al-Bukhari</Text>
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Bukhari</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
@@ -64,7 +64,7 @@ class Home extends React.Component {
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
-             <Text style={{color:'white', textAlign:'center'}}>Sohih Al-Muslim</Text>
+             <Text style={{color:'white', textAlign:'center'}}>Sohih Muslim</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
@@ -72,7 +72,7 @@ class Home extends React.Component {
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
-             <Text style={{color:'white', textAlign:'center'}}>Sohih Jami-Tirmiji</Text>
+             <Text style={{color:'white', textAlign:'center'}}>Jami At Tirmidhi</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
@@ -80,7 +80,7 @@ class Home extends React.Component {
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
-             <Text style={{color:'white', textAlign:'center'}}>Sohih Sunan Abu Dawud</Text>
+             <Text style={{color:'white', textAlign:'center'}}>Sunan An Nasai</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
@@ -88,7 +88,7 @@ class Home extends React.Component {
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
-             <Text style={{color:'white', textAlign:'center'}}>Sohih Ibn-Majah</Text>
+             <Text style={{color:'white', textAlign:'center'}}>Sunan Abu Dawud</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
@@ -96,7 +96,7 @@ class Home extends React.Component {
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
-             <Text style={{color:'white', textAlign:'center'}}>Sohih Sunan Nasaih</Text>
+             <Text style={{color:'white', textAlign:'center'}}>Sunan Ibn Majah</Text>
           </View>
               </TouchableHighlight>
             </View>
