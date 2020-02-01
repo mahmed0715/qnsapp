@@ -50,7 +50,7 @@ class BukhariList extends React.Component {
   _renderItem = ( {item: hadith_books} ) => {
     // console.log('render item', surah);
     return (
-     <ListItem onPress={()=>{this.props.navigation.navigate('BukhariDetails', { id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
+     <ListItem onPress={()=>{this.props.navigation.push('BukhariDetails', { id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
         <Left style={{maxWidth:30}}>
           <Text style={theme.textColor}>{hadith_books.id}</Text>
         </Left>

@@ -44,7 +44,7 @@ class Home extends React.Component {
           <Content enableOnAndroid style={appStyles.content}>
 
             <View style={styles.container}>
-              <TouchableHighlight style={styles.item} onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Quran Majid'})}}>
+              <TouchableHighlight style={styles.item} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Quran Majid'})}}>
              <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
@@ -52,7 +52,7 @@ class Home extends React.Component {
           </View>
              </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.navigate('BukhariList', {title: 'Sohih Al-Bukhari'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {title: 'Sohih Al-Bukhari'})}}>
                 <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
@@ -60,7 +60,7 @@ class Home extends React.Component {
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Al-Muslim'})}}>
+              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Al-Muslim'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
@@ -68,7 +68,7 @@ class Home extends React.Component {
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih-Jami-Tirmiji'})}}>
+              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih-Jami-Tirmiji'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
@@ -76,7 +76,7 @@ class Home extends React.Component {
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Sunan Abu Dawud'})}}>
+              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Sunan Abu Dawud'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
@@ -84,7 +84,7 @@ class Home extends React.Component {
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Ibn-Majah'})}}>
+              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Ibn-Majah'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />
@@ -92,7 +92,7 @@ class Home extends React.Component {
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.navigate('QuranList', {title: 'Sohih Sunan Nasai'})}}>
+              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Sunan Nasai'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
        style={{width: '90%',marginLeft:10, height: 160}} />

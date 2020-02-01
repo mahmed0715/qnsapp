@@ -26,7 +26,7 @@ class ReduxNavigation extends React.Component {
     backHandlerClickCount = 1;
     setTimeout(() => {
       backHandlerClickCount = 0;
-    }, 600);
+    }, 200);
     if (currentRoute==Screens.Home.route || currentRoute==Screens.SignIn.route) {
       /*ToastAndroid.showWithGravity(
         'Press again to close',

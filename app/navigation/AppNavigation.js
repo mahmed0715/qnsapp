@@ -70,7 +70,19 @@ const DrawerStack = createDrawerNavigator({
 });
 
 const DrawerNavigation = createStackNavigator({
-  [Screens.DrawerStack.route]: { screen: DrawerStack }
+  [Screens.DrawerStack.route]: { screen: DrawerStack },
+  [Screens.QuranList.route]: { 
+    screen: QuranList 
+  },
+  [Screens.QuranDetails.route]: { 
+    screen: QuranDetails
+  },
+  [Screens.BukhariList.route]: { 
+    screen: BukhariList 
+  },
+  [Screens.BukhariDetails.route]: { 
+    screen: BukhariDetails 
+  },
 }, {
   headerMode: 'none',
   transitionConfig: transitionConfig

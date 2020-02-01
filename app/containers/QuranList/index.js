@@ -88,7 +88,7 @@ class QuranList extends React.Component {
   _renderItem = ( {item: surah} ) => {
     // console.log('render item', surah);
     return (
-     <ListItem onPress={()=>{this.props.navigation.navigate('QuranDetails', { id: surah.id, title: `Surah ${surah.name}` })}}>
+     <ListItem onPress={()=>{this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}` })}}>
         <Left style={{maxWidth:30}}>
           <Text style={theme.textColor}>{surah.id}</Text>
         </Left>
