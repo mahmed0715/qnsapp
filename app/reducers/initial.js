@@ -5,7 +5,7 @@ export const initialState = {
 		showModal: false,
 		quranList: [],
 		quranDetails: {},
-		bukhariList: [],
+		bukhariList: {},
 		bukhariDetails: {},
 	},
 	auth:{

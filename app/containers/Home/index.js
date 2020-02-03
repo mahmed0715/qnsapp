@@ -47,55 +47,55 @@ class Home extends React.Component {
               <TouchableHighlight style={styles.item} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Quran Majid'})}}>
              <View>
              <Image source={require('./../assets/images/book.png')}
-       style={{width: '90%',marginLeft:10, height: 160}} />
+       style={{width: '75%',marginLeft:5, height: 95}} />
              <Text style={{color:'white', textAlign:'center'}}>Quran Majid</Text>
           </View>
              </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.push('BukhariList', {title: 'Sohih Al-Bukhari'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id: 1, title: 'Sohih Bukhari'})}}>
                 <View>
              <Image source={require('./../assets/images/book.png')}
-       style={{width: '90%',marginLeft:10, height: 160}} />
+       style={{width: '75%',marginLeft:5, height: 95}} />
              <Text style={{color:'white', textAlign:'center'}}>Sohih Bukhari</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Al-Muslim'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id:2, title: 'Sohih Muslim'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
-       style={{width: '90%',marginLeft:10, height: 160}} />
+       style={{width: '75%',marginLeft:5, height: 95}} />
              <Text style={{color:'white', textAlign:'center'}}>Sohih Muslim</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih-Jami-Tirmiji'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id:3, title: 'Jami At Tirmidhi'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
-       style={{width: '90%',marginLeft:10, height: 160}} />
+       style={{width: '75%',marginLeft:5, height: 95}} />
              <Text style={{color:'white', textAlign:'center'}}>Jami At Tirmidhi</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Sunan Abu Dawud'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id:4,title: 'Sunan An Nasai'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
-       style={{width: '90%',marginLeft:10, height: 160}} />
+       style={{width: '75%',marginLeft:5, height: 95}} />
              <Text style={{color:'white', textAlign:'center'}}>Sunan An Nasai</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Ibn-Majah'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id:5, title: 'Sunan Abu Dawud'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
-       style={{width: '90%',marginLeft:10, height: 160}} />
+       style={{width: '75%',marginLeft:5, height: 95}} />
              <Text style={{color:'white', textAlign:'center'}}>Sunan Abu Dawud</Text>
           </View>
               </TouchableHighlight>
               <TouchableHighlight style={styles.item} 
-              onPress={()=>{this.props.navigation.push('QuranList', {title: 'Sohih Sunan Nasai'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id: 6, title: 'Sunan Ibn Majah'})}}>
                  <View>
              <Image source={require('./../assets/images/book.png')}
-       style={{width: '90%',marginLeft:10, height: 160}} />
+       style={{width: '75%',marginLeft:5, height: 95}} />
              <Text style={{color:'white', textAlign:'center'}}>Sunan Ibn Majah</Text>
           </View>
               </TouchableHighlight>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start' // if you want to fill rows left to right
   },
   item: {
-    padding:5, margin: 5, borderWidth:1, borderColor:'white',
+    padding:5, margin: 5, borderWidth:0, borderColor:'white',
     // flexBasis:200
     width: '46%' // is 50% of container width
   }

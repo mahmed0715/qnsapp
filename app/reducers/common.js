@@ -32,16 +32,19 @@ const common = (state = initialState.common, action) => {
       }
     }
     case ActionTypes.BUKHARILIST: {
-      return {
-        ...state,
-        bukhariList: action.payload,
-      }
-    }
-    case ActionTypes.BUKHARIDETAILS: {
       let newData = action.payload;
       return {
         ...state,
-        bukhariDetails: Object.assign({}, state.bukhariDetails, newData),
+        bukhariList: Object.assign({}, state.bukhariList, newData),
+      }
+    }
+    case ActionTypes.BUKHARIDETAILS: {
+      let newData = action.payload;//{1:{1:[{1:1},{2:2}]}}
+      console.log('reducer new data:', newData, state.bukhariDetails);
+      console.log('reducer merge:',  merge(state.bukhariDetails, newData))
+      return {
+        ...state,
+        bukhariDetails: Object.assign({}, merge(state.bukhariDetails, newData)),
       }
     }
    
@@ -54,3 +57,27 @@ const common = (state = initialState.common, action) => {
 
 // Exports
 export default common;
+
+function merge(current, update) {
+
+  Object.keys(update).forEach(function(key) {
+    // if update[key] exist, and it's not a string or array,
+    // we go in one level deeper
+    if (current.hasOwnProperty(key) 
+        && typeof current[key] === 'object'
+        && !(current[key] instanceof Array)) {
+      merge(current[key], update[key]);
+
+    // if update[key] doesn't exist in current, or it's a string
+    // or array, then assign/overwrite current[key] to update[key]
+    } else {
+      current[key] = update[key];
+    }
+  });
+  return current;
+}
+
+// var x = { a: { a: 1 } }
+// var y = { a: { b: 1 } }
+
+// console.log(merge(x, y));

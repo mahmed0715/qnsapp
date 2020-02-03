@@ -34,19 +34,23 @@ class BukhariDetails extends React.Component {
   }
   
   componentDidMount(){
+    const contextBookId = this.props.navigation.getParam('contextBookId');
+    
     const id = this.props.navigation.getParam('id');
-    if(!this.props.bukhariDetails || !this.props.bukhariDetails[id]){
-      console.log('dont have quran list in quran list screen, fetching');
-      this.props.fetchBukhariDetails({id:id});
+    if(!this.props.bukhariDetails[contextBookId] || !this.props.bukhariDetails[contextBookId][id]){
+      console.log('dont have bukhari details, fetching', contextBookId, id);
+      this.props.fetchBukhariDetails({contextBookId, id});
     }
   }
   componentWillReceiveProps(nextProps){
     console.log('nexprops:', nextProps.bukhariDetails);
+    const contextBookId = nextProps.navigation.getParam('contextBookId');
+    
     const id = nextProps.navigation.getParam('id');
-    if(!nextProps.bukhariDetails[id]){
-      console.log('dont have quran details in quran details screen, fetching');
-      this.props.fetchBukhariDetails({id: id});
-      }
+    if(!nextProps.bukhariDetails[contextBookId] || !nextProps.bukhariDetails[contextBookId][id]){
+      console.log('dont have bukhari details, fetching', contextBookId, id);
+      this.props.fetchBukhariDetails({contextBookId, id});
+    }
   }
   _keyExtractor = item => item.id.toString();
 
@@ -54,7 +58,7 @@ class BukhariDetails extends React.Component {
     // console.log('render item', surah);
     return (
      <ListItem>
-        <Left style={{maxWidth:30}}>
+        <Left style={{maxWidth:30, alignContent:'flex-start'}}>
           <Text style={theme.textColor}>{hadith_books.id}</Text>
         </Left>
        <Body>
@@ -70,7 +74,10 @@ class BukhariDetails extends React.Component {
     )
   };
   render(){
+    const contextBookId = this.props.navigation.getParam('contextBookId');
+    
     const id = this.props.navigation.getParam('id');
+    console.log('data', this.props.bukhariDetails, contextBookId, id);
     return (
       <Container style={appStyles.container}>
         <ImageBackground 
@@ -78,14 +85,14 @@ class BukhariDetails extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
-          {!this.props.bukhariDetails[id]?
+          {!this.props.bukhariDetails[contextBookId] || !this.props.bukhariDetails[contextBookId][id]?
           
             (<View style={commonStyles.loading}>
       <ActivityIndicator size='large' color="white" />
     </View>):
           <FlatList
           
-        data={this.props.bukhariDetails[id]}
+        data={this.props.bukhariDetails[contextBookId][id]}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle

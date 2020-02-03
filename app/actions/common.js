@@ -40,9 +40,9 @@ export const fetchBukhariList =  (payloads) =>  (dispatch) => {
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
  return axios.get(url.apiBaseUrl + url.bukhariList(payloads))
   .then(res => {
-   console.log("res bukhari list:", res.data);
+   console.log("res bukhari list:", res.data, ActionTypes['1']);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
-    res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARILIST, payload: res.data.hadith_books });
+    res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARILIST, payload: {[payloads.id]: res.data.hadith_books} });
   })
   .catch((error)=>{
     console.log(error)
@@ -50,17 +50,15 @@ export const fetchBukhariList =  (payloads) =>  (dispatch) => {
   });
 }
 
-
-
-export const fetchBukhariDetails =  (payloads) =>  (dispatch) => {  
+export const fetchBukhariDetails =  (payloads={}) =>  (dispatch) => {  
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
- return axios.get(url.apiBaseUrl + url.bukhariDetails({id: payloads.id}))
+ return axios.get(url.apiBaseUrl + url.bukhariDetails(payloads))
   .then(res => {  
-   console.log("res quran list:", res.data);
+   console.log("res bukhari details:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
-    res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARIDETAILS, payload: {[payloads.id]: res.data.hadith_books }});
+    res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARIDETAILS, payload: {[payloads.contextBookId]:{[payloads.id]: res.data.hadith_books }}});
   })
-  .catch((error)=>{
+  .catch((error)=> {
     console.log(error)
     return error;
   });

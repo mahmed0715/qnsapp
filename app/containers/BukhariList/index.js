@@ -30,7 +30,8 @@ class BukhariList extends React.Component {
     this.player = React.createRef();
     this.state = {
       isPlaying: false,
-      currentlyPlaying: 1
+      currentlyPlaying: 1,
+      id: props.navigation.getParam('id')
     }
     console.log(styles.textColor)
   }
@@ -40,17 +41,22 @@ class BukhariList extends React.Component {
     pause ? this.player.pause(context) : this.player.play(context);
   }
   componentDidMount(){
-    if(!this.props.bukhariList || !this.props.bukhariList.length){
-     console.log('dont have bukhari list fetching');
-     this.props.fetchBukhariList({id:1});
+    const id = this.props.navigation.getParam('id');
+    if(!this.props.bukhariList[id] || !this.props.bukhariList[id].length){
+   
+     const id = this.props.navigation.getParam('id');
+     console.log('dont have bukhari list fetching', id);
+     this.props.fetchBukhariList({id});
     }
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item: hadith_books} ) => {
     // console.log('render item', surah);
+     const id = this.props.navigation.getParam('id');
+     console.log('in bukhari list id context book id', id);
     return (
-     <ListItem onPress={()=>{this.props.navigation.push('BukhariDetails', { id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
+     <ListItem onPress={()=>{this.props.navigation.push('BukhariDetails', {contextBookId: id, id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
         <Left style={{maxWidth:30}}>
           <Text style={theme.textColor}>{hadith_books.id}</Text>
         </Left>
@@ -67,6 +73,9 @@ class BukhariList extends React.Component {
     )
   };
   render(){
+    
+    const id = this.props.navigation.getParam('id');
+    console.log('this.props.bukhariList', this.props.bukhariList[id]);
     return (
       <Container style={appStyles.container}>
         <ImageBackground 
@@ -74,14 +83,14 @@ class BukhariList extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
-          {!this.props.bukhariList || !this.props.bukhariList.length?
+          {!this.props.bukhariList[id] || !this.props.bukhariList[id].length?
           
             (<View style={commonStyles.loading}>
       <ActivityIndicator size='large' color="white" />
     </View>):
           <FlatList
           
-        data={this.props.bukhariList}
+        data={this.props.bukhariList[id]}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
