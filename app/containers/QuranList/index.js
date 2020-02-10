@@ -89,7 +89,7 @@ class QuranList extends React.Component {
     // console.log('render item', surah);
     return (
      <ListItem onPress={()=>{this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}` })}}>
-        <Left style={{maxWidth:30}}>
+        <Left style={{maxWidth:30, alignItems:'flex-start', justifyContent:'flex-start'}}>
           <Text style={theme.textColor}>{surah.id}</Text>
         </Left>
        <Body>
@@ -99,7 +99,7 @@ class QuranList extends React.Component {
        <Right>
       
        {this.state.currentlyPlaying == surah.id && this.state.isPlaying ? (
-   <TouchableHighlight onPress={()=>{this.setCurrentlyPlaying(surah, true)}}> 
+   <TouchablOpacity onPress={()=>{this.setCurrentlyPlaying(surah, true)}}> 
    <Icon
   size={38}
    
@@ -107,7 +107,7 @@ class QuranList extends React.Component {
       name="pause"
       color="#56D5FA"
     />
-    </TouchableHighlight>
+    </TouchablOpacity>
   ) : (
     <TouchableHighlight  onPress={()=>{this.setCurrentlyPlaying(surah)}} >   
      <Icon

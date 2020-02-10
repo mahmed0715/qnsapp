@@ -38,5 +38,8 @@
     "babel-preset-expo": "^5.1.1",
     "redux-logger": "^3.0.6"
   },
-  "private": true
+  "private": true,
+  "engine": {
+    "node": "12"
+  }
 }

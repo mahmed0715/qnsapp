@@ -15,6 +15,8 @@ import {
   Header, Left, Body, Title, Right,Footer, FooterTab,
   ListItem
 } from 'native-base';
+import Single from '../../components/Single';
+
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
 import {fetchQuranDetails} from "../../actions/common";
@@ -47,23 +49,10 @@ class QuranDetails extends React.Component {
   }
   _keyExtractor = item => item.id.toString();
 
-  _renderItem = ( {item: surah} ) => {
+  _renderItem = ( {item}) => {
     // console.log('render item', surah);
     return (
-     
-      <ListItem>
-        <Left style={{maxWidth: 35}}>
-          <Text style={theme.textColor}>{surah.verse_serial}</Text>
-        </Left>
-        <Body>
-          <View> 
-            {<Text style={theme.textColor}> {surah.text_simple}</Text> }
-            <Text style={theme.textColor}> {surah.detail}</Text>
-          </View>
-        </Body>
-     
-     
-      </ListItem> 
+     <Single item={item} />
     )
   };
   render(){

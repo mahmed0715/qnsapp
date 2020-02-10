@@ -22,6 +22,7 @@ import {fetchBukhariDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
+import Single from '../../components/Single';
 import Player from '../../components/Player';
 
 class BukhariDetails extends React.Component {
@@ -54,23 +55,10 @@ class BukhariDetails extends React.Component {
   }
   _keyExtractor = item => item.id.toString();
 
-  _renderItem = ( {item: hadith_books} ) => {
-    // console.log('render item', surah);
+  _renderItem = ( {item} ) => {
     return (
-     <ListItem>
-        <Left style={{maxWidth:30, alignContent:'flex-start'}}>
-          <Text style={theme.textColor}>{hadith_books.id}</Text>
-        </Left>
-       <Body>
-          <Text style={theme.textColor}>{hadith_books.hadith_narrated}</Text>
-          <Text style={theme.textColor}>({hadith_books.text_details})</Text>
-       </Body>
-       
-{/* <Right> 
-  <Text>Verse {surah.verse_number}</Text>
- </Right> */}
-       {/* <RightPlayer style={{alignSelf:'flex-start'}} surah={surah} player={this.player} /> */}
-      </ListItem> 
+     <Single item={item} />
+
     )
   };
   render(){
