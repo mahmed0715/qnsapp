@@ -86,6 +86,9 @@ componentWillMount(){
 			this.playbackInstance.pauseAsync();
 		} 
 	}
+	playPause(){
+		this._onPlayPausePressed();
+	}
 	play(surah, dontPlay){
 		console.log('===========================================================playing new', surah.name);
 			let PLAYITEM = new PlaylistItem(

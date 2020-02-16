@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight,ActivityIndicator} from 'react-native'
+import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight,ActivityIndicator,TouchableOpacity} from 'react-native'
 import _ from 'lodash'; 
 import commonStyles from '../styles';
 import { Layout, Colors, Screens } from '../../constants';
@@ -28,35 +28,54 @@ class RightPlayer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      playing: false
+      isPlaying: false,
+      context : props.context
     }
-    this.play = this.play.bind(this);
+    this.player = props.player;
+  }
+  componentWillReceiveProps(nextProps){
+    this.player = nextProps.player;
+  }
+  setPause(context){
+    this.player.pause()
+    this.setState({isPlaying: false});
+  }
+  setCurrentlyPlaying = (context) => {
+    let { isPlaying } = this.state;
+   
+    if(!isPlaying && this.state.context.id == this.props.currentlyPlaying) { 
+      this.player.playPause();
+    } else{
+      this.player.play(this.state.context);
+      this.props.setCurrentlyPlaying(this.state.context.id) ;
+    }
+    this.setState({isPlaying: true});
   }
  
-  play(){
-    this.setState({playing: !this.state.playing})
-    this.props.setCurrentlyPlaying(this.props.context);
-  }
   render(){
 return (
   
   <View>
-  {this.props.currentlyPlaying && this.props.currentlyPlaying == this.props.context.id ? (
+  {this.state.isPlaying && this.props.currentlyPlaying == this.state.context.id ? (
+    <TouchableOpacity onPress={()=>{this.setPause()}}> 
     <Icon
-  size={38}
-  onPress={ this.play} 
-    style={{fontSize: 38}}
-      name="pause"
-      color="#56D5FA"
-    />
-  ) : (
-    <Icon
-  size={38}
-  onPress={this.play} 
-    style={{fontSize: 38}}
-      name="play-circle"
-      color="#56D5FA"
-    />
+   size={38}
+    
+     style={{fontSize: 38}}
+       name="pause"
+       color="#56D5FA"
+     />
+     </TouchableOpacity>
+   ) : (
+     <TouchableOpacity  onPress={()=>{this.setCurrentlyPlaying()}} >   
+      <Icon
+   size={38}
+  
+     style={{fontSize: 38}}
+       name="play-circle"
+       color="#56D5FA"
+     /></TouchableOpacity>
+ 
   )}
   </View>
   
@@ -69,13 +88,23 @@ class QuranList extends React.Component {
     this.player = React.createRef();
     this.state = {
       isPlaying: false,
-      currentlyPlaying: 1
+      currentlyPlaying: 1,
+      player: React.createRef()
     }
   }
-  setCurrentlyPlaying = (context, pause) => {
-    let {isPlaying}  = this.state;
-    this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
-    pause ? this.player.pause(context) : this.player.play(context);
+  setPause(context){
+    this.setState({isPlaying: false}, ()=>{
+      this.player.pause()
+    });
+  }
+  setCurrentlyPlaying = (id) => {
+    // let { isPlaying } = this.state;
+    // isPlaying && this.player.pause();
+    // this.state.currentlyPlaying == context.id ? this.setState({isPlaying: true},() => {
+    //   this.player.playPause();
+    // }):
+     this.setState({currentlyPlaying : id});
+    
   }
   async componentWillMount(){
     // if(!this.props.quranDetails || !this.props.quranDetails.length){
@@ -97,9 +126,9 @@ class QuranList extends React.Component {
           <Text style={theme.textColor}>({surah.meaning}) Verse {surah.verse_number}</Text>
        </Body>
        <Right>
-      
+{/*       
        {this.state.currentlyPlaying == surah.id && this.state.isPlaying ? (
-   <TouchablOpacity onPress={()=>{this.setCurrentlyPlaying(surah, true)}}> 
+   <TouchableOpacity onPress={()=>{this.setPause(surah)}}> 
    <Icon
   size={38}
    
@@ -107,19 +136,21 @@ class QuranList extends React.Component {
       name="pause"
       color="#56D5FA"
     />
-    </TouchablOpacity>
+    </TouchableOpacity>
   ) : (
-    <TouchableHighlight  onPress={()=>{this.setCurrentlyPlaying(surah)}} >   
+    <TouchableOpacity  onPress={()=>{this.setCurrentlyPlaying(surah)}} >   
      <Icon
   size={38}
  
     style={{fontSize: 38}}
       name="play-circle"
       color="#56D5FA"
-    /></TouchableHighlight>
+    /></TouchableOpacity>
 
-  )}
-       {/* <RightPlayer style={{alignSelf:'flex-start'}} context={surah} setCurrentlyPlaying={this.setCurrentlyPlaying} currentlyPlaying={this.state.currentlyPlaying} /> */}
+  )} */}
+       <RightPlayer style={{alignSelf:'flex-start'}} context={surah} player={this.state.player} currentlyPlaying={this.state.currentlyPlaying}
+       setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
+       />
        </Right>
 {/* <Right> 
   <Text>Verse {surah.verse_number}</Text>
@@ -137,7 +168,7 @@ class QuranList extends React.Component {
           <Content enableOnAndroid style={appStyles.content}>
           {!this.props.quranList || !this.props.quranList.length?
           (<View style={commonStyles.loading}>
-      <ActivityIndicator size='large' color="white" />
+      <ActivityIndicator size='large' color="black" />
     </View>)
          :
           <FlatList
@@ -150,11 +181,11 @@ class QuranList extends React.Component {
       />
           }
           </Content>
-          {/* <Footer> */}
+          <Footer>
 
             {/* just commented becaseu its getting slow, no need to load first one on load */}
-          {/* <Player book={'quran'} onRef={ref => (this.player = ref)} /> */}
-        {/* </Footer> */}
+          <Player book={'quran'} onRef={ref => (this.setState({ player : ref}))} />
+        </Footer>
          </View>
       </Container>
      
