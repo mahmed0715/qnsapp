@@ -123,7 +123,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const styles = StyleSheet.create({
   image:{
-    height: 135, width: 120
+    height: 135, width: 135
   },
   container: {
     flex: 1,
