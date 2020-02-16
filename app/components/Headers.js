@@ -34,11 +34,11 @@ class Headers extends React.Component {
         <Header transparent>
           <Left style={[appStyles.row, {maxWidth:'20%'}]}>
             <Button transparent style={appStyles.menuBtn} onPress={() => this.props.navigation.openDrawer()}>
-              <Svgicon color={Colors.white} name="menu" />
+              <Svgicon color={Colors.black} name="menu" />
             </Button>
           </Left>
           <Body style={{justifyContent:'flex-start', alignItems:'flex-start'}}>
-              <Text style={{fontSize: 20 , color: 'white'}}>{title}</Text>
+              <Text style={{fontSize: 20 , color: 'black'}}>{title}</Text>
           </Body>
         </Header>
     );

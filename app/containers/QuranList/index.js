@@ -131,8 +131,7 @@ class QuranList extends React.Component {
   render(){
     return (
       <Container style={appStyles.container}>
-        <ImageBackground 
-            source={imgs.bg1} 
+        <View 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
@@ -156,7 +155,7 @@ class QuranList extends React.Component {
             {/* just commented becaseu its getting slow, no need to load first one on load */}
           {/* <Player book={'quran'} onRef={ref => (this.player = ref)} /> */}
         {/* </Footer> */}
-         </ImageBackground>
+         </View>
       </Container>
      
     );

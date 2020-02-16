@@ -21,7 +21,9 @@ import ReduxNavigation from './app/navigation/ReduxNavigation';
 
 // Imports: Redux Persist Persister
 import { store, persistor } from './app/store/store';
+// import { I18nManager } from 'react-native';
 
+// I18nManager.forceRTL(false);
 console.disableYellowBox = true;
 
 function cacheImages(images) {

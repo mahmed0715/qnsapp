@@ -1,7 +1,7 @@
 import {Colors,Layout} from '../constants/';
 export default {
   textColor:{
-    color: 'white'
+    color: 'black'
   }
   ,
   container: {

@@ -6,7 +6,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primary,
+    backgroundColor: 'white'//Colors.primary,
   },
   statusBar:{
     flex: 1,
