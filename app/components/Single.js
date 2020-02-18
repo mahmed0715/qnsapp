@@ -19,7 +19,7 @@ const Single = ({item})=> {
         <Text style={[theme.textColor, {alignSelf:'flex-start'}]}>{surah.verse_serial}</Text>
       </Left> */}
       <View style={{flexDirection:'row'}}>
-        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:8, paddingRight:3}]}>{item.verse_serial||item.id}.</Text>
+        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:8, paddingRight:3}]}>{item.hadith_serial||item.id}.</Text>
         <View style={{paddingRight:10, marginRight: 10, paddingLeft:5}}> 
           {<Text style={[theme.textColor, {textAlign:'left', writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {item.text_simple||item.hadith_narrated}</Text> }
           <Text style={[theme.textColor]}> {item.detail||item.text_details}</Text>
