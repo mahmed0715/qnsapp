@@ -1,5 +1,5 @@
 export default {
-  apiBaseUrl: `http://academicbd.com/qns_public/public/`,
+  apiBaseUrl: `http://qnsacademy.com/api/public/`,
   quranList: `api/quran`,
   quranDetails: object => `api/quran-ayat-by-chapter/${object.id}`,
   bukhariList: object => `api/hadith-book-by-collection/${object.id}`,
