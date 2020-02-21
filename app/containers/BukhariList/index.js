@@ -58,7 +58,7 @@ class BukhariList extends React.Component {
     return (
      <ListItem onPress={()=>{this.props.navigation.push('BukhariDetails', {contextBookId: id, id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
         <Left style={{maxWidth:30}}>
-          <Text style={theme.textColor}>{hadith_books.id}</Text>
+          <Text style={theme.textColor}>{hadith_books.book_serial}</Text>
         </Left>
        <Body>
           <Text style={theme.textColor}>{hadith_books.book_name}</Text>
