@@ -64,7 +64,7 @@ componentWillMount(){
 }
 
   componentWillUnmount() {
-	console.log(url);
+	// console.log(url);
     this.props.onRef(undefined)
   }
 	componentDidMount() {

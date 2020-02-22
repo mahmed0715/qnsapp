@@ -49,3 +49,6 @@ This will start the process of "ejecting" from Create React Native App's build s
 
 Warning: Running eject is a permanent action (aside from whatever version control system you use). An ejected app will require you to have an Xcode and/or Android Studio environment set up.
 
+
+## 16.02.2020
+## active working branch is develop
