@@ -40,7 +40,7 @@ class Player extends Component {
 		this.shouldPlayAtEndOfSeek = false;
 		this.playbackInstance = null;
 		this.state = {
-			PLAYLIST: [],
+			PLAYLIST: props.playList || [],
 			playbackInstanceName: LOADING_STRING,
 			playbackInstancePosition: null,
 			playbackInstanceDuration: null,
@@ -51,37 +51,46 @@ class Player extends Component {
 			fontLoaded: true,
 			volume: 1.0,
 			rate: 1.0,
+			index: 0
 		};
+		console.log('in player:', this.state.PLAYLIST)
 		// this.play = this.play.bind(this);
 	}
 componentWillMount(){
-	if(this.props.book = 'quran'){
+	this.props.onRef(this)
+	if(this.props.book == 'quran'){
+		// play the first one
 		let {id} = this.props;
 		if(!id) id = 1;
 		const current = this.props.quranList.filter(surah=> surah.id == id);
 		current.length && this.play(current[0], true);
 	}
 }
-
+componentWillReceiveProps(nextProps){
+	console.log('Player: receieve props', nextProps);
+	if(nextProps.playList != this.state.PLAYLIST){
+		this.setState(nextProps.playList);
+	}
+}
   componentWillUnmount() {
-	// console.log(url);
+	 console.log('Player unmounting',);
     this.props.onRef(undefined)
   }
 	componentDidMount() {
-
-		this.props.onRef(this)
 		Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+			staysActiveInBackground: false,
+			playsInBackgroundModeAndroid: false,
+			playThroughEarpieceAndroid: false
 		});
 		
 		this._loadNewPlaybackInstance(false);
 	}
-	pause(){
-		// this._onPlayPausePressed();
+	pause(){		// this._onPlayPausePressed();
 		if (this.state.isPlaying) {
 			this.playbackInstance.pauseAsync();
 		} 
@@ -89,38 +98,71 @@ componentWillMount(){
 	playPause(){
 		this._onPlayPausePressed();
 	}
+	stop(){
+		this._onStopPressed();
+	}
 	play(surah, dontPlay){
-		console.log('===========================================================playing new', surah.name);
-			let PLAYITEM = new PlaylistItem(
-			surah.name,
-			getAudioFileUrl(surah),
-		  surah.id);
-		  console.log('===========================================================playing new', PLAYITEM);
-			this.setState({PLAYLIST: [PLAYITEM]});
+		this._onStopPressed();
+		console.log('===========================================================playing new', surah);
+			if(!this.state.PLAYLIST.length){
+				let PLAYITEM = new PlaylistItem(
+					surah.name,
+					surah.id != 1 ? getAudioFileUrl(surah) : '',
+				  surah.id);
+				  console.log('===========================================================playing new', PLAYITEM);
+				this.setState({PLAYLIST: [PLAYITEM]});
+			} else {
+				const index = this.state.PLAYLIST.findIndex(({id}) => id == surah.id);
+				if(index != -1)
+					this.index = index;
+					else {
+						let PLAYITEM = new PlaylistItem(
+							surah.name,
+							surah.id != 1 ? getAudioFileUrl(surah) : '',
+						  surah.id);
+						  let { PLAYLIST } = this.state;
+						  PLAYLIST.push(PLAYITEM);
+						  this.index = PLAYLIST.length - 1;
+						  console.log('===========================================================playing new', PLAYITEM);
+						this.setState({PLAYLIST: PLAYLIST});
+					}
+
+				// this.setState({index: index});
+			}
+			
 			dontPlay?this._loadNewPlaybackInstance(false):this._loadNewPlaybackInstance(true);
 	}
 
 	async _loadNewPlaybackInstance(playing) {
+		console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance)
 		if (this.playbackInstance != null) {
 			await this.playbackInstance.unloadAsync();
 			this.playbackInstance.setOnPlaybackStatusUpdate(null);
+		
 			this.playbackInstance = null;
 		}
-
-		const source = { uri: this.state.PLAYLIST[this.index].uri };
+		let source;
+		if(this.state.PLAYLIST.length)
+			if(this.state.PLAYLIST[this.index].uri){
+				source = { uri: this.state.PLAYLIST[this.index].uri };
+			}else {
+				source = require('./assets/quran_1.mp3')
+			}
+		else return;
+		console.log('_loadNewPlaybackInstance: ', source);
 		const initialStatus = {
 			shouldPlay: playing,
 			rate: this.state.rate,
 			volume: this.state.volume,
 		};
-
+		console.log('initial asttaus: playback load:', initialStatus)
 		const { sound, status } = await Audio.Sound.createAsync(
 			source,
 			initialStatus,
 			this._onPlaybackStatusUpdate
 		);
 		this.playbackInstance = sound;
-
+		console.log('playback this.playbackInstance:', this.playbackInstance)
 		this._updateScreenForLoading(false);
 	}
 
@@ -142,7 +184,8 @@ componentWillMount(){
 	}
 
 	_onPlaybackStatusUpdate = status => {
-		if (status.isLoaded) {
+		console.log('platback status:', status);
+		if (status && status.isLoaded) {
 			this.setState({
 				playbackInstancePosition: status.positionMillis,
 				playbackInstanceDuration: status.durationMillis,
@@ -154,25 +197,30 @@ componentWillMount(){
 			});
 			if (status.didJustFinish) {
 				this._advanceIndex(true);
+				console.log('index after change:', this.index)
 				this._updatePlaybackInstanceForIndex(true);
 			}
 		} else {
-			if (status.error) {
-				console.log(`FATAL PLAYER ERROR: ${status.error}`);
-			}
+			// if (status.error) {
+				console.log(`FATAL PLAYER ERROR:`, status);
+			// }
 		}
 	};
 
 	_advanceIndex(forward) {
+		console.log('index old', this.index)
 		this.index =
 			(this.index + (forward ? 1 : this.state.PLAYLIST.length - 1)) %
 			this.state.PLAYLIST.length;
+			console.log('index new', this.index)
 	}
 
 	async _updatePlaybackInstanceForIndex(playing) {
 		this._updateScreenForLoading(true);
-
-		this._loadNewPlaybackInstance(playing);
+		console.log('_updatePlaybackInstanceForIndex:')
+		await this._loadNewPlaybackInstance(playing);
+		console.log('_updatePlaybackInstanceForIndex after new playback instance:')
+		
 	}
 
 	_onPlayPausePressed = () => {
@@ -290,10 +338,12 @@ componentWillMount(){
 	}
 
 	render() {
+		const iconColor = '#1f8ec6';
+		const iconSize = 24;
 		return !this.state.fontLoaded ? (
 			<View />
 		) : (
-			<View style={[styles.container, {flexDirection:'row', paddingLeft: 10, paddingRight: 10}]}>
+			<View style={[styles.container, {flexDirection:'row', paddingLeft: 5, paddingRight: 5, backgroundColor:'#f1f3f4'}]}>
 			
 				<View style={[styles.detailsContainer, {flex:1}]}>
 					<Text style={[styles.text]}>
@@ -335,9 +385,9 @@ componentWillMount(){
 							<Icon
 							type="FontAwesome"
 							name="fast-backward"
-							size={18}
-								style={{fontSize: 18}}
-								color="#56D5FA"
+							size={iconSize}
+								style={{fontSize: iconSize, color: iconColor}}
+								color="#1f8ec6"
 							/>
 											</TouchableHighlight>
 					<TouchableHighlight
@@ -346,20 +396,20 @@ componentWillMount(){
 						onPress={this._onPlayPausePressed}
 						disabled={this.state.isLoading}
 					>
-						<View>
+						<View >
 							{this.state.isPlaying ? (
 								<Icon
 									name="pause"
-									size={24}
-								style={{fontSize: 24}}
-									color="#56D5FA"
+									size={iconSize}
+								style={{fontSize: iconSize, color: iconColor}}
+									color="#1f8ec6"
 								/>
 							) : (
 								<Icon
-									name="play-circle"
-									size={24}
-								style={{fontSize: 24}}
-									color="#56D5FA"
+									name="play"
+									size={iconSize}
+								style={{fontSize: iconSize, color: iconColor}}
+									color="#1f8ec6"
 								/>
 							)}
 						</View>
@@ -374,9 +424,9 @@ componentWillMount(){
 							<Icon
 							type='FontAwesome'
 								name="stop"
-								size={16}
-								style={{fontSize: 16}}
-								color="#56D5FA"
+								size={iconSize}
+								style={{fontSize: iconSize, color: iconColor}}
+								color="#1f8ec6"
 							/>
 						</View>
 					</TouchableHighlight>
@@ -390,15 +440,15 @@ componentWillMount(){
 							<Icon
 							type="FontAwesome"
 								name="fast-forward"
-								color="#56D5FA"
-								size={18}
-								style={{fontSize: 18}}
+								color="#1f8ec6"
+								size={iconSize}
+								style={{fontSize: iconSize, color: iconColor}}
 							/>
 						</View>
 					</TouchableHighlight>
 				</View>
 				
-				<View
+				{/* <View
 					style={[
 						styles.playbackContainer,
 						{
@@ -417,7 +467,7 @@ componentWillMount(){
 						minimumTrackTintColor="#4CCFF9"
 						disabled={this.state.isLoading}
 					/>
-				</View>
+				</View> */}
 				</View>
 				{/* <View
 					style={[
@@ -463,7 +513,7 @@ const mapStateToProps = (state) => {
   
   const mapDispatchToProps = (dispatch) => {
 	return {
-	  fetchQuranList: (query)=> dispatch(fetchQuranList(query))
+	//   fetchQuranList: (query)=> dispatch(fetchQuranList(query))
 	 };
   };
   

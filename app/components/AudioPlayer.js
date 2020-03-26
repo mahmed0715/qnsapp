@@ -236,11 +236,12 @@ export default class AudioPlayer extends React.Component {
         this._updatePlaybackInstanceForIndex(true);
       }
     } else {
-      if (status.error) {
-        console.log(`FATAL PLAYER ERROR: ${status.error}`);
-      }
+      // if (status && status.error) {
+        console.error(`FATAL PLAYER ERROR: ${status}`);
+      // }
     }
   };
+
 
   _onLoadStart = () => {
     console.log(`ON LOAD START`);

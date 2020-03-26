@@ -23,79 +23,34 @@ import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
 import Player from '../../components/Player';
+import {getAudioFileUrl} from '../../utils/common';
 console.log('common styles',commonStyles)
-class RightPlayer extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      isPlaying: false,
-      context : props.context
-    }
-    this.player = props.player;
-  }
-  componentWillReceiveProps(nextProps){
-    this.player = nextProps.player;
-  }
-  setPause(context){
-    this.player.pause()
-    this.setState({isPlaying: false});
-  }
-  setCurrentlyPlaying = (context) => {
-    let { isPlaying } = this.state;
-   
-    if(!isPlaying && this.state.context.id == this.props.currentlyPlaying) { 
-      this.player.playPause();
-    } else{
-      this.player.play(this.state.context);
-      this.props.setCurrentlyPlaying(this.state.context.id) ;
-    }
-    this.setState({isPlaying: true});
-  }
- 
-  render(){
-return (
-  
-  <View>
-  {this.state.isPlaying && this.props.currentlyPlaying == this.state.context.id ? (
-    <TouchableOpacity onPress={()=>{this.setPause()}}> 
-    <Icon
-   size={38}
-    
-     style={{fontSize: 38}}
-       name="pause"
-       color="#56D5FA"
-     />
-     </TouchableOpacity>
-   ) : (
-     <TouchableOpacity  onPress={()=>{this.setCurrentlyPlaying()}} >   
-      <Icon
-   size={38}
-  
-     style={{fontSize: 38}}
-       name="play-circle"
-       color="#56D5FA"
-     /></TouchableOpacity>
- 
-  )}
-  </View>
-  
-)
-  }
-}
+import RightPlayer from '../../components/RightPlayer';
 class QuranList extends React.Component {
   constructor(props) {
     super(props);
     this.player = React.createRef();
+    const playList = props.quranList.map((surah)=>{
+      return {uri: getAudioFileUrl(surah), name: surah.name, id: parseInt(surah.id)}
+    });
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1,
-      player: React.createRef()
+      player: React.createRef(),
+      playList: playList
     }
+    console.log(playList);
   }
   setPause(context){
     this.setState({isPlaying: false}, ()=>{
       this.player.pause()
     });
+  }
+  generatePlayList = ()=>{
+    const playList = nextProps.quranDetails[id].map((ayah)=>{
+      return {uri: getAudioFileUrl(ayah), name: ayah.verse_serial, id: ayah.id}
+    });
+    this.setState({playList: playList})
   }
   setCurrentlyPlaying = (id) => {
     // let { isPlaying } = this.state;
@@ -106,18 +61,20 @@ class QuranList extends React.Component {
      this.setState({currentlyPlaying : id});
     
   }
-  async componentWillMount(){
+  async componentWillUnmount(){
     // if(!this.props.quranDetails || !this.props.quranDetails.length){
     //   console.log('dont have quran list in quran list screen, fetching');
     //   this.props.fetchQuranDetails({});
+    
     // }
+    this.player.stop();
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item: surah} ) => {
     // console.log('render item', surah);
     return (
-     <ListItem onPress={()=>{this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}` })}}>
+     <ListItem onPress={()=>{this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}`, surah: surah, player: this.state.player })}}>
         <Left style={{maxWidth:30, alignItems:'flex-start', justifyContent:'flex-start'}}>
           <Text style={theme.textColor}>{surah.id}</Text>
         </Left>
@@ -184,7 +141,7 @@ class QuranList extends React.Component {
           <Footer>
 
             {/* just commented becaseu its getting slow, no need to load first one on load */}
-          <Player book={'quran'} onRef={ref => (this.setState({ player : ref}))} />
+          <Player book={'quran'} onRef={ref => {console.log('index outside:', ref.index);this.setState({ player : ref})}} playList={this.state.playList} />
         </Footer>
          </View>
       </Container>

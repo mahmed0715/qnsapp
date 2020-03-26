@@ -29,7 +29,8 @@ class Headers extends React.Component {
   }
   render() {
     console.log('nav', this.props.navigation)
-    const title = this.props.navigation.getParam('title', 'Qns App')
+    const title = this.props.navigation.getParam('title', 'Qns App');
+    const id = this.props.navigation.getParam('id', '')
     return (
         <Header transparent>
           <Left style={[appStyles.row, {maxWidth:'20%'}]}>
@@ -38,7 +39,7 @@ class Headers extends React.Component {
             </Button>
           </Left>
           <Body style={{justifyContent:'flex-start', alignItems:'flex-start'}}>
-              <Text style={{fontSize: 20 , color: 'black'}}>{title}</Text>
+    <Text style={{fontSize: 20 , color: 'black'}}>{id ? id + '.' : ''} {title}</Text>
           </Body>
         </Header>
     );

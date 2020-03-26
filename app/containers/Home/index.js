@@ -43,7 +43,7 @@ class Home extends React.Component {
           <Content enableOnAndroid style={appStyles.content}>
 
             <View style={styles.container}>
-              <TouchableHighlight style={styles.item} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Quran Majid'})}}>
+              <TouchableHighlight style={[styles.item,{paddingBottom:10}]} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Quran Majid'})}}>
              {/* <View> */}
              <Image source={require('./../assets/icons/Al-Quran.png')}
        style={styles.image} />
