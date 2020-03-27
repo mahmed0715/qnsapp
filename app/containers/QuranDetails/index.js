@@ -26,20 +26,23 @@ import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
 import Player from '../../components/Player';
+// import RightPlayer from '../../components/RightPlayer';
 class QuranDetails extends React.Component {
   constructor(props) {
     super(props);
     this.player = React.createRef();
     const id = props.navigation.getParam('id');
     props.navigation.getParam('player').stop();
+    let surah = props.navigation.getParam('surah');
     this.state = {
+      // player1:  React.createRef(),
       player:  React.createRef(),
       id: id,
       name: props.navigation.getParam('title'),
-      uri: getAudioFileUrl({...props.navigation.getParam('surah')}), 
-      surah: props.navigation.getParam('surah'),
+      uri: getAudioFileUrl({...surah}), 
+      surah: surah,
       currentlyPlaying: 0,
-      playList: []
+      playList: [{id: parseInt(id), name: surah.name, uri: getAudioFileUrl({...surah}), root: true}]
     }
   }
   setCurrentlyPlaying = (id) => {
@@ -59,41 +62,63 @@ class QuranDetails extends React.Component {
      if(!this.props.quranDetails || !this.props.quranDetails[id]){
       console.log('dont have quran details in quran details screen, fetching');
       this.props.fetchQuranDetails({id:id});
+      }else {
+        let playList1 = this.props.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
+          return {uri: apiConfig.singleAudioFile(ayah), name: ayah.verse_serial, id: parseInt(ayah.id)}
+        });
+        let { playList } = this.state;
+        console.log('playlist in quran details existing:', playList, playList1);
+        this.setState({playList: [...playList, ...playList1]})
       }
   }
+  async componentWillUnmount(){
+    // if(!this.props.quranDetails || !this.props.quranDetails.length){
+    //   console.log('dont have quran list in quran list screen, fetching');
+    //   this.props.fetchQuranDetails({});
+    
+    // }
+    this.state.player.stop();
+    // this.state.player1.stop();
+  }
   componentWillReceiveProps(nextProps){
-    console.log('nexprops:', nextProps.quranDetails);
+    console.log('nextprops in quran details:', nextProps.quranDetails);
     const id = nextProps.navigation.getParam('id');
     if(!nextProps.quranDetails || !nextProps.quranDetails[id]){
       console.log('dont have quran details in quran details screen, fetching');
-      this.props.fetchQuranDetails({id:id});
+      this.props.fetchQuranDetails({id});
       }else{
-        const playList = nextProps.quranDetails[id].map((ayah)=>{
+        let playList1 = nextProps.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
           return {uri: apiConfig.singleAudioFile(ayah), name: ayah.verse_serial, id: parseInt(ayah.id)}
         });
-        this.setState({playList: playList})
+        let { playList } = this.state;
+        console.log('playlist in quran details', playList, playList1);
+        this.setState({playList: [...playList, ...playList1]})
       }
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item}) => {
-    // console.log('render item', surah);
-    return (
-     <Single item={item} player={this.state.player} setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)} currentlyPlaying={this.state.currentlyPlaying} />
-    )
+      return (<Single item={item} 
+      player={this.state.player} 
+     setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)} 
+     currentlyPlaying={this.state.currentlyPlaying} />)
   };
+  
   render(){
     const id = this.props.navigation.getParam('id');
     return (
       <Container style={appStyles.container}>
+      <View 
+            style={ { width: Layout.window.width, height: Layout.window.height }}>
         {/* <ImageBackground 
             source={imgs.bg1} 
             style={ { width: Layout.window.width, height: Layout.window.height }}> */}
           <Headers {...this.props} />
           <Content enableOnAndroid style={appStyles.content}>
+         
 {!this.props.quranDetails[id] ?
   (<View style={commonStyles.loading}>
-      <ActivityIndicator size='large' color="white" />
+      <ActivityIndicator size='large' color="black" />
     </View>)
   :
 
@@ -109,13 +134,19 @@ class QuranDetails extends React.Component {
 
      </Content>
         <Footer>
-          {/* {this.state.playList.length? */}
-        <Player book={'quran'} context={id} playList={this.state.playList} onRef={ref => (this.setState({ player : ref}, ()=>{
-          ref.play({...this.state.surah}, true);
-        }))} />
+          {/* { this.state.playList.length ? 
+          <Player abstract={true} book={'quran'} context={id} playList={this.state.playList} onRef={ref => (this.setState({ player1 : ref}))} />
+      :null} */}
+        <Player book={'quran'} context={id} playList={this.state.playList} onRef={
+          ref => {
+            ref && ref.play({...this.state.surah}, true);
+           this.setState({ player : ref})
+          }} />
+
           {/* :null} */}
+         
         </Footer>
-       
+        </View>
       </Container>
      
     );

@@ -12,8 +12,8 @@ import RightPlayer from './RightPlayer';
 import { I18nManager } from 'react-native';
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-const Single = ({item, player,currentlyPlaying,setCurrentlyPlaying})=> {
-  // console.log('item in single', item);
+const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
+  //  console.log('item in single:', player);
   const BACKGROUND_COLOR = '#FFFFFF';
   const iconColor = '#1f8ec6';
   const iconSize = 24;
@@ -34,9 +34,9 @@ const Single = ({item, player,currentlyPlaying,setCurrentlyPlaying})=> {
       </Left> */}
       <View style={{flexDirection:'row'}}>
         <View style={{flexDirection:'column'}}>
-        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:8, paddingRight:3}]}>{item.hadith_serial||item.verse_serial}.</Text>
+        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:5, paddingRight:3}]}>{item.hadith_serial||item.verse_serial}.</Text>
         {player ? 
-        <RightPlayer style={{alignSelf:'flex-start'}} context={item} player={player} currentlyPlaying={currentlyPlaying}
+        <RightPlayer context={item} player={player} currentlyPlaying={currentlyPlaying}
         setCurrentlyPlaying={setCurrentlyPlaying}
         />
         : null

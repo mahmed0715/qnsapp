@@ -28,9 +28,10 @@ class Headers extends React.Component {
     }
   }
   render() {
-    console.log('nav', this.props.navigation)
+    console.log('nav in header:', this.props.navigation)
     const title = this.props.navigation.getParam('title', 'Qns App');
     const id = this.props.navigation.getParam('id', '')
+    console.log('nav in header:', title, id)
     return (
         <Header transparent>
           <Left style={[appStyles.row, {maxWidth:'20%'}]}>

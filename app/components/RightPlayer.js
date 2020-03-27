@@ -23,25 +23,34 @@ class RightPlayer extends React.Component {
     constructor(props){
       super(props);
       this.state = {
+        player: props.player,
         isPlaying: false,
         context : props.context
       }
-      this.player = props.player;
+      // console.log('Player in right player:', this.state.player.play)
+      // this.player = props.player;
     }
     componentWillReceiveProps(nextProps){
-      this.player = nextProps.player;
+      if(nextProps.player && this.state.player != nextProps.player)
+        this.setState({player : nextProps.player});
     }
     setPause(context){
-      this.player.pause()
+      this.state.player.pause()
       this.setState({isPlaying: false});
     }
-    setCurrentlyPlaying = (context) => {
+    async play(context){
+      // await this.props.player.play;
+      this.props.play.play(context)
+    }
+    async setCurrentlyPlaying (context) {
       let { isPlaying } = this.state;
-     
+     let { player } =  this.props;
+     console.log('play set', player)
+     console.log('play set', player.play)
       if(!isPlaying && this.state.context.id == this.props.currentlyPlaying) { 
-        this.player.playPause();
+        this.state.player.playPause();
       } else{
-        this.player.play(this.state.context);
+        this.props.player.play(this.state.context);
         this.props.setCurrentlyPlaying(this.state.context.id) ;
       }
       this.setState({isPlaying: true});
@@ -52,18 +61,18 @@ class RightPlayer extends React.Component {
           const iconSize = 24;
   return (
     
-    <View>
+    <View >
     {this.state.isPlaying && this.props.currentlyPlaying == this.state.context.id ? (
-      <TouchableOpacity onPress={()=>{this.setPause()}}> 
+      <TouchableOpacity onPress={()=>{this.setPause()}} style={{padding: 10}}> 
       <Icon
      size={iconSize}
       
        style={{fontSize: iconSize, color: iconColor}}
-         name="pause"
+         name="play"
        />
        </TouchableOpacity>
      ) : (
-       <TouchableOpacity  onPress={()=>{this.setCurrentlyPlaying()}} >   
+       <TouchableOpacity style={{padding: 10}} onPress={()=>{this.setCurrentlyPlaying(this.state.context.id)}} >   
         <Icon
      size={iconSize}
     

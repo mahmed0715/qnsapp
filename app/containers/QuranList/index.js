@@ -79,7 +79,7 @@ class QuranList extends React.Component {
           <Text style={theme.textColor}>{surah.id}</Text>
         </Left>
        <Body>
-          <Text style={theme.textColor}>Surah {surah.name}{this.state.isPlaying}</Text>
+          <Text style={theme.textColor}>Surah {surah.name}</Text>
           <Text style={theme.textColor}>({surah.meaning}) Verse {surah.verse_number}</Text>
        </Body>
        <Right>
@@ -141,7 +141,7 @@ class QuranList extends React.Component {
           <Footer>
 
             {/* just commented becaseu its getting slow, no need to load first one on load */}
-          <Player book={'quran'} onRef={ref => {console.log('index outside:', ref.index);this.setState({ player : ref})}} playList={this.state.playList} />
+          <Player book={'quran'} onRef={ref => {ref && console.log('index outside:', ref.index);this.setState({ player : ref})}} playList={this.state.playList} />
         </Footer>
          </View>
       </Container>

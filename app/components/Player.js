@@ -67,14 +67,18 @@ componentWillMount(){
 	}
 }
 componentWillReceiveProps(nextProps){
-	console.log('Player: receieve props', nextProps);
+	console.log('Player: receieve playlist', nextProps.playList);
 	if(nextProps.playList != this.state.PLAYLIST){
-		this.setState(nextProps.playList);
+		this.setState({PLAYLIST: nextProps.playList});
 	}
 }
-  componentWillUnmount() {
+  async componentWillUnmount() {
 	 console.log('Player unmounting',);
-    this.props.onRef(undefined)
+	this.props.onRef(undefined);
+	this.stop();
+	await this.playbackInstance.unloadAsync();
+	this.playbackInstance.setOnPlaybackStatusUpdate(null);
+	this.playbackInstance = null;
   }
 	componentDidMount() {
 		Audio.setAudioModeAsync({
@@ -101,6 +105,7 @@ componentWillReceiveProps(nextProps){
 	stop(){
 		this._onStopPressed();
 	}
+
 	play(surah, dontPlay){
 		this._onStopPressed();
 		console.log('===========================================================playing new', surah);
@@ -115,22 +120,23 @@ componentWillReceiveProps(nextProps){
 				const index = this.state.PLAYLIST.findIndex(({id}) => id == surah.id);
 				if(index != -1)
 					this.index = index;
-					else {
-						let PLAYITEM = new PlaylistItem(
-							surah.name,
-							surah.id != 1 ? getAudioFileUrl(surah) : '',
-						  surah.id);
-						  let { PLAYLIST } = this.state;
-						  PLAYLIST.push(PLAYITEM);
-						  this.index = PLAYLIST.length - 1;
-						  console.log('===========================================================playing new', PLAYITEM);
-						this.setState({PLAYLIST: PLAYLIST});
-					}
+					// else {
+					// 	let PLAYITEM = new PlaylistItem(
+					// 		surah.name,
+					// 		surah.id != 1 ? getAudioFileUrl(surah) : '',
+					// 	  surah.id);
+					// 	  let { PLAYLIST } = this.state;
+					// 	  PLAYLIST.push(PLAYITEM);
+					// 	  this.index = PLAYLIST.length - 1;
+					// 	  console.log('===========================================================playing new', PLAYITEM);
+					// 	this.setState({PLAYLIST: PLAYLIST});
+					// }
 
 				// this.setState({index: index});
 			}
-			
-			dontPlay?this._loadNewPlaybackInstance(false):this._loadNewPlaybackInstance(true);
+			if(this.index > -1){
+				dontPlay?this._loadNewPlaybackInstance(false):this._loadNewPlaybackInstance(true);
+			}
 	}
 
 	async _loadNewPlaybackInstance(playing) {
@@ -184,7 +190,7 @@ componentWillReceiveProps(nextProps){
 	}
 
 	_onPlaybackStatusUpdate = status => {
-		console.log('platback status:', status);
+		// console.log('platback status:', status);
 		if (status && status.isLoaded) {
 			this.setState({
 				playbackInstancePosition: status.positionMillis,
@@ -340,6 +346,8 @@ componentWillReceiveProps(nextProps){
 	render() {
 		const iconColor = '#1f8ec6';
 		const iconSize = 24;
+		if(this.props.abstract) 
+			return <View />;
 		return !this.state.fontLoaded ? (
 			<View />
 		) : (
@@ -347,7 +355,7 @@ componentWillReceiveProps(nextProps){
 			
 				<View style={[styles.detailsContainer, {flex:1}]}>
 					<Text style={[styles.text]}>
-						Surah {this.state.playbackInstanceName}
+		Surah {!isNaN(this.state.playbackInstanceName) ? (this.state.PLAYLIST[0].name +' :'):''} {this.state.playbackInstanceName}
 					</Text>
 					<Text style={[styles.text]}>
 						{/* {this.state.isBuffering ? (
