@@ -35,7 +35,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
       <View style={{flexDirection:'row'}}>
         <View style={{flexDirection:'column'}}>
         <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:5, paddingRight:3}]}>{item.hadith_serial||item.verse_serial}.</Text>
-        {player ? 
+        {player  && (item.audio_file|| item.audio_embed) ? 
         <RightPlayer context={item} player={player} currentlyPlaying={currentlyPlaying}
         setCurrentlyPlaying={setCurrentlyPlaying}
         />

@@ -76,8 +76,10 @@ componentWillReceiveProps(nextProps){
 	 console.log('Player unmounting',);
 	this.props.onRef(undefined);
 	this.stop();
-	await this.playbackInstance.unloadAsync();
-	this.playbackInstance.setOnPlaybackStatusUpdate(null);
+	if(this.playbackInstance != null){
+		this.playbackInstance.unloadAsync();
+		this.playbackInstance.setOnPlaybackStatusUpdate(null);
+ 	 }
 	this.playbackInstance = null;
   }
 	componentDidMount() {
@@ -355,10 +357,10 @@ componentWillReceiveProps(nextProps){
 			
 				<View style={[styles.detailsContainer, {flex:1}]}>
 					<Text style={[styles.text]}>
-		Surah {!isNaN(this.state.playbackInstanceName) ? (this.state.PLAYLIST[0].name +' :'):''} {this.state.playbackInstanceName}
+		{this.props.book == 'hadiths' ? 'Hadith' : 'Surah'} { !isNaN(this.state.playbackInstanceName) ? (this.props.book !== 'hadiths' ?(this.state.PLAYLIST[0].name +' :'):''):''} {this.state.playbackInstanceName}
 					</Text>
 					<Text style={[styles.text]}>
-						{/* {this.state.isBuffering ? (
+						{/* {this.state.isBufferirahng ? (
 							BUFFERING_STRING
 						) : null} */}
 						({(
@@ -366,7 +368,7 @@ componentWillReceiveProps(nextProps){
 						)})
 					</Text>
 				</View>
-				<View style={{flex: 2, flexBasis: 30, justifyContent:'flex-start', alignItems:'flex-end', paddingTop: 5}}>
+				<View style={{flex: 1, flexBasis: 30, justifyContent:'flex-start', alignItems:'flex-end', paddingTop: 5}}>
 			
 				<View
 					style={[
@@ -378,7 +380,7 @@ componentWillReceiveProps(nextProps){
 								: 1.0,
 						},
 						{
-							mariginTop: 0, flex: 1,
+							marginTop: 0, flex: 1,
 							flexBasis: 30
 						}
 					]}
@@ -414,7 +416,7 @@ componentWillReceiveProps(nextProps){
 								/>
 							) : (
 								<Icon
-									name="play"
+									name="play-circle"
 									size={iconSize}
 								style={{fontSize: iconSize, color: iconColor}}
 									color="#1f8ec6"

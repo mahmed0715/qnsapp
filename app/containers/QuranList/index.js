@@ -105,7 +105,10 @@ class QuranList extends React.Component {
     /></TouchableOpacity>
 
   )} */}
-       <RightPlayer style={{alignSelf:'flex-start'}} context={surah} player={this.state.player} currentlyPlaying={this.state.currentlyPlaying}
+       <RightPlayer style={{alignSelf:'flex-start'}} 
+       context={surah} 
+       player={this.state.player} 
+       currentlyPlaying={this.state.currentlyPlaying}
        setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
        />
        </Right>

@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
 import commonStyles from '../styles';
+import apiConfig from '../../config/api';
 import imgs from '../../assets/images';
 import {
   Container,
@@ -22,23 +23,29 @@ import {fetchBukhariList} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
-import Player from '../../components/Player';
-
+// import Player from '../../components/Player';
+import RightPlayer from '../../components/RightPlayer';
 class BukhariList extends React.Component {
   constructor(props) {
     super(props);
-    this.player = React.createRef();
+    // this.player = React.createRef();
+    const id =  props.navigation.getParam('id');
+    // const playList = props.bukhariList[id].map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.book_name, id: ayah.id}));
+    // console.log('playlist in bukharilist:', apiConfig.singleAudioFile(props.bukhariList[id][0], 'hadiths'), playList)
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1,
-      id: props.navigation.getParam('id')
+      id: id
     }
-    console.log(styles.textColor)
   }
+  // generatePlayList = (nextProps, id)=>{
+  //   const playList = nextProps.bukhariList[id].map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.book_name, id: ayah.id}));
+  //   this.setState({playList: playList})
+  // }
   setCurrentlyPlaying = (context, pause) => {
     let {isPlaying}  = this.state;
     this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
-    pause ? this.player.pause(context) : this.player.play(context);
+    pause ? this.state.player.pause(context) : this.state.player.play(context);
   }
   componentDidMount(){
     const id = this.props.navigation.getParam('id');
@@ -69,6 +76,12 @@ class BukhariList extends React.Component {
   <Text>Verse {surah.verse_number}</Text>
  </Right> */}
        {/* <RightPlayer style={{alignSelf:'flex-start'}} surah={surah} player={this.player} /> */}
+       {/* <RightPlayer style={{alignSelf:'flex-start'}} 
+       context={hadith_books} 
+       player={this.state.player} 
+       currentlyPlaying={this.state.currentlyPlaying}
+       setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
+       /> */}
       </ListItem> 
     )
   };
@@ -78,7 +91,7 @@ class BukhariList extends React.Component {
     console.log('this.props.bukhariList', this.props.bukhariList[id]);
     return (
       <Container style={appStyles.container}>
-        <ImageBackground 
+        <View 
             source={imgs.bg1} 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
@@ -86,7 +99,7 @@ class BukhariList extends React.Component {
           {!this.props.bukhariList[id] || !this.props.bukhariList[id].length?
           
             (<View style={commonStyles.loading}>
-      <ActivityIndicator size='large' color="white" />
+      <ActivityIndicator size='large' color="black" />
     </View>):
           <FlatList
           
@@ -98,8 +111,13 @@ class BukhariList extends React.Component {
       />
           }
           </Content>
-         
-         </ImageBackground>
+          {/* <Footer>
+
+          <Player book={'hadiths'} 
+          onRef={ref => {this.setState({ player : ref})}} 
+          playList={this.state.playList} />
+        </Footer> */}
+         </View>
       </Container>
      
     );
