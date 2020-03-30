@@ -99,7 +99,7 @@ class BukhariList extends React.Component {
           {!this.props.bukhariList[id] || !this.props.bukhariList[id].length?
           
             (<View style={commonStyles.loading}>
-      <ActivityIndicator size='large' color="black" />
+      <ActivityIndicator size='large' color="white" />
     </View>):
           <FlatList
           

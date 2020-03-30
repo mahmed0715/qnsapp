@@ -25,7 +25,7 @@ class PlaylistItem {
 };
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#FFFFFF';
+const BACKGROUND_COLOR = '#8bb0cb';
 const DISABLED_OPACITY = 0.5;
 const FONT_SIZE = 14;
 const LOADING_STRING = 'Loading...';
@@ -69,12 +69,14 @@ componentWillMount(){
 componentWillReceiveProps(nextProps){
 	console.log('Player: receieve playlist', nextProps.playList);
 	if(nextProps.playList != this.state.PLAYLIST){
-		this.setState({PLAYLIST: nextProps.playList});
+		this.setState({PLAYLIST: nextProps.playList}, ()=>{
+			//this.loadSound();
+		});
 	}
 }
-  async componentWillUnmount() {
+  componentWillUnmount() {
 	 console.log('Player unmounting',);
-	this.props.onRef(undefined);
+	 this.props.onRef && this.props.onRef(undefined);
 	this.stop();
 	if(this.playbackInstance != null){
 		this.playbackInstance.unloadAsync();
@@ -95,6 +97,7 @@ componentWillReceiveProps(nextProps){
 		});
 		
 		this._loadNewPlaybackInstance(false);
+		// this.loadSound();
 	}
 	pause(){		// this._onPlayPausePressed();
 		if (this.state.isPlaying) {
@@ -141,6 +144,31 @@ componentWillReceiveProps(nextProps){
 			}
 	}
 
+	async loadSound(){
+		// (async () => {
+			if(!this.state.PLAYLIST[this.index + 1] || (this.state.PLAYLIST[this.index + 1] && this.state.PLAYLIST[this.index + 1].sound)){
+				console.log('loading sound for index returning:', this.state.PLAYLIST[this.index + 1])
+				return;
+			}
+			let source  = this.state.PLAYLIST[this.index + 1];
+			const initialStatus = {
+				shouldPlay: false,
+				rate: this.state.rate,
+				volume: this.state.volume,
+			};
+			console.log('loading sound for index:', this.index+1)
+			const { sound, status } = await Audio.Sound.createAsync(
+				{uri: source.uri},
+				initialStatus,
+				this._onPlaybackStatusUpdate
+			);
+			source.sound = sound;
+			let {PLAYLIST} = this.state;
+			PLAYLIST[this.index+1] = source;
+			this.setState({PLAYLIST});
+		// });
+		// this.setState({PLAYLIST: soundPlaylist});
+	}
 	async _loadNewPlaybackInstance(playing) {
 		console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance)
 		if (this.playbackInstance != null) {
@@ -150,26 +178,38 @@ componentWillReceiveProps(nextProps){
 			this.playbackInstance = null;
 		}
 		let source;
-		if(this.state.PLAYLIST.length)
+		if(this.state.PLAYLIST.length){
 			if(this.state.PLAYLIST[this.index].uri){
 				source = { uri: this.state.PLAYLIST[this.index].uri };
 			}else {
 				source = require('./assets/quran_1.mp3')
 			}
+		}
 		else return;
-		console.log('_loadNewPlaybackInstance: ', source);
+		if(this.state.PLAYLIST[this.index].sound)
+		{
+			console.log('sound found, using');
+			const {sound} = this.state.PLAYLIST[this.index];
+			this.playbackInstance = sound;
+			playing && this.playbackInstance.playAsync();
+		}else{
+			console.log('_loadNewPlaybackInstance: ', source);
 		const initialStatus = {
 			shouldPlay: playing,
 			rate: this.state.rate,
 			volume: this.state.volume,
 		};
 		console.log('initial asttaus: playback load:', initialStatus)
-		const { sound, status } = await Audio.Sound.createAsync(
+		
+		 let { sound } = await Audio.Sound.createAsync(
 			source,
 			initialStatus,
 			this._onPlaybackStatusUpdate
 		);
 		this.playbackInstance = sound;
+		}
+		this.loadSound();
+		// this.playbackInstance = sound||sound1;
 		console.log('playback this.playbackInstance:', this.playbackInstance)
 		this._updateScreenForLoading(false);
 	}
@@ -346,20 +386,22 @@ componentWillReceiveProps(nextProps){
 	}
 
 	render() {
-		const iconColor = '#1f8ec6';
+		const iconColor = 'white';
+		const bgColor = '#e7e0e0';
 		const iconSize = 24;
 		if(this.props.abstract) 
 			return <View />;
 		return !this.state.fontLoaded ? (
 			<View />
 		) : (
-			<View style={[styles.container, {flexDirection:'row', paddingLeft: 5, paddingRight: 5, backgroundColor:'#f1f3f4'}]}>
+			//f1f3f4
+			<View style={[styles.container, {flexDirection:'row', paddingLeft: 5, paddingRight: 5, backgroundColor:'#228392'}]}>
 			
 				<View style={[styles.detailsContainer, {flex:1}]}>
-					<Text style={[styles.text]}>
+					<Text style={[styles.text, {color: 'white'}]}>
 		{this.props.book == 'hadiths' ? 'Hadith' : 'Surah'} { !isNaN(this.state.playbackInstanceName) ? (this.props.book !== 'hadiths' ?(this.state.PLAYLIST[0].name +' :'):''):''} {this.state.playbackInstanceName}
 					</Text>
-					<Text style={[styles.text]}>
+					<Text style={[styles.text,{color: 'white'}]}>
 						{/* {this.state.isBufferirahng ? (
 							BUFFERING_STRING
 						) : null} */}
@@ -368,9 +410,9 @@ componentWillReceiveProps(nextProps){
 						)})
 					</Text>
 				</View>
-				<View style={{flex: 1, flexBasis: 30, justifyContent:'flex-start', alignItems:'flex-end', paddingTop: 5}}>
+				<View style={{flex: 1, flexBasis: 30, flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
 			
-				<View
+				{/* <View
 					style={[
 						styles.buttonsContainerBase,
 						styles.buttonsContainerTopRow,
@@ -382,12 +424,15 @@ componentWillReceiveProps(nextProps){
 						{
 							marginTop: 0, flex: 1,
 							flexBasis: 30
+						},
+						{
+							backgroundColor:'red'
 						}
 					]}
-				>
+				> */}
 					<TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={[styles.wrapper, {}]}
+						style={[styles.wrapper, styles.btn]}
 						onPress={this._onBackPressed}
 						disabled={this.state.isLoading}
 					>
@@ -402,7 +447,7 @@ componentWillReceiveProps(nextProps){
 											</TouchableHighlight>
 					<TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={styles.wrapper}
+						style={[styles.wrapper, styles.btn]}
 						onPress={this._onPlayPausePressed}
 						disabled={this.state.isLoading}
 					>
@@ -426,7 +471,7 @@ componentWillReceiveProps(nextProps){
 					</TouchableHighlight>
 					<TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={styles.wrapper}
+						style={[styles.wrapper, styles.btn]}
 						onPress={this._onStopPressed}
 						disabled={this.state.isLoading}
 					>
@@ -436,13 +481,13 @@ componentWillReceiveProps(nextProps){
 								name="stop"
 								size={iconSize}
 								style={{fontSize: iconSize, color: iconColor}}
-								color="#1f8ec6"
+								color="white"
 							/>
 						</View>
 					</TouchableHighlight>
 					<TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={styles.wrapper}
+						style={[styles.wrapper, styles.btn]}
 						onPress={this._onForwardPressed}
 						disabled={this.state.isLoading}
 					>
@@ -450,13 +495,13 @@ componentWillReceiveProps(nextProps){
 							<Icon
 							type="FontAwesome"
 								name="fast-forward"
-								color="#1f8ec6"
+								color="white"
 								size={iconSize}
 								style={{fontSize: iconSize, color: iconColor}}
 							/>
 						</View>
 					</TouchableHighlight>
-				</View>
+				{/* </View> */}
 				
 				{/* <View
 					style={[
@@ -601,4 +646,5 @@ const styles = StyleSheet.create({
 	rateSlider: {
 		width: DEVICE_WIDTH - 80,
 	},
+	btn: {backgroundColor: '#228392', paddingHorizontal:10, paddingVertical: 5}
 });

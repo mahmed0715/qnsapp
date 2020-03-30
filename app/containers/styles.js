@@ -1,12 +1,12 @@
 import {Colors,Layout} from '../constants/';
 export default {
   textColor:{
-    color: 'black'
+    color: 'white'
   }
   ,
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#4fa3d2',
     alignItems: 'center',
     justifyContent: 'center',
   },

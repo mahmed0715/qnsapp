@@ -102,7 +102,7 @@ class BukhariDetails extends React.Component {
           {!this.props.bukhariDetails[contextBookId] || !this.props.bukhariDetails[contextBookId][id]?
           
             (<View style={commonStyles.loading}>
-      <ActivityIndicator size='large' color="black" />
+      <ActivityIndicator size='large' color="white" />
     </View>):
           <FlatList
           

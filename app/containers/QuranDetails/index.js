@@ -118,18 +118,18 @@ class QuranDetails extends React.Component {
          
 {!this.props.quranDetails[id] ?
   (<View style={commonStyles.loading}>
-      <ActivityIndicator size='large' color="black" />
+      <ActivityIndicator size='large' color="white" />
     </View>)
   :
 
-          (<FlatList
+          (this.state.player && this.state.player.play ? <FlatList
           
         data={this.props.quranDetails[id]}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
-      />)
+      />:null)
 }
 
      </Content>

@@ -76,7 +76,7 @@ class QuranList extends React.Component {
     return (
      <ListItem onPress={()=>{this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}`, surah: surah, player: this.state.player })}}>
         <Left style={{maxWidth:30, alignItems:'flex-start', justifyContent:'flex-start'}}>
-          <Text style={theme.textColor}>{surah.id}</Text>
+          <Text style={theme.textColor}>{surah.id}.</Text>
         </Left>
        <Body>
           <Text style={theme.textColor}>Surah {surah.name}</Text>
@@ -105,12 +105,14 @@ class QuranList extends React.Component {
     /></TouchableOpacity>
 
   )} */}
+  {this.state.player && this.state.player.play ?
        <RightPlayer style={{alignSelf:'flex-start'}} 
        context={surah} 
        player={this.state.player} 
        currentlyPlaying={this.state.currentlyPlaying}
        setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
-       />
+       />:null
+  }
        </Right>
 {/* <Right> 
   <Text>Verse {surah.verse_number}</Text>
@@ -125,10 +127,10 @@ class QuranList extends React.Component {
         <View 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
-          <Content enableOnAndroid style={appStyles.content}>
+          <Content enableOnAndroid style={[appStyles.content, {backgroundColor: '#399aa9'}]}>
           {!this.props.quranList || !this.props.quranList.length?
           (<View style={commonStyles.loading}>
-      <ActivityIndicator size='large' color="black" />
+      <ActivityIndicator size='large' color="white" />
     </View>)
          :
           <FlatList
@@ -144,7 +146,7 @@ class QuranList extends React.Component {
           <Footer>
 
             {/* just commented becaseu its getting slow, no need to load first one on load */}
-          <Player book={'quran'} onRef={ref => {ref && console.log('index outside:', ref.index);this.setState({ player : ref})}} playList={this.state.playList} />
+          <Player book={'quran'} onRef={ref => {this.setState({ player : ref})}} playList={this.state.playList} />
         </Footer>
          </View>
       </Container>

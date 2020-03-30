@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { StyleSheet, View, ImageBackground, Image, TouchableHighlight} from 'react-native'
+import { StyleSheet, View, ImageBackground, Image, TouchableHighlight, TouchableOpacity} from 'react-native'
 import _ from 'lodash'; 
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
@@ -58,68 +58,71 @@ class Home extends React.Component {
     }
   }
   render(){
+    const BACKGROUND_COLOR = 'green';
     return (
       <Container style={appStyles.container}>
       
         <View 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
-          <Content enableOnAndroid style={appStyles.content}>
+          <Content enableOnAndroid style={[appStyles.content,{paddingTop: 10, backgroundColor: 'white'}]}>
 
             <View style={styles.container}>
-              <TouchableHighlight style={[styles.item,{paddingBottom:10}]} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Quran Majid'})}}>
+              <TouchableOpacity 
+              	underlayColor={BACKGROUND_COLOR}
+              style={[styles.item,{paddingBottom:10}]} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Quran Majid'})}}>
              {/* <View> */}
              <Image source={require('./../assets/icons/Al-Quran.png')}
        style={styles.image} />
              {/* <Text style={{color:'black', textAlign:'center'}}>Quran Majid</Text> */}
           {/* </View> */}
-             </TouchableHighlight>
-              <TouchableHighlight style={styles.item} 
+             </TouchableOpacity>
+              <TouchableOpacity style={styles.item} 
               onPress={()=>{this.props.navigation.push('BukhariList', {id: 1, title: 'Sohih Bukhari'})}}>
                 {/* <View> */}
              <Image source={require('./../assets/icons/Sahih-Bukhari.png')}
        style={styles.image} />
              {/* <Text style={{color:'white', textAlign:'center'}}>Sohih Bukhari</Text> */}
           {/* </View> */}
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.item} 
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item} 
               onPress={()=>{this.props.navigation.push('BukhariList', {id:2, title: 'Sohih Muslim'})}}>
                  {/* <View> */}
              <Image source={require('./../assets/icons/Sahih-Muslim.png')}
        style={styles.image} />
              {/* <Text style={{color:'white', textAlign:'center'}}>Sohih Muslim</Text> */}
           {/* </View> */}
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.item} 
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item} 
               onPress={()=>{this.props.navigation.push('BukhariList', {id:3, title: 'Jami At Tirmidhi'})}}>
                  {/* <View> */}
              <Image source={require('./../assets/icons/Jami-At-Tirmidhi.png')}
        style={styles.image} />
              {/* <Text style={{color:'white', textAlign:'center'}}>Jami At Tirmidhi</Text> */}
           {/* </View> */}
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.item} 
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item} 
               onPress={()=>{this.props.navigation.push('BukhariList', {id:4,title: 'Sunan An Nasai'})}}>
                  {/* <View style={{padding:10}}> */}
              <Image source={require('./../assets/icons/Sunan-An-Nasai.png')}
        style={styles.image} />
              {/* <Text style={{color:'white', textAlign:'center'}}>Sunan An Nasai</Text> */}
           {/* </View> */}
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.item} 
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item} 
               onPress={()=>{this.props.navigation.push('BukhariList', {id:5, title: 'Sunan Abu Dawud'})}}>
                  <View style={{padding:10}}>
              <Image source={require('./../assets/icons/Sunan-Abu-Dawud.png')}
        style={styles.image} />
              {/* <Text style={{color:'white', textAlign:'center'}}>Sunan Abu Dawud</Text> */}
           </View>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.item} 
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item} 
               onPress={()=>{this.props.navigation.push('BukhariList', {id: 6, title: 'Sunan Ibn Majah'})}}>
              <Image source={require('./../assets/icons/Sunan-Ibn-Majah.png')}
        style={styles.image} />
              {/* <Text style={{color:'white', textAlign:'center'}}>Sunan Ibn Majah</Text> */}
-              </TouchableHighlight>
+              </TouchableOpacity>
               <View style={styles.item}></View>
             </View>
            

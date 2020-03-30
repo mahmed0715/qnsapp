@@ -3,6 +3,7 @@ import { Colors, Layout } from '../constants/';
 
 export default StyleSheet.create({
   container: {
+    
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -36,7 +37,8 @@ export default StyleSheet.create({
     fontFamily: 'Font-Regular',
   },
   content:{
-    marginTop: Layout.indent
+    // marginTop: Layout.indent
+    backgroundColor: '#399aa9'
   },
   contentBg:{
     backgroundColor: Colors.white,

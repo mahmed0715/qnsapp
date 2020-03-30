@@ -28,20 +28,20 @@ class Headers extends React.Component {
     }
   }
   render() {
-    console.log('nav in header:', this.props.navigation)
-    const title = this.props.navigation.getParam('title', 'Qns App');
+    console.log('nav in header:', this.props.navigation);
+    const title = this.props.navigation.getParam('title');
     const id = this.props.navigation.getParam('id', '')
     console.log('nav in header:', title, id)
     return (
-        <Header transparent>
-          <Left style={[appStyles.row, {maxWidth:'20%'}]}>
-            <Button transparent style={appStyles.menuBtn} onPress={() => this.props.navigation.openDrawer()}>
+        <Header transparent style={{backgroundColor: '#228392'}}>
+          {/* <Left style={[appStyles.row, {maxWidth:'20%'}]}> */}
+            {/* <Button transparent style={appStyles.menuBtn} onPress={() => this.props.navigation.openDrawer()}>
               <Svgicon color={Colors.black} name="menu" />
-            </Button>
-          </Left>
-          <Body style={{justifyContent:'flex-start', alignItems:'flex-start'}}>
-    <Text style={{fontSize: 20 , color: 'black'}}>{id ? id + '.' : ''} {title}</Text>
-          </Body>
+            </Button> */}
+          {/* </Left> */}
+          <View style={{justifyContent:'center', alignItems:'center'}}>
+    <Text style={{fontSize: 20 , color: 'white', textAlign:'center'}}>{id ? id + '.' : ''} {title?title : 'Qns App'}</Text>
+          </View>
         </Header>
     );
   }

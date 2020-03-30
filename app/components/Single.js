@@ -19,16 +19,17 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
   const iconSize = 24;
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const capitalize = (s) => {
-    if (typeof s !== 'string') return ''
+    if (typeof s != 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1)
   }
  const removeSupTag = (text) => {
   text = capitalize(text);
-  return text.replace(/\<sup.*\<\/sup\>/g,'')
+  return text.replace(/\<sup.*\<\/sup\>/g,'');
  }
     return (
-      <View style={{margin:5, paddingTop:5, paddingBottom:10, borderBottomColor:'gray', borderBottomWidth:.5, width: screenWidth * 0.95, maxWidth: screenWidth * 0.95}}>
+      <View style={{ marginLeft: 5, paddingTop:5, paddingBottom:10, borderBottomColor:'white', borderBottomWidth:.5, width: screenWidth * 0.95, maxWidth: screenWidth * 0.95}}>
       {/* <Left style={{maxWidth: 35, justifyContent:'flex-start','alignItems':'flex-start', backgroundColor:'red'}}>
         <Text style={[theme.textColor, {alignSelf:'flex-start'}]}>{surah.verse_serial}</Text>
       </Left> */}
@@ -40,6 +41,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
         setCurrentlyPlaying={setCurrentlyPlaying}
         />
         : null
+        
         //  	<TouchableHighlight
         //    underlayColor={BACKGROUND_COLOR}
         //    style={{}}
@@ -62,11 +64,13 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
         //    </View>
         //  </TouchableHighlight>
         // : null} 
-      }
+}
     </View>
         <View style={{paddingRight:10, marginRight: 10, paddingLeft:5}}> 
-          {<Text style={[theme.textColor, { textAlign:'right', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.text_simple||item.hadith_narrated)}</Text> }
+          {item.text_simple ? <Text style={[theme.textColor, { textAlign:'right', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.text_simple||item.hadith_narrated)}</Text> :null}
+          {item.hadith_narrated ? <Text style={[theme.textColor, { textAlign:'left', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.hadith_narrated)}</Text> :null}
           <Text style={[theme.textColor, {width: screenWidth * 0.83, margin: 5, marginTop: 10}]}> {removeSupTag(item.detail||item.text_details)}</Text>
+
         </View>
       </View>
    

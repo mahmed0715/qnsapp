@@ -42,12 +42,12 @@ class RightPlayer extends React.Component {
       // await this.props.player.play;
       this.props.play.play(context)
     }
-    async setCurrentlyPlaying (context) {
-      let { isPlaying } = this.state;
-     let { player } =  this.props;
-     console.log('play set', player)
-     console.log('play set', player.play)
-      if(!isPlaying && this.state.context.id == this.props.currentlyPlaying) { 
+    setPlaying = (context) => {
+      // let { isPlaying } = this.state;
+    //  let { player } =  this.props;
+     console.log('play set', this.props, this.state)
+     console.log('play set', this.props.player.play)
+      if(this.state.isPlaying && this.state.context.id == this.props.currentlyPlaying) { 
         this.state.player.playPause();
       } else{
         this.props.player.play(this.state.context);
@@ -57,7 +57,7 @@ class RightPlayer extends React.Component {
     }
    
     render(){
-      const iconColor = '#1f8ec6';
+      const iconColor = 'white';
           const iconSize = 24;
   return (
     
@@ -72,7 +72,7 @@ class RightPlayer extends React.Component {
        />
        </TouchableOpacity>
      ) : (
-       <TouchableOpacity style={{padding: 10}} onPress={()=>{this.setCurrentlyPlaying(this.state.context.id)}} >   
+       <TouchableOpacity style={{padding: 10}} onPress={this.setPlaying.bind(this)} >   
         <Icon
      size={iconSize}
     
