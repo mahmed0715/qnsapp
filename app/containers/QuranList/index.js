@@ -75,8 +75,8 @@ class QuranList extends React.Component {
     // console.log('render item', surah);
     return (
      <ListItem onPress={()=>{this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}`, surah: surah, player: this.state.player })}}>
-        <Left style={{maxWidth:30, alignItems:'flex-start', justifyContent:'flex-start'}}>
-          <Text style={theme.textColor}>{surah.id}.</Text>
+        <Left style={{maxWidth:35, alignItems:'flex-start', justifyContent:'flex-start'}}>
+          <Text style={theme.textColor}>{surah.id}</Text>
         </Left>
        <Body>
           <Text style={theme.textColor}>Surah {surah.name}</Text>

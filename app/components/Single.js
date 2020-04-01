@@ -69,7 +69,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
         <View style={{paddingRight:10, marginRight: 10, paddingLeft:5}}> 
           {item.text_simple ? <Text style={[theme.textColor, { textAlign:'right', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.text_simple||item.hadith_narrated)}</Text> :null}
           {item.hadith_narrated ? <Text style={[theme.textColor, { textAlign:'left', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.hadith_narrated)}</Text> :null}
-          <Text style={[theme.textColor, {width: screenWidth * 0.83, margin: 5, marginTop: 10}]}> {removeSupTag(item.detail||item.text_details)}</Text>
+          <Text style={[theme.textColor, {width: screenWidth * 0.83, margin: 5, marginTop: 10, paddingBottom: 10}]}> {removeSupTag(item.detail||item.text_details)}</Text>
 
         </View>
       </View>

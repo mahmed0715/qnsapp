@@ -27,6 +27,10 @@ class Headers extends React.Component {
       visibleModal:false
     }
   }
+  capitalize = (s) => {
+    if (typeof s != 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
   render() {
     console.log('nav in header:', this.props.navigation);
     const title = this.props.navigation.getParam('title');
@@ -40,7 +44,7 @@ class Headers extends React.Component {
             </Button> */}
           {/* </Left> */}
           <View style={{justifyContent:'center', alignItems:'center'}}>
-    <Text style={{fontSize: 20 , color: 'white', textAlign:'center'}}> {title?title : 'Qns App'}</Text>
+    <Text style={{fontSize: 20 , color: 'white', textAlign:'center'}}> {title?this.capitalize(title) : 'QNS App'}</Text>
           </View>
         </Header>
     );

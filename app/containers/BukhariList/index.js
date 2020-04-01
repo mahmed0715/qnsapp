@@ -47,6 +47,10 @@ class BukhariList extends React.Component {
     this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
     pause ? this.state.player.pause(context) : this.state.player.play(context);
   }
+  capitalize = (s) => {
+    if (typeof s != 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
   componentDidMount(){
     const id = this.props.navigation.getParam('id');
     if(!this.props.bukhariList[id] || !this.props.bukhariList[id].length){
@@ -68,7 +72,7 @@ class BukhariList extends React.Component {
           <Text style={theme.textColor}>{hadith_books.book_serial}</Text>
         </Left>
        <Body>
-          <Text style={theme.textColor}>{hadith_books.book_name}</Text>
+          <Text style={theme.textColor}>{this.capitalize(hadith_books.book_name)}</Text>
           <Text style={theme.textColor}>({hadith_books.hadith_end-hadith_books.hadith_start+1})</Text>
        </Body>
        
