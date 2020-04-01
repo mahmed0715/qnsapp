@@ -40,7 +40,7 @@ class Headers extends React.Component {
             </Button> */}
           {/* </Left> */}
           <View style={{justifyContent:'center', alignItems:'center'}}>
-    <Text style={{fontSize: 20 , color: 'white', textAlign:'center'}}>{id ? id + '.' : ''} {title?title : 'Qns App'}</Text>
+    <Text style={{fontSize: 20 , color: 'white', textAlign:'center'}}> {title?title : 'Qns App'}</Text>
           </View>
         </Header>
     );

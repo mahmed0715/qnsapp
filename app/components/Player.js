@@ -91,7 +91,7 @@ componentWillReceiveProps(nextProps){
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-			staysActiveInBackground: false,
+			staysActiveInBackground: true,
 			playsInBackgroundModeAndroid: false,
 			playThroughEarpieceAndroid: false
 		});

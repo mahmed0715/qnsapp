@@ -30,6 +30,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.qnsbd.qnsapp"
-    }
+    },
+    "githubUrl": "https://github.com/mahmed0715/qnsapp"
   }
 }
