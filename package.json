@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "shake": "adb shell input keyevent 82"
+    "shake": "adb shell input keyevent 82",
+    "postinstall": "cp node_modules/@expo/vector-icons/FontAwesome.js node_modules/@expo/vector-icons/Fontisto.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -23,7 +24,9 @@
     "react-native-app-intro-slider": "^3.0.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-modal": "^11.3.1",
+    "react-native-screens": "^2.4.0",
     "react-native-slider": "^0.11.0",
+    "react-native-svg": "~9.5.1",
     "react-native-svg-icon": "^0.8.1",
     "react-native-web": "~0.11.4",
     "react-navigation": "^3.11.1",
@@ -33,8 +36,7 @@
     "redux-form": "^8.2.6",
     "redux-form-validators": "^3.3.2",
     "redux-persist": "^5.10.0",
-    "redux-thunk": "^2.3.0",
-    "react-native-svg": "~9.5.1"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^6.0.0",
