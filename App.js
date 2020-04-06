@@ -4,7 +4,8 @@ import { View, Text, Image } from 'react-native';
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { Provider } from 'react-redux';
 
-import { Font, AppLoading } from 'expo';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 // import * as Font from 'expo-font';
 
 /*import { AppLoading } from 'expo';
