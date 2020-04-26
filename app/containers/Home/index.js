@@ -70,7 +70,7 @@ class Home extends React.Component {
             <View style={styles.container}>
               <TouchableOpacity 
               	underlayColor={BACKGROUND_COLOR}
-              style={[styles.item,{paddingBottom:10}]} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Quran Majid'})}}>
+              style={[styles.item,{paddingBottom:10}]} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Al Quran'})}}>
              {/* <View> */}
              <Image source={require('./../assets/icons/Al-Quran.png')}
        style={styles.image} />

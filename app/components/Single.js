@@ -35,7 +35,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
       </Left> */}
       <View style={{flexDirection:'row'}}>
         <View style={{flexDirection:'column'}}>
-        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:5, paddingRight:3}]}>{item.hadith_serial||item.verse_serial}.</Text>
+        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:3, paddingRight:0}]}>{item.hadith_serial||item.verse_serial}</Text>
         {player  && (item.audio_file|| item.audio_embed) ? 
         <RightPlayer context={item} player={player} currentlyPlaying={currentlyPlaying}
         setCurrentlyPlaying={setCurrentlyPlaying}
@@ -66,10 +66,10 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
         // : null} 
 }
     </View>
-        <View style={{paddingRight:10, marginRight: 10, paddingLeft:5}}> 
-          {item.text_madani  ? <Text style={[theme.textColor, { textAlign:'right', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.text_madani ||item.hadith_narrated)}</Text> :null}
+        <View style={{paddingRight:10, marginRight: 10, paddingLeft:5, width: screenWidth * 0.84}}> 
+          {item.text_madani  ? <Text style={[theme.textColor, { textAlign:'right', width: screenWidth * 0.84, margin: 5, paddingBottom: 8, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.text_madani ||item.hadith_narrated)}</Text> :null}
           {item.hadith_narrated ? <Text style={[theme.textColor, { textAlign:'left', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.hadith_narrated)}</Text> :null}
-          <Text style={[theme.textColor, {width: screenWidth * 0.83, margin: 5, marginTop: 10, paddingBottom: 10}]}> {removeSupTag(item.detail||item.text_details)}</Text>
+          <Text style={[theme.textColor, {width: screenWidth * 0.83, margin: 5, marginLeft: 0, marginTop: 10, paddingBottom: 0, marginBottom: 10}]}> {removeSupTag(item.detail||item.text_details)}</Text>
 
         </View>
       </View>
