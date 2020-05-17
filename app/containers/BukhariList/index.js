@@ -23,8 +23,8 @@ import {fetchBukhariList} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
-// import Player from '../../components/Player';
-import RightPlayer from '../../components/RightPlayer';
+import Player from '../../components/Player';
+import RightPlayerHadith from '../../components/RightPlayerHadith';
 class BukhariList extends React.Component {
   constructor(props) {
     super(props);
@@ -32,10 +32,27 @@ class BukhariList extends React.Component {
     const id =  props.navigation.getParam('id');
     // const playList = props.bukhariList[id].map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.book_name, id: ayah.id}));
     // console.log('playlist in bukharilist:', apiConfig.singleAudioFile(props.bukhariList[id][0], 'hadiths'), playList)
+    this.player = React.createRef();
+    let playList = [];
+    let i = 0;
+
+    props.bukhariList[id] &&   props.bukhariList[id].length &&props.bukhariList[id].map((book) => {
+      book.start = '';
+      book.audio_embed && book.audio_embed.split('<br/>')
+      .map((aa, index) => {
+        dd = aa.match(/<a href="(.*)">.*$/); 
+        //console.log('d', dd);
+        dd && playList.push({uri: dd[1], name: dd[1].split('/').pop(), id: ++i});
+        index == 0 && dd && (book.start = i)
+      });
+    });
+    // console.log('playlist', playList)
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1,
-      id: id
+      id: id,
+      player: React.createRef(),
+      playList: playList
     }
   }
   // generatePlayList = (nextProps, id)=>{
@@ -56,8 +73,24 @@ class BukhariList extends React.Component {
     if(!this.props.bukhariList[id] || !this.props.bukhariList[id].length){
    
      const id = this.props.navigation.getParam('id');
-     console.log('dont have bukhari list fetching', id);
+    //  console.log('dont have bukhari list fetching', id);
      this.props.fetchBukhariList({id});
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    if(!this.state.playList.length && nextProps.bukhariList[this.state.id]){
+      let playList = [];
+      this.props.bukhariList[id] &&this.props.bukhariList[id].length&& this.props.bukhariList[id].map((book) => {
+        book.start = '';
+        book.audio_embed && book.audio_embed.split('<br/>')
+        .map((aa, index) => {
+          dd = aa.match(/<a href="(.*)">.*$/); 
+          //console.log('d', dd);
+          dd && playList.push({uri: dd[1], name: dd[1].split('/').pop(), id: ++i});
+          index == 0 && dd && (book.start = i);
+        });
+      });
+      this.setState({playList: playList})
     }
   }
   _keyExtractor = item => item.id.toString();
@@ -65,7 +98,7 @@ class BukhariList extends React.Component {
   _renderItem = ( {item: hadith_books} ) => {
     // console.log('render item', surah);
      const id = this.props.navigation.getParam('id');
-     console.log('in bukhari list id context book id', id);
+    //  console.log('in bukhari list id context book id', id, hadith_books);
     return (
      <ListItem onPress={()=>{this.props.navigation.push('BukhariDetails', {contextBookId: id, id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
         <Left style={{maxWidth:30}}>
@@ -76,9 +109,17 @@ class BukhariList extends React.Component {
           <Text style={theme.textColor}>({hadith_books.hadith_end-hadith_books.hadith_start+1})</Text>
        </Body>
        
-{/* <Right> 
-  <Text>Verse {surah.verse_number}</Text>
- </Right> */}
+{<Right> 
+   {this.state.player && this.state.player.play && hadith_books.audio_embed ?
+       <RightPlayerHadith style={{alignSelf:'flex-start'}} 
+       context={hadith_books} 
+       player={this.state.player} 
+       currentlyPlaying={this.state.currentlyPlaying}
+       setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
+       mixed={true}
+       />:null
+  }
+ </Right> }
        {/* <RightPlayer style={{alignSelf:'flex-start'}} surah={surah} player={this.player} /> */}
        {/* <RightPlayer style={{alignSelf:'flex-start'}} 
        context={hadith_books} 
@@ -92,7 +133,7 @@ class BukhariList extends React.Component {
   render(){
     
     const id = this.props.navigation.getParam('id');
-    console.log('this.props.bukhariList', this.props.bukhariList[id]);
+    // console.log('this.props.bukhariList', this.props.bukhariList[id], this.state.playList);
     return (
       <Container style={appStyles.container}>
         <View 
@@ -115,12 +156,12 @@ class BukhariList extends React.Component {
       />
           }
           </Content>
-          {/* <Footer>
+         <Footer>
 
           <Player book={'hadiths'} 
           onRef={ref => {this.setState({ player : ref})}} 
           playList={this.state.playList} />
-        </Footer> */}
+        </Footer> 
          </View>
       </Container>
      

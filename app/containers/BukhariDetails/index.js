@@ -58,17 +58,17 @@ class BukhariDetails extends React.Component {
     
     const id = this.props.navigation.getParam('id');
     if(!this.props.bukhariDetails[contextBookId] || !this.props.bukhariDetails[contextBookId][id]){
-      console.log('dont have bukhari details, fetching', contextBookId, id);
+      // console.log('dont have bukhari details, fetching', contextBookId, id);
       this.props.fetchBukhariDetails({contextBookId, id});
     }
   }
   componentWillReceiveProps(nextProps){
-    console.log('nexprops:', nextProps.bukhariDetails);
+    // console.log('nexprops:', nextProps.bukhariDetails);
     const contextBookId = nextProps.navigation.getParam('contextBookId');
     
     const id = nextProps.navigation.getParam('id');
     if(!nextProps.bukhariDetails[contextBookId] || !nextProps.bukhariDetails[contextBookId][id]){
-      console.log('dont have bukhari details, fetching', contextBookId, id);
+      // console.log('dont have bukhari details, fetching', contextBookId, id);
       this.props.fetchBukhariDetails({contextBookId, id});
     } else if(nextProps.bukhariDetails && nextProps.bukhariDetails[contextBookId] && nextProps.bukhariDetails[contextBookId][id]){
       const playList = nextProps.bukhariDetails[contextBookId][id].filter(({audio_file}) => audio_file).map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.hadith_serial, id: ayah.id}))
@@ -83,7 +83,8 @@ class BukhariDetails extends React.Component {
     return (
      <Single item={item}  player={this.state.player} 
       setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)} 
-     currentlyPlaying={this.state.currentlyPlaying}  />
+     currentlyPlaying={this.state.currentlyPlaying} 
+     hidePlayer={true} />
 
     )
   };
@@ -91,7 +92,7 @@ class BukhariDetails extends React.Component {
     const contextBookId = this.props.navigation.getParam('contextBookId');
     
     const id = this.props.navigation.getParam('id');
-    console.log('data', this.props.bukhariDetails, contextBookId, id);
+    // console.log('data', this.props.bukhariDetails, contextBookId, id);
     return (
       <Container style={appStyles.container}>
         <View 

@@ -19,7 +19,7 @@ import {
 // import theme from '../styles';
 // import Player from './Player';
 // console.log('common styles',commonStyles)
-class RightPlayer extends React.Component {
+class RightPlayerHadith extends React.Component {
     constructor(props){
       super(props);
       this.state = {
@@ -40,13 +40,13 @@ class RightPlayer extends React.Component {
     }
     async play(context){
       // await this.props.player.play;
-      this.props.play.play(context)
+      this.props.player.play(context)
     }
     setPlaying = (context) => {
       // let { isPlaying } = this.state;
     //  let { player } =  this.props;
-     console.log('play set', this.props, this.state)
-     console.log('play set', this.props.player.play)
+    //  console.log('play set', this.props, this.state)
+    //  console.log('play set', this.props.player.play)
       if(this.state.isPlaying && this.state.context.id == this.props.currentlyPlaying) { 
         this.state.player.playPause();
       } else{
@@ -87,4 +87,4 @@ class RightPlayer extends React.Component {
     }
   }
 
-  export default RightPlayer;
+  export default RightPlayerHadith;

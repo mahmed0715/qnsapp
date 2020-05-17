@@ -29,31 +29,31 @@ class Home extends React.Component {
   }
   async componentWillMount(){
     if(!this.props.quranList || !this.props.quranList.length){
-      console.log('dont have quran list, fetching');
+      // console.log('dont have quran list, fetching');
       this.props.fetchQuranList({});
     }
     if(!this.props.bukhariList || !this.props.bukhariList[1] || !this.props.bukhariList[1].length){
-      console.log('dont have bukhari list, fetching');
+      // console.log('dont have bukhari list, fetching');
       this.props.fetchBukhariList({id: 1});
     }
     if(!this.props.bukhariList || !this.props.bukhariList[2] || !this.props.bukhariList[2].length){
-      console.log('dont have bukhari list, fetching');
+      // console.log('dont have bukhari list, fetching');
       this.props.fetchBukhariList({id: 2});
     }
     if(!this.props.bukhariList || !this.props.bukhariList[3] || !this.props.bukhariList[3].length){
-      console.log('dont have bukhari list, fetching');
+      // console.log('dont have bukhari list, fetching');
       this.props.fetchBukhariList({id: 3});
     }
     if(!this.props.bukhariList || !this.props.bukhariList[4] || !this.props.bukhariList[4].length){
-      console.log('dont have bukhari list, fetching');
+      // console.log('dont have bukhari list, fetching');
       this.props.fetchBukhariList({id: 4});
     }
     if(!this.props.bukhariList || !this.props.bukhariList[5] || !this.props.bukhariList[5].length){
-      console.log('dont have bukhari list, fetching');
+      // console.log('dont have bukhari list, fetching');
       this.props.fetchBukhariList({id: 5});
     }
     if(!this.props.bukhariList || !this.props.bukhariList[6] || !this.props.bukhariList[6].length){
-      console.log('dont have bukhari list, fetching');
+      // console.log('dont have bukhari list, fetching');
       this.props.fetchBukhariList({id: 6});
     }
   }

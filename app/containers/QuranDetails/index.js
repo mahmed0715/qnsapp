@@ -58,16 +58,16 @@ class QuranDetails extends React.Component {
     const id = this.props.navigation.getParam('id');
       // const name = this.props.navigation.getParam('name');
       // this.state.player.play({id: id, name: name}, true);
-     console.log('got qurqan details did mount', JSON.stringify(this.props.quranDetails) , id);
+    //  console.log('got qurqan details did mount', JSON.stringify(this.props.quranDetails) , id);
      if(!this.props.quranDetails || !this.props.quranDetails[id]){
-      console.log('dont have quran details in quran details screen, fetching');
+      // console.log('dont have quran details in quran details screen, fetching');
       this.props.fetchQuranDetails({id:id});
       }else {
         let playList1 = this.props.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
           return {uri: apiConfig.singleAudioFile(ayah), name: ayah.verse_serial, id: parseInt(ayah.id)}
         });
         let { playList } = this.state;
-        console.log('playlist in quran details existing:', playList, playList1);
+        // console.log('playlist in quran details existing:', playList, playList1);
         this.setState({playList: [...playList, ...playList1]})
       }
   }
@@ -81,17 +81,17 @@ class QuranDetails extends React.Component {
     // this.state.player1.stop();
   }
   componentWillReceiveProps(nextProps){
-    console.log('nextprops in quran details:', nextProps.quranDetails);
+    // console.log('nextprops in quran details:', nextProps.quranDetails);
     const id = nextProps.navigation.getParam('id');
     if(!nextProps.quranDetails || !nextProps.quranDetails[id]){
-      console.log('dont have quran details in quran details screen, fetching');
+      // console.log('dont have quran details in quran details screen, fetching');
       this.props.fetchQuranDetails({id});
       }else{
         let playList1 = nextProps.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
           return {uri: apiConfig.singleAudioFile(ayah), name: ayah.verse_serial, id: parseInt(ayah.id)}
         });
         let { playList } = this.state;
-        console.log('playlist in quran details', playList, playList1);
+        // console.log('playlist in quran details', playList, playList1);
         this.setState({playList: [...playList, ...playList1]})
       }
   }
@@ -101,7 +101,7 @@ class QuranDetails extends React.Component {
       return (<Single item={item} 
       player={this.state.player} 
      setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)} 
-     currentlyPlaying={this.state.currentlyPlaying} />)
+     currentlyPlaying={this.state.currentlyPlaying} hidePlayer={false} />)
   };
   
   render(){

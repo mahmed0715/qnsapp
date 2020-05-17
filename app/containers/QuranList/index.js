@@ -24,7 +24,7 @@ import styles from './styles';
 import theme from '../styles';
 import Player from '../../components/Player';
 import {getAudioFileUrl} from '../../utils/common';
-console.log('common styles',commonStyles)
+// console.log('common styles',commonStyles)
 import RightPlayer from '../../components/RightPlayer';
 class QuranList extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class QuranList extends React.Component {
       player: React.createRef(),
       playList: playList
     }
-    console.log(playList);
+    // console.log(playList);
   }
   setPause(context){
     this.setState({isPlaying: false}, ()=>{

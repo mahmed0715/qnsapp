@@ -12,8 +12,9 @@ import RightPlayer from './RightPlayer';
 import { I18nManager } from 'react-native';
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
+const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer})=> {
   //  console.log('item in single:', player);
+  console.log('hideplayer==============----=', hidePlayer, item.audio_embed)
   const BACKGROUND_COLOR = '#FFFFFF';
   const iconColor = '#1f8ec6';
   const iconSize = 24;
@@ -36,7 +37,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying})=> {
       <View style={{flexDirection:'row'}}>
         <View style={{flexDirection:'column'}}>
         <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:3, paddingRight:0}]}>{item.hadith_serial||item.verse_serial}</Text>
-        {player  && (item.audio_file|| item.audio_embed) ? 
+        {!hidePlayer && player  && (item.audio_file|| item.audio_embed) ? 
         <RightPlayer context={item} player={player} currentlyPlaying={currentlyPlaying}
         setCurrentlyPlaying={setCurrentlyPlaying}
         />
