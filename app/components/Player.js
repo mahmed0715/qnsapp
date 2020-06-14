@@ -53,7 +53,7 @@ class Player extends Component {
 			rate: 1.0,
 			index: 0
 		};
-		// console.log('in player:', this.state.PLAYLIST)
+		 console.log('player: playlist in constructor', this.state.PLAYLIST)
 		// this.play = this.play.bind(this);
 	}
 componentWillMount(){
@@ -67,15 +67,16 @@ componentWillMount(){
 	}
 }
 componentWillReceiveProps(nextProps){
-	// console.log('Player: receieve playlist', nextProps.playList);
+	console.log('Player: receieve playlist', nextProps.playList);
 	if(nextProps.playList != this.state.PLAYLIST){
 		this.setState({PLAYLIST: nextProps.playList}, ()=>{
-			//this.loadSound();
+			console.log('player: playlist updated in player', this.state.PLAYLIST);
+		//	this.loadSound(true);
 		});
 	}
 }
   componentWillUnmount() {
-	//  console.log('Player unmounting',);
+	  console.log('Player unmounting',);
 	 this.props.onRef && this.props.onRef(undefined);
 	this.stop();
 	if(this.playbackInstance != null){
@@ -108,12 +109,13 @@ componentWillReceiveProps(nextProps){
 		this._onPlayPausePressed();
 	}
 	stop(){
+		console.log('stop pressed');
 		this._onStopPressed();
 	}
 
 	play(surah, dontPlay, mixed){
 		this._onStopPressed();
-		// console.log('===========================================================playing new', surah, mixed);
+		 console.log('===========================================================playing new', surah, mixed);
 			if(!this.state.PLAYLIST.length){
 				let PLAYITEM = new PlaylistItem(
 					surah.name,
@@ -123,7 +125,7 @@ componentWillReceiveProps(nextProps){
 				this.setState({PLAYLIST: [PLAYITEM]});
 			} else {
 				const index = this.state.PLAYLIST.findIndex(({id}) => !mixed ? id == surah.id : id == (surah.start));
-				// console.log('===========================================================playing now', this.state.PLAYLIST[index]);
+				 console.log('===========================================================playing now', this.state.PLAYLIST[index]);
 				if(index != -1)
 					this.index = index;
 					// else {
@@ -143,15 +145,18 @@ componentWillReceiveProps(nextProps){
 			if(this.index > -1){
 				dontPlay?this._loadNewPlaybackInstance(false):this._loadNewPlaybackInstance(true);
 			}
+			console.log('playlist in play method:', this.state.PLAYLIST);
+
 	}
 
-	async loadSound(){
+	async loadSound(forcedStart){
 		// (async () => {
 			if(!this.state.PLAYLIST[this.index + 1] || (this.state.PLAYLIST[this.index + 1] && this.state.PLAYLIST[this.index + 1].sound)){
 				// console.log('loading sound for index returning:', this.state.PLAYLIST[this.index + 1])
 				return;
 			}
-			let source  = this.state.PLAYLIST[this.index + 1];
+			const whichIndex = forcedStart?(this.index||0) : (this.index + 1)
+			let source  = this.state.PLAYLIST[whichIndex];
 			const initialStatus = {
 				shouldPlay: false,
 				rate: this.state.rate,
@@ -165,13 +170,14 @@ componentWillReceiveProps(nextProps){
 			);
 			source.sound = sound;
 			let {PLAYLIST} = this.state;
-			PLAYLIST[this.index+1] = source;
+			PLAYLIST[whichIndex] = source;
 			this.setState({PLAYLIST});
 		// });
 		// this.setState({PLAYLIST: soundPlaylist});
 	}
 	async _loadNewPlaybackInstance(playing) {
-		// console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance)
+		//console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance);
+		console.log('loading index', this.index, this.state.PLAYLIST[this.index]);
 		if (this.playbackInstance != null) {
 			await this.playbackInstance.unloadAsync();
 			this.playbackInstance.setOnPlaybackStatusUpdate(null);
@@ -189,30 +195,31 @@ componentWillReceiveProps(nextProps){
 		else return;
 		if(this.state.PLAYLIST[this.index].sound)
 		{
-			// console.log('sound found, using');
+			 console.log('sound found, using');
 			const {sound} = this.state.PLAYLIST[this.index];
 			this.playbackInstance = sound;
 			playing && this.playbackInstance.playAsync();
 		}else{
-			// console.log('_loadNewPlaybackInstance: ', source);
-		const initialStatus = {
-			shouldPlay: playing,
-			rate: this.state.rate,
-			volume: this.state.volume,
-		};
-		// console.log('initial asttaus: playback load:', initialStatus)
-		
-		 let { sound } = await Audio.Sound.createAsync(
-			source,
-			initialStatus,
-			this._onPlaybackStatusUpdate
-		);
-		this.playbackInstance = sound;
+			 console.log('_loadNewPlaybackInstance: ', source);
+			const initialStatus = {
+				shouldPlay: playing,
+				rate: this.state.rate,
+				volume: this.state.volume,
+			};
+			 console.log('initial asttaus: playback load:', initialStatus)
+			
+			let { sound } = await Audio.Sound.createAsync(
+				source,
+				initialStatus,
+				this._onPlaybackStatusUpdate
+			);
+			console.log('sound loaded ', sound);
+			this.playbackInstance = sound;
 		}
-		this.loadSound();
-		// this.playbackInstance = sound||sound1;
-		// console.log('playback this.playbackInstance:', this.playbackInstance)
+		
+		console.log('playback this.playbackInstance:', this.playbackInstance)
 		this._updateScreenForLoading(false);
+		// this.loadSound(!playing);
 	}
 
 	_updateScreenForLoading(isLoading) {
@@ -400,7 +407,7 @@ componentWillReceiveProps(nextProps){
 			
 				<View style={[styles.detailsContainer, {flex:1}]}>
 					<Text style={[styles.text, {color: 'white'}]}>
-		{this.props.book == 'hadiths' ? 'Hadith' : 'Surah'} { !isNaN(this.state.playbackInstanceName) ? (this.props.book !== 'hadiths' ?(this.state.PLAYLIST[0].name +' :'):''):''} {this.state.playbackInstanceName}
+		{this.props.book == 'hadiths' ? 'Hadith' : 'Surah'} { !isNaN(this.state.playbackInstanceName) ? (this.props.book !== 'hadiths' ?(this.state.PLAYLIST[0].name):''):''} {this.state.playbackInstanceName}
 					</Text>
 					<Text style={[styles.text,{color: 'white'}]}>
 						{/* {this.state.isBufferirahng ? (

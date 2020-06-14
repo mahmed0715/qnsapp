@@ -78,19 +78,19 @@ class Home extends React.Component {
           {/* </View> */}
              </TouchableOpacity>
               <TouchableOpacity style={styles.item} 
-              onPress={()=>{this.props.navigation.push('BukhariList', {id: 1, title: 'Sohih Bukhari'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id: 1, title: 'Sahih Bukhari'})}}>
                 {/* <View> */}
              <Image source={require('./../assets/icons/Sahih-Bukhari.png')}
        style={styles.image} />
-             {/* <Text style={{color:'white', textAlign:'center'}}>Sohih Bukhari</Text> */}
+             {/* <Text style={{color:'white', textAlign:'center'}}>Sahih Bukhari</Text> */}
           {/* </View> */}
               </TouchableOpacity>
               <TouchableOpacity style={styles.item} 
-              onPress={()=>{this.props.navigation.push('BukhariList', {id:2, title: 'Sohih Muslim'})}}>
+              onPress={()=>{this.props.navigation.push('BukhariList', {id:2, title: 'Sahih Muslim'})}}>
                  {/* <View> */}
              <Image source={require('./../assets/icons/Sahih-Muslim.png')}
        style={styles.image} />
-             {/* <Text style={{color:'white', textAlign:'center'}}>Sohih Muslim</Text> */}
+             {/* <Text style={{color:'white', textAlign:'center'}}>Sahih Muslim</Text> */}
           {/* </View> */}
               </TouchableOpacity>
               <TouchableOpacity style={styles.item} 

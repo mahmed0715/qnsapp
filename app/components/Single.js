@@ -14,7 +14,7 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 
 const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer})=> {
   //  console.log('item in single:', player);
-  console.log('hideplayer==============----=', hidePlayer, item.audio_embed)
+  // console.log('hideplayer==============----=', hidePlayer, item.audio_embed)
   const BACKGROUND_COLOR = '#FFFFFF';
   const iconColor = '#1f8ec6';
   const iconSize = 24;

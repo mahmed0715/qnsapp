@@ -42,7 +42,8 @@ class QuranDetails extends React.Component {
       uri: getAudioFileUrl({...surah}), 
       surah: surah,
       currentlyPlaying: 0,
-      playList: [{id: parseInt(id), name: surah.name, uri: getAudioFileUrl({...surah}), root: true}]
+      playList: []
+      //{id: parseInt(id), name: surah.name, uri: getAudioFileUrl({...surah}), root: true}
     }
   }
   setCurrentlyPlaying = (id) => {
@@ -64,7 +65,7 @@ class QuranDetails extends React.Component {
       this.props.fetchQuranDetails({id:id});
       }else {
         let playList1 = this.props.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
-          return {uri: apiConfig.singleAudioFile(ayah), name: ayah.verse_serial, id: parseInt(ayah.id)}
+          return {uri: apiConfig.singleAudioFile(ayah), name: id + ':' + ayah.verse_serial, id: parseInt(ayah.id)}
         });
         let { playList } = this.state;
         // console.log('playlist in quran details existing:', playList, playList1);
@@ -88,11 +89,13 @@ class QuranDetails extends React.Component {
       this.props.fetchQuranDetails({id});
       }else{
         let playList1 = nextProps.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
-          return {uri: apiConfig.singleAudioFile(ayah), name: ayah.verse_serial, id: parseInt(ayah.id)}
+          return {uri: apiConfig.singleAudioFile(ayah), name: id + ':' + ayah.verse_serial, id: parseInt(ayah.id)}
         });
         let { playList } = this.state;
-        // console.log('playlist in quran details', playList, playList1);
-        this.setState({playList: [...playList, ...playList1]})
+         console.log('playlist in quran details', playList, playList1);
+        this.setState({playList: [...playList, ...playList1]}, ()=>{
+          this.state.player && this.state.player.play({...this.state.playList[0]}, true);
+        })
       }
   }
   _keyExtractor = item => item.id.toString();
@@ -139,7 +142,7 @@ class QuranDetails extends React.Component {
       :null} */}
         <Player book={'quran'} context={id} playList={this.state.playList} onRef={
           ref => {
-            ref && ref.play({...this.state.surah}, true);
+            // ref && ref.play({...this.state.surah}, true);
            this.setState({ player : ref})
           }} />
 

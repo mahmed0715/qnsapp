@@ -33,10 +33,28 @@ class BukhariDetails extends React.Component {
     let playList = [];
     const id  = props.navigation.getParam('id');
     const contextBookId = props.navigation.getParam('contextBookId');
-    if(props.bukhariDetails && props.bukhariDetails[contextBookId] && props.bukhariDetails[contextBookId][id]){
-      playList = props.bukhariDetails[contextBookId][id].filter(({audio_file})=>audio_file).map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.hadith_serial, id: ayah.id}));
+    // if(props.bukhariDetails && props.bukhariDetails[contextBookId] && props.bukhariDetails[contextBookId][id]){
+    //   playList = props.bukhariDetails[contextBookId][id].filter(({audio_file})=>audio_file).map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.hadith_serial, id: ayah.id}));
+    // }
+    const data = props.navigation.getParam('data');
+    let i = 0;
+    if(data && data.audio_embed){
+      const regex = /([^<"]+).mp3/g;
+      const found = data.audio_embed.match(regex);
+      found.length && found
+      .map((aa, index) => {
+        aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
+      });
     }
+    // data && data.audio_embed && data.audio_embed.split('<br/>')
+    // .map((aa, index) => {
+    //   const dd = aa.match(/<a href="(.*)">.*$/); 
+    //   //console.log('d', dd);
+    //   dd && playList.push({uri: dd[1], name: dd[1].split('/').pop(), id: ++i});
+    //   // index == 0 && dd && (book.start = i)
+    // });
     this.state = {
+      data: data,
       playList: playList,
       player: React.createRef(),
       isPlaying: false,
@@ -71,10 +89,10 @@ class BukhariDetails extends React.Component {
       // console.log('dont have bukhari details, fetching', contextBookId, id);
       this.props.fetchBukhariDetails({contextBookId, id});
     } else if(nextProps.bukhariDetails && nextProps.bukhariDetails[contextBookId] && nextProps.bukhariDetails[contextBookId][id]){
-      const playList = nextProps.bukhariDetails[contextBookId][id].filter(({audio_file}) => audio_file).map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.hadith_serial, id: ayah.id}))
-      .filter(({uri})=>uri);
-      this.setState({playList: playList});
-      this.state.playList.length && this.state.player.play({...this.state.playList[0]}, true);
+      // const playList = nextProps.bukhariDetails[contextBookId][id].filter(({audio_file}) => audio_file).map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.hadith_serial, id: ayah.id}))
+      // .filter(({uri})=>uri);
+      // this.setState({playList: playList});
+      // this.state.playList.length && this.state.player.play({...this.state.playList[0]}, true);
     }
   }
   _keyExtractor = item => item.id.toString();

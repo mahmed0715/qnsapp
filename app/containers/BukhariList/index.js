@@ -35,18 +35,26 @@ class BukhariList extends React.Component {
     this.player = React.createRef();
     let playList = [];
     let i = 0;
-
+    const regex = /([^<"]+).mp3/g;
     props.bukhariList[id] &&   props.bukhariList[id].length &&props.bukhariList[id].map((book) => {
       book.start = '';
-      book.audio_embed && book.audio_embed.split('<br/>')
-      .map((aa, index) => {
-        dd = aa.match(/<a href="(.*)">.*$/); 
-        //console.log('d', dd);
-        dd && playList.push({uri: dd[1], name: dd[1].split('/').pop(), id: ++i});
-        index == 0 && dd && (book.start = i)
-      });
+      if(book.audio_embed){
+        const found = book.audio_embed.match(regex);
+        found.length && found
+        .map((aa, index) => {
+          aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
+          index == 0 && aa && (book.start = i);
+        });
+      }
+      // book.audio_embed && book.audio_embed.split('<br/>')
+      // .map((aa, index) => {
+      //   dd = aa.match(/<a href="(.*)">.*$/); 
+      //   //console.log('d', dd);
+      //   dd && playList.push({uri: dd[1], name: dd[1].split('/').pop(), id: ++i});
+      //   index == 0 && dd && (book.start = i)
+      // });
     });
-    // console.log('playlist', playList)
+     console.log('playlist found:', playList)
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1,
@@ -77,21 +85,29 @@ class BukhariList extends React.Component {
      this.props.fetchBukhariList({id});
     }
   }
+  componentWillUnmount(){
+    this.state.player.stop();
+  }
   componentWillReceiveProps(nextProps){
     if(!this.state.playList.length && nextProps.bukhariList[this.state.id]){
       let playList = [];
+      const regex = /([^<"]+).mp3/g;
       this.props.bukhariList[id] &&this.props.bukhariList[id].length&& this.props.bukhariList[id].map((book) => {
         book.start = '';
-        book.audio_embed && book.audio_embed.split('<br/>')
-        .map((aa, index) => {
-          dd = aa.match(/<a href="(.*)">.*$/); 
-          //console.log('d', dd);
-          dd && playList.push({uri: dd[1], name: dd[1].split('/').pop(), id: ++i});
-          index == 0 && dd && (book.start = i);
-        });
+        if(book.audio_embed){
+          const found = book.audio_embed.match(regex);
+          found.length && found
+          .map((aa, index) => {
+            aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
+            index == 0 && aa && (book.start = i);
+          });
+        }
       });
+      console.log('playlist found 2', playList)
       this.setState({playList: playList})
     }
+    
+    
   }
   _keyExtractor = item => item.id.toString();
 
@@ -100,7 +116,7 @@ class BukhariList extends React.Component {
      const id = this.props.navigation.getParam('id');
     //  console.log('in bukhari list id context book id', id, hadith_books);
     return (
-     <ListItem onPress={()=>{this.props.navigation.push('BukhariDetails', {contextBookId: id, id: hadith_books.id, title: `${hadith_books.book_name}` })}}>
+     <ListItem onPress={()=>{this.state.player.stop();this.props.navigation.push('BukhariDetails', {contextBookId: id, id: hadith_books.id, title: `${hadith_books.book_name}`, data: hadith_books })}}>
         <Left style={{maxWidth:30}}>
           <Text style={theme.textColor}>{hadith_books.book_serial}</Text>
         </Left>

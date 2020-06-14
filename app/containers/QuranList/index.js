@@ -39,7 +39,22 @@ class QuranList extends React.Component {
       player: React.createRef(),
       playList: playList
     }
-    // console.log(playList);
+     console.log('Quranlist playlist in constructor', playList);
+  }
+  componentWillReceiveProps(nextProps){
+    // console.log('nextprops in quran details:', nextProps.quranDetails);
+    // const id = nextProps.navigation.getParam('id');
+    if(nextProps.quranList && nextProps.quranList != this.state.quranList){
+    
+        let playList1 = nextProps.quranList.map((surah)=>{
+          return {uri: getAudioFileUrl(surah), name: surah.name, id: parseInt(surah.id)}
+        });
+        let { playList } = this.state;
+         console.log('playlist in quran list', playList, playList1);
+        this.setState({playList: [...playList, ...playList1]}, ()=>{
+          this.state.player && this.state.player.play({...this.state.playList[0]}, true);
+        })
+      }
   }
   setPause(context){
     this.setState({isPlaying: false}, ()=>{
@@ -146,7 +161,13 @@ class QuranList extends React.Component {
           <Footer>
 
             {/* just commented becaseu its getting slow, no need to load first one on load */}
-          <Player book={'quran'} onRef={ref => {this.setState({ player : ref})}} playList={this.state.playList} />
+          <Player book={'quran'} onRef={ref => {
+            this.setState({ player : ref}, ()=>{
+              ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true)
+            })
+            
+          }
+            } playList={this.state.playList} />
         </Footer>
          </View>
       </Container>
