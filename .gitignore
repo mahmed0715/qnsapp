@@ -10,3 +10,4 @@ web-build/
 web-report/
 *.log
 *.lock
+.expo

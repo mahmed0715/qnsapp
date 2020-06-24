@@ -27,10 +27,14 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
   }
  const removeSupTag = (text) => {
   text = capitalize(text);
-  return text.replace(/\<sup.*\<\/sup\>/g,'');
+  if(text[0].search(/\s/)>-1){
+    text[0] = '';
+  }
+  return text.replace(/\<sup.*\<\/sup\>/g,'').replace(/\s\s+/g, ' ');
  }
+//  console.log('text', item.text_details);
     return (
-      <View style={{ marginLeft: 5, paddingTop:5, paddingBottom:10, borderBottomColor:'white', borderBottomWidth:.5, width: screenWidth * 0.95, maxWidth: screenWidth * 0.95}}>
+      <View style={{ borderWidth:1, marginLeft: 5, paddingTop:5, paddingBottom:10, borderBottomColor:'white', borderBottomWidth:.5, width: screenWidth * 0.95, maxWidth: screenWidth * 0.95}}>
       {/* <Left style={{maxWidth: 35, justifyContent:'flex-start','alignItems':'flex-start', backgroundColor:'red'}}>
         <Text style={[theme.textColor, {alignSelf:'flex-start'}]}>{surah.verse_serial}</Text>
       </Left> */}
@@ -68,9 +72,17 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
 }
     </View>
         <View style={{paddingRight:10, marginRight: 10, paddingLeft:5, width: screenWidth * 0.84}}> 
-          {item.text_madani  ? <Text style={[theme.textColor, { textAlign:'right', width: screenWidth * 0.84, margin: 5, paddingBottom: 8, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.text_madani ||item.hadith_narrated)}</Text> :null}
-          {item.hadith_narrated ? <Text style={[theme.textColor, { textAlign:'left', width: screenWidth * 0.84, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.hadith_narrated)}</Text> :null}
-          <Text style={[theme.textColor, {width: screenWidth * 0.83, margin: 5, marginLeft: 0, marginTop: 10, paddingBottom: 0, marginBottom: 10}]}> {removeSupTag(item.detail||item.text_details)}</Text>
+          {item.text_madani  ? <Text style={[theme.textColor, { textAlign:'right', width: screenWidth * 0.84, margin: 5, paddingBottom: 8, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}> {(item.text_madani)}</Text> :null}
+{item.hadith_narrated ? <Text style={[theme.textColor, { textAlign:'left', width: screenWidth * 0.83, margin: 5, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{removeSupTag(item.hadith_narrated)} {removeSupTag(item.detail||item.text_details + ' ')}</Text> :null}
+          {/* <Text style={[theme.textColor, {width: screenWidth * 0.83, margin: 5, marginLeft: 0, marginTop: 10, paddingBottom: 5, marginBottom: 2, borderBottomWidth: 2, borderBottomColor: 'red'}]}> 
+          {
+          
+          removeSupTag(item.detail||item.text_details + ' ')
+          
+          }
+{''+'  '}
+        <Text style={{minHeight: 5}}> {' '}</Text>
+          </Text> */}
 
         </View>
       </View>

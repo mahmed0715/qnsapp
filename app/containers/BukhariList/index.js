@@ -54,7 +54,7 @@ class BukhariList extends React.Component {
       //   index == 0 && dd && (book.start = i)
       // });
     });
-     console.log('playlist found:', playList)
+    //  console.log('playlist found:', playList)
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1,
@@ -92,7 +92,8 @@ class BukhariList extends React.Component {
     if(!this.state.playList.length && nextProps.bukhariList[this.state.id]){
       let playList = [];
       const regex = /([^<"]+).mp3/g;
-      this.props.bukhariList[id] &&this.props.bukhariList[id].length&& this.props.bukhariList[id].map((book) => {
+      const id =  props.navigation.getParam('id');
+      nextProps.bukhariList[id] &&tnextProps.bukhariList[id].length&& nextProps.bukhariList[id].map((book) => {
         book.start = '';
         if(book.audio_embed){
           const found = book.audio_embed.match(regex);
@@ -103,7 +104,7 @@ class BukhariList extends React.Component {
           });
         }
       });
-      console.log('playlist found 2', playList)
+      // console.log('playlist found 2', playList)
       this.setState({playList: playList})
     }
     
