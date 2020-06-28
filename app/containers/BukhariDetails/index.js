@@ -22,7 +22,7 @@ import {fetchBukhariDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
-import Single from '../../components/Single';
+import Single from '../../components/SingleHadithCustom';
 import Player from '../../components/Player';
 import apiConfig from '../../config/api';
 

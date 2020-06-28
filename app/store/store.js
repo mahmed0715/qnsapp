@@ -40,7 +40,7 @@ middleware.push(reduxHelper);
 
 // Middleware: Redux Logger (For Development)
 if (process.env.NODE_ENV !== 'production') {  
-   //middleware.push(createLogger());
+   middleware.push(createLogger());
 }
 
 // Middleware: Redux Persist Config

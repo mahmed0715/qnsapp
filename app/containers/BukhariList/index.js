@@ -92,8 +92,9 @@ class BukhariList extends React.Component {
     if(!this.state.playList.length && nextProps.bukhariList[this.state.id]){
       let playList = [];
       const regex = /([^<"]+).mp3/g;
-      const id =  props.navigation.getParam('id');
-      nextProps.bukhariList[id] &&tnextProps.bukhariList[id].length&& nextProps.bukhariList[id].map((book) => {
+      let i = 0;
+      const id =  this.props.navigation.getParam('id');
+      nextProps.bukhariList[id] && nextProps.bukhariList[id].length && nextProps.bukhariList[id].map((book) => {
         book.start = '';
         if(book.audio_embed){
           const found = book.audio_embed.match(regex);
