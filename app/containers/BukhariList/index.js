@@ -42,6 +42,7 @@ class BukhariList extends React.Component {
         const found = book.audio_embed.match(regex);
         found.length && found
         .map((aa, index) => {
+          if(aa.indexOf('>')==0)return;
           aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
           index == 0 && aa && (book.start = i);
         });
@@ -54,7 +55,7 @@ class BukhariList extends React.Component {
       //   index == 0 && dd && (book.start = i)
       // });
     });
-    //  console.log('playlist found:', playList)
+     console.log('playlist found:', playList)
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1,
@@ -100,6 +101,7 @@ class BukhariList extends React.Component {
           const found = book.audio_embed.match(regex);
           found.length && found
           .map((aa, index) => {
+            if(aa.indexOf('>')==0)return;
             aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
             index == 0 && aa && (book.start = i);
           });

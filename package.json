@@ -14,7 +14,7 @@
     "axios": "^0.19.0",
     "expo": "^37.0.0",
     "expo-av": "~8.1.0",
-    "expo-cli": "^3.19.2",
+   
     "expo-constants": "~9.0.0",
     "expo-font": "~8.1.0",
     "global": "^4.4.0",
@@ -43,7 +43,8 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^8.1.0",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "expo-cli": "^3.19.2"
   },
   "private": true,
   "engine": {

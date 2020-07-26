@@ -407,7 +407,7 @@ componentWillReceiveProps(nextProps){
 			
 				<View style={[styles.detailsContainer, {flex:1}]}>
 					<Text style={[styles.text, {color: 'white'}]}>
-		{this.props.book == 'hadiths' ? 'Hadith' : 'Surah'} { !isNaN(this.state.playbackInstanceName) ? (this.props.book !== 'hadiths' ?(this.state.PLAYLIST[0].name):''):''} {this.state.playbackInstanceName}
+		{this.props.book == 'hadiths' ? 'File' : 'Surah'} { !isNaN(this.state.playbackInstanceName) ? (this.props.book !== 'hadiths' ?(this.state.PLAYLIST[0].name):''):''} {this.state.playbackInstanceName}
 					</Text>
 					<Text style={[styles.text,{color: 'white'}]}>
 						{/* {this.state.isBufferirahng ? (
