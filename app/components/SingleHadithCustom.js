@@ -40,7 +40,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
       </Left> */}
       <View style={{flexDirection:'column'}}>
         <View style={{flexDirection:'row', alignContent: 'space-between'}}>
-        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:3, paddingRight:0}]}>{item.hadith_serial||item.verse_serial}</Text>
+        <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:3, paddingRight:0}]}>{item.hadith_serial||item.verse_serial}.</Text>
         {!hidePlayer && player  && (item.audio_file|| item.audio_embed) ? 
         <RightPlayer context={item} player={player} currentlyPlaying={currentlyPlaying}
         setCurrentlyPlaying={setCurrentlyPlaying}

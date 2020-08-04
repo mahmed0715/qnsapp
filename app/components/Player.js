@@ -188,9 +188,9 @@ componentWillReceiveProps(nextProps){
 		if(this.state.PLAYLIST.length){
 			if(this.state.PLAYLIST[this.index].uri){
 				source = { uri: this.state.PLAYLIST[this.index].uri };
-			}else {
-				source = require('./assets/quran_1.mp3')
-			}
+			}//else {
+				//source = require('./assets/quran_1.mp3')
+			//}
 		}
 		else return;
 		if(this.state.PLAYLIST[this.index].sound)

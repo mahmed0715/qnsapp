@@ -38,14 +38,28 @@ class BukhariDetails extends React.Component {
     // }
     const data = props.navigation.getParam('data');
     let i = 0;
-    if(data && data.audio_embed){
-      const regex = /([^<"]+).mp3/g;
-      const found = data.audio_embed.match(regex);
-      found.length && found
-      .map((aa, index) => {
-        aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
-      });
-    }
+ 
+    const regex = /([^<"]+).mp3/g;
+   
+      if(data && data.audio_embed){
+        const found = data.audio_embed.match(regex);
+        found.length && found
+        .map((aa, index) => {
+          if(aa.indexOf('>')==0)return;
+          aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
+         // index == 0 && aa && (book.start = i);
+        });
+      }
+   
+
+    // if(data && data.audio_embed){
+    //   const regex = /([^<"]+).mp3/g;
+    //   const found = data.audio_embed.match(regex);
+    //   found.length && found
+    //   .map((aa, index) => {
+    //     aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
+    //   });
+    // }
     // data && data.audio_embed && data.audio_embed.split('<br/>')
     // .map((aa, index) => {
     //   const dd = aa.match(/<a href="(.*)">.*$/); 

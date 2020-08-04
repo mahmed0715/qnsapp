@@ -21,8 +21,8 @@ import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
 import appStyles from '../../theme/appStyles';
 // import styles from './styles';
-import AudioPlayer from '../../components/AudioPlayer';
-import Player from '../../components/Player';
+// import AudioPlayer from '../../components/AudioPlayer';
+// import Player from '../../components/Player';
 class Home extends React.Component {
   constructor(props) {
     super(props);

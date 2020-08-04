@@ -47,13 +47,7 @@ class BukhariList extends React.Component {
           index == 0 && aa && (book.start = i);
         });
       }
-      // book.audio_embed && book.audio_embed.split('<br/>')
-      // .map((aa, index) => {
-      //   dd = aa.match(/<a href="(.*)">.*$/); 
-      //   //console.log('d', dd);
-      //   dd && playList.push({uri: dd[1], name: dd[1].split('/').pop(), id: ++i});
-      //   index == 0 && dd && (book.start = i)
-      // });
+     
     });
      console.log('playlist found:', playList)
     this.state = {

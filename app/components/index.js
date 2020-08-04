@@ -9,7 +9,7 @@ import SetLanguage from "./SetLanguage";
 import SelectLanguage from "./SelectLanguage";
 import Svgicon from "./Svgicon";
 import Headers from "./Headers";
-import AudioPlayer from "./AudioPlayer";
+// import AudioPlayer from "./AudioPlayer";
 
 export { 
 	Loader, 
@@ -23,5 +23,4 @@ export {
 	SelectLanguage, 
 	Svgicon, 
 	Headers, 
-	AudioPlayer
 };
