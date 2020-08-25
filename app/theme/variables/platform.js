@@ -185,7 +185,7 @@ export default {
   },
 
   // Footer
-  footerHeight: 55,
+  footerHeight: 70,
   footerDefaultBg: platform === PLATFORM.IOS ? '#F8F8F8' : '#3F51B5',
   footerPaddingBottom: 0,
 

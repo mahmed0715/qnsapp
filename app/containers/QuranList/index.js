@@ -29,7 +29,6 @@ import RightPlayer from '../../components/RightPlayer';
 class QuranList extends React.Component {
   constructor(props) {
     super(props);
-    this.player = React.createRef();
     const playList = props.quranList.map((surah)=>{
       return {uri: getAudioFileUrl(surah), name: surah.name, id: parseInt(surah.id)}
     });
@@ -52,13 +51,13 @@ class QuranList extends React.Component {
         let { playList } = this.state;
          console.log('playlist in quran list', playList, playList1);
         this.setState({playList: [...playList, ...playList1]}, ()=>{
-          this.state.player && this.state.player.play({...this.state.playList[0]}, true);
+          // this.state.player && this.state.player.play({...this.state.playList[0]}, true);
         })
       }
   }
   setPause(context){
     this.setState({isPlaying: false}, ()=>{
-      this.player.pause()
+      this.state.player.pause()
     });
   }
   generatePlayList = ()=>{
@@ -82,7 +81,7 @@ class QuranList extends React.Component {
     //   this.props.fetchQuranDetails({});
     
     // }
-    this.player.stop();
+    this.state.player.stop();
   }
   _keyExtractor = item => item.id.toString();
 
@@ -163,7 +162,7 @@ class QuranList extends React.Component {
             {/* just commented becaseu its getting slow, no need to load first one on load */}
           <Player book={'quran'} onRef={ref => {
             this.setState({ player : ref}, ()=>{
-              ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true)
+             // ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true)
             })
             
           }

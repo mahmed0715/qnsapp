@@ -33,6 +33,7 @@ const BUFFERING_STRING = 'Buffering...';
 const RATE_SCALE = 3.0;
 
 class Player extends Component {
+	// static instance = Player.instance || new Player();
 	constructor(props) {
 		super(props);
 		this.index = 0;
@@ -56,16 +57,18 @@ class Player extends Component {
 		 console.log('player: playlist in constructor', this.state.PLAYLIST)
 		// this.play = this.play.bind(this);
 	}
-componentWillMount(){
-	this.props.onRef(this)
-	if(this.props.book == 'quran'){
-		// play the first one
-		let {id} = this.props;
-		if(!id) id = 1;
-		const current = this.props.quranList.filter(surah=> surah.id == id);
-		current.length && this.play(current[0], true);
-	}
-}
+// 	UNSAFE_componentWillMount(){
+// 	this.props.onRef(this)
+// 	if(this.props.book == 'quran'){
+// 		// play the first one
+// 		let {id} = this.props;
+// 		if(!id) id = 1;
+// 		const current = this.props.quranList.filter(surah=> surah.id == id);
+// 		current.length && this.play(current[0], true);
+// 	}
+// }
+
+
 componentWillReceiveProps(nextProps){
 	console.log('Player: receieve playlist', nextProps.playList);
 	if(nextProps.playList != this.state.PLAYLIST){
@@ -75,7 +78,9 @@ componentWillReceiveProps(nextProps){
 		});
 	}
 }
-  componentWillUnmount() {
+
+
+componentWillUnmount() {
 	  console.log('Player unmounting',);
 	 this.props.onRef && this.props.onRef(undefined);
 	this.stop();
@@ -96,6 +101,15 @@ componentWillReceiveProps(nextProps){
 			playsInBackgroundModeAndroid: false,
 			playThroughEarpieceAndroid: false
 		});
+		this.props.onRef(this)
+	// if(this.props.book == 'quran'){
+		// play the first one
+		// let {id} = this.props;
+		// if(!id) id = 1;
+		// const current = this.props.quranList.filter(surah=> surah.id == id);
+		// current.length && this.play(current[0], true);
+	// }
+	
 		
 		this._loadNewPlaybackInstance(false);
 		// this.loadSound();
@@ -114,6 +128,7 @@ componentWillReceiveProps(nextProps){
 	}
 
 	play(surah, dontPlay, mixed){
+		
 		this._onStopPressed();
 		 console.log('===========================================================playing new', surah, mixed);
 			if(!this.state.PLAYLIST.length){
@@ -124,8 +139,10 @@ componentWillReceiveProps(nextProps){
 				//   console.log('===========================================================playing new', PLAYITEM);
 				this.setState({PLAYLIST: [PLAYITEM]});
 			} else {
+				
 				const index = this.state.PLAYLIST.findIndex(({id}) => !mixed ? id == surah.id : id == (surah.start));
-				 console.log('===========================================================playing now', this.state.PLAYLIST[index]);
+				
+				console.log('===========================================================playing now', this.state.PLAYLIST[index]);
 				if(index != -1)
 					this.index = index;
 					// else {
@@ -149,37 +166,38 @@ componentWillReceiveProps(nextProps){
 
 	}
 
-	async loadSound(forcedStart){
-		// (async () => {
-			if(!this.state.PLAYLIST[this.index + 1] || (this.state.PLAYLIST[this.index + 1] && this.state.PLAYLIST[this.index + 1].sound)){
-				// console.log('loading sound for index returning:', this.state.PLAYLIST[this.index + 1])
-				return;
-			}
-			const whichIndex = forcedStart?(this.index||0) : (this.index + 1)
-			let source  = this.state.PLAYLIST[whichIndex];
-			const initialStatus = {
-				shouldPlay: false,
-				rate: this.state.rate,
-				volume: this.state.volume,
-			};
-			// console.log('loading sound for index:', this.index+1)
-			const { sound, status } = await Audio.Sound.createAsync(
-				{uri: source.uri},
-				initialStatus,
-				this._onPlaybackStatusUpdate
-			);
-			source.sound = sound;
-			let {PLAYLIST} = this.state;
-			PLAYLIST[whichIndex] = source;
-			this.setState({PLAYLIST});
-		// });
-		// this.setState({PLAYLIST: soundPlaylist});
-	}
+	// async loadSound(forcedStart){
+	// 	// (async () => {
+	// 		if(!this.state.PLAYLIST[this.index + 1] || (this.state.PLAYLIST[this.index + 1] && this.state.PLAYLIST[this.index + 1].sound)){
+	// 			// console.log('loading sound for index returning:', this.state.PLAYLIST[this.index + 1])
+	// 			return;
+	// 		}
+	// 		const whichIndex = forcedStart?(this.index||0) : (this.index + 1)
+	// 		let source  = this.state.PLAYLIST[whichIndex];
+	// 		const initialStatus = {
+	// 			shouldPlay: false,
+	// 			rate: this.state.rate,
+	// 			volume: this.state.volume,
+	// 		};
+	// 		// console.log('loading sound for index:', this.index+1)
+	// 		const { sound, status } = await Audio.Sound.createAsync(
+	// 			{uri: source.uri},
+	// 			initialStatus,
+	// 			this._onPlaybackStatusUpdate
+	// 		);
+	// 		source.sound = sound;
+	// 		let {PLAYLIST} = this.state;
+	// 		PLAYLIST[whichIndex] = source;
+	// 		this.setState({PLAYLIST});
+	// 	// });
+	// 	// this.setState({PLAYLIST: soundPlaylist});
+	// }
 	async _loadNewPlaybackInstance(playing) {
 		//console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance);
 		console.log('loading index', this.index, this.state.PLAYLIST[this.index]);
 		if (this.playbackInstance != null) {
-			await this.playbackInstance.unloadAsync();
+			this.playbackInstance.stopAsync();
+			this.playbackInstance.unloadAsync();
 			this.playbackInstance.setOnPlaybackStatusUpdate(null);
 		
 			this.playbackInstance = null;
@@ -188,34 +206,41 @@ componentWillReceiveProps(nextProps){
 		if(this.state.PLAYLIST.length){
 			if(this.state.PLAYLIST[this.index].uri){
 				source = { uri: this.state.PLAYLIST[this.index].uri };
+				
 			}//else {
 				//source = require('./assets/quran_1.mp3')
 			//}
 		}
 		else return;
-		if(this.state.PLAYLIST[this.index].sound)
-		{
-			 console.log('sound found, using');
-			const {sound} = this.state.PLAYLIST[this.index];
-			this.playbackInstance = sound;
-			playing && this.playbackInstance.playAsync();
-		}else{
+		if(this.state.source && source.uri == this.state.source.uri)return;
+		this.setState({source});
+		// if(this.state.PLAYLIST[this.index].sound)
+		// {
+		// 	 console.log('sound found, using');
+		// 	const {sound} = this.state.PLAYLIST[this.index];
+		// 	this.playbackInstance = sound;
+		// 	playing && this.playbackInstance.playAsync();
+		// }else{
 			 console.log('_loadNewPlaybackInstance: ', source);
 			const initialStatus = {
 				shouldPlay: playing,
 				rate: this.state.rate,
 				volume: this.state.volume,
 			};
-			 console.log('initial asttaus: playback load:', initialStatus)
-			
+			// if(this.sound){
+			// 	await this.sound.unloadAsync();
+			// 	await this.sound.stopAsync();
+			// 	this.sound.setOnPlaybackStatusUpdate(null);
+			// }
 			let { sound } = await Audio.Sound.createAsync(
 				source,
 				initialStatus,
 				this._onPlaybackStatusUpdate
 			);
 			console.log('sound loaded ', sound);
+			// this.sound = sound;
 			this.playbackInstance = sound;
-		}
+		// }
 		
 		console.log('playback this.playbackInstance:', this.playbackInstance)
 		this._updateScreenForLoading(false);
@@ -240,8 +265,9 @@ componentWillReceiveProps(nextProps){
 	}
 
 	_onPlaybackStatusUpdate = status => {
-		// console.log('platback status:', status);
+	//  console.log('got platback status:', status);
 		if (status && status.isLoaded) {
+			// if(this.state.isPlaying != status.isPlaying)return;
 			this.setState({
 				playbackInstancePosition: status.positionMillis,
 				playbackInstanceDuration: status.durationMillis,
@@ -258,7 +284,7 @@ componentWillReceiveProps(nextProps){
 			}
 		} else {
 			// if (status.error) {
-				console.log(`FATAL PLAYER ERROR:`, status);
+				console.log(`PLAYER ERROR:`, status);
 			// }
 		}
 	};
@@ -403,9 +429,9 @@ componentWillReceiveProps(nextProps){
 			<View />
 		) : (
 			//f1f3f4
-			<View style={[styles.container, {flexDirection:'row', paddingLeft: 5, paddingRight: 5, backgroundColor:'#228392'}]}>
-			
-				<View style={[styles.detailsContainer, {flex:1}]}>
+			<View style={[styles.container, {flexDirection:'column', paddingLeft: 5, paddingRight: 15, backgroundColor:'#228392', paddingTop: 8}]}>
+				<View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', borderColor:'blue', borderWidth:0}}>
+				<View style={[styles.detailsContainer, {flex:1, borderColor:'yellow', borderWidth:0}]}>
 					<Text style={[styles.text, {color: 'white'}]}>
 		{this.props.book == 'hadiths' ? 'File' : 'Surah'} { !isNaN(this.state.playbackInstanceName) ? (this.props.book !== 'hadiths' ?(this.state.PLAYLIST[0].name):''):''} {this.state.playbackInstanceName}
 					</Text>
@@ -418,29 +444,33 @@ componentWillReceiveProps(nextProps){
 						)})
 					</Text>
 				</View>
-				<View style={{flex: 1, flexBasis: 30, flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
 			
-				{/* <View
+			
+				<View
 					style={[
-						styles.buttonsContainerBase,
-						styles.buttonsContainerTopRow,
+					
 						{
 							opacity: this.state.isLoading
 								? DISABLED_OPACITY
 								: 1.0,
 						},
 						{
-							marginTop: 0, flex: 1,
-							flexBasis: 30
-						},
-						{
-							backgroundColor:'red'
+							flexDirection:'row',
+							flex:1,
+							alignItems:'space-between',
+							justifyContent:'space-between',
+							marginTop: 0, 
+							
+							
+							borderColor:'red',
+							borderWidth: 0,
+							
 						}
 					]}
-				> */}
-					<TouchableHighlight
+				>
+					 <TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={[styles.wrapper, styles.btn]}
+						style={[styles.wrapper, styles.btn, styles.playerBtn]}
 						onPress={this._onBackPressed}
 						disabled={this.state.isLoading}
 					>
@@ -453,18 +483,19 @@ componentWillReceiveProps(nextProps){
 								color="#1f8ec6"
 							/>
 											</TouchableHighlight>
+
 					<TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={[styles.wrapper, styles.btn]}
+						style={[styles.wrapper, styles.btn, styles.playerBtn]}
 						onPress={this._onPlayPausePressed}
 						disabled={this.state.isLoading}
 					>
-						<View >
+						
 							{this.state.isPlaying ? (
 								<Icon
 									name="pause"
-									size={iconSize}
-								style={{fontSize: iconSize, color: iconColor}}
+									size={iconSize+4}
+								style={{fontSize: iconSize+4, color: iconColor}}
 									color="#1f8ec6"
 								/>
 							) : (
@@ -475,15 +506,15 @@ componentWillReceiveProps(nextProps){
 									color="#1f8ec6"
 								/>
 							)}
-						</View>
+						
 					</TouchableHighlight>
 					<TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={[styles.wrapper, styles.btn]}
+						style={[styles.wrapper, styles.btn, styles.playerBtn]}
 						onPress={this._onStopPressed}
 						disabled={this.state.isLoading}
 					>
-						<View>
+						
 							<Icon
 							type='FontAwesome'
 								name="stop"
@@ -491,15 +522,15 @@ componentWillReceiveProps(nextProps){
 								style={{fontSize: iconSize, color: iconColor}}
 								color="white"
 							/>
-						</View>
+						
 					</TouchableHighlight>
 					<TouchableHighlight
 						underlayColor={BACKGROUND_COLOR}
-						style={[styles.wrapper, styles.btn]}
+						style={[styles.wrapper, styles.btn, styles.playerBtn]}
 						onPress={this._onForwardPressed}
 						disabled={this.state.isLoading}
 					>
-						<View>
+						
 							<Icon
 							type="FontAwesome"
 								name="fast-forward"
@@ -507,9 +538,24 @@ componentWillReceiveProps(nextProps){
 								size={iconSize}
 								style={{fontSize: iconSize, color: iconColor}}
 							/>
-						</View>
-					</TouchableHighlight>
-				{/* </View> */}
+						
+					</TouchableHighlight> 
+					
+
+				</View>
+				</View>
+
+				<View
+					style={[
+						styles.buttonsContainerBase,
+						styles.buttonsContainerMiddleRow,
+						{
+							borderColor:'black',
+							borderWidth:0
+						}
+					]}
+				> 
+					
 				
 				{/* <View
 					style={[
@@ -519,19 +565,24 @@ componentWillReceiveProps(nextProps){
 								? DISABLED_OPACITY
 								: 1.0,
 						},
+						{
+							borderWidth:1,
+							borderColor:'green',
+													}
 					]}
-				>
-					<Slider
+				> */}
+					{/* <Text>Slider here</Text> */}
+					 <Slider
 						style={styles.playbackSlider}
 						value={this._getSeekSliderPosition()}
 						onValueChange={this._onSeekSliderValueChange}
 						onSlidingComplete={this._onSeekSliderSlidingComplete}
-						thumbTintColor="#000000"
+						thumbTintColor="#acdeef"
 						minimumTrackTintColor="#4CCFF9"
 						disabled={this.state.isLoading}
-					/>
-				</View> */}
-				</View>
+					/> 
+				 </View> 
+				
 				{/* <View
 					style={[
 						styles.buttonsContainerBase,
@@ -611,9 +662,9 @@ const styles = StyleSheet.create({
 		alignSelf: 'stretch',
 	},
 	playbackSlider: {
-		alignSelf: 'stretch',
+		 alignSelf: 'stretch',
 		marginLeft: 10,
-		marginRight: 10,
+		marginRight: 1,
 		marginBottom: 5
 	},
 	text: {
@@ -622,9 +673,9 @@ const styles = StyleSheet.create({
 	},
 	buttonsContainerBase: {
 		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'flex-end',
-		justifyContent: 'space-around',
+		// flexDirection: 'row',
+		// alignItems: 'flex-start',
+		// justifyContent: 'space-around',
 		
 	},
 	buttonsContainerTopRow: {
@@ -633,9 +684,9 @@ const styles = StyleSheet.create({
 		maxWidth: DEVICE_WIDTH / 2.0,
 	},
 	buttonsContainerMiddleRow: {
-		maxHeight: 20,
+		// maxHeight: 20,
 		alignSelf: 'stretch',
-		paddingRight: 20,
+		// paddingRight: 20,
 	},
 	volumeContainer: {
 		flex: 1,
@@ -654,5 +705,6 @@ const styles = StyleSheet.create({
 	rateSlider: {
 		width: DEVICE_WIDTH - 80,
 	},
-	btn: {backgroundColor: '#228392', paddingHorizontal:10, paddingVertical: 5}
+	btn: {backgroundColor: '#228392', paddingHorizontal:10, paddingVertical: 5},
+	playerBtn: {borderColor:'#acdcef', borderWidth:0}
 });

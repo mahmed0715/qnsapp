@@ -22,7 +22,7 @@ import {fetchBukhariDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
-import Single from '../../components/SingleHadithCustom';
+import SingleHadithCustom from '../../components/SingleHadithCustom';
 import Player from '../../components/Player';
 import apiConfig from '../../config/api';
 
@@ -113,7 +113,7 @@ class BukhariDetails extends React.Component {
 
   _renderItem = ( {item} ) => {
     return (
-     <Single item={item}  player={this.state.player} 
+     <SingleHadithCustom item={item}  player={this.state.player} 
       setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)} 
      currentlyPlaying={this.state.currentlyPlaying} 
      hidePlayer={true} />
@@ -152,7 +152,7 @@ class BukhariDetails extends React.Component {
         (  <Footer>
         <Player book={'hadiths'} context={id} playList={this.state.playList} onRef={
           ref => {
-            ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true);
+            //ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true);
            this.setState({ player : ref})
           }} />
           

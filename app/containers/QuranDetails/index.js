@@ -55,7 +55,7 @@ class QuranDetails extends React.Component {
      this.setState({currentlyPlaying : id});
     
   }
-  componentWillMount(){  
+  UNSAFE_componentWillMount(){  
     const id = this.props.navigation.getParam('id');
       // const name = this.props.navigation.getParam('name');
       // this.state.player.play({id: id, name: name}, true);
@@ -94,7 +94,7 @@ class QuranDetails extends React.Component {
         let { playList } = this.state;
          console.log('playlist in quran details', playList, playList1);
         this.setState({playList: [...playList, ...playList1]}, ()=>{
-          this.state.player && this.state.player.play({...this.state.playList[0]}, true);
+          // this.state.player && this.state.player.play({...this.state.playList[0]}, true);
         })
       }
   }

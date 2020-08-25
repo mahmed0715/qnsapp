@@ -16,7 +16,7 @@ class SetLanguage extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     this.props.setLanguage(0);
   }
   render() {

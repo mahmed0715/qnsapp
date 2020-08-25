@@ -74,7 +74,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
     </View>
         <View style={{paddingRight:10, marginRight: 10, paddingLeft:5, width: screenWidth * 0.90, margin: 0, padding: 0}}> 
           {item.text_madani  ? <Text style={[theme.textColor, 
-            { textAlign:'right', width: screenWidth * 0.88, margin: 2, paddingBottom: 8, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',  padding: 1}]}> {(item.text_madani)}</Text> :null}
+            { textAlign:'right', fontSize:17, width: screenWidth * 0.88, margin: 2, paddingBottom: 8, writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',  padding: 1}]}> {(item.text_madani)}</Text> :null}
 {item.hadith_narrated || item.text_details || item.detail? <Text style={[theme.textColor, { textAlign:'left', width: screenWidth * 0.88, margin: 1, padding: 1}]}>
   {removeSupTag(item.hadith_narrated)} {removeSupTag(item.detail||item.text_details + ' ')}
   </Text> :null}

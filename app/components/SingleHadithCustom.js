@@ -12,7 +12,7 @@ import RightPlayer from './RightPlayer';
 import { I18nManager } from 'react-native';
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer})=> {
+const SingleHadithCustom = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer})=> {
   //  console.log('item in single:', player);
   // console.log('hideplayer==============----=', hidePlayer, item.audio_embed)
   const BACKGROUND_COLOR = '#FFFFFF';
@@ -27,7 +27,7 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
   }
  const removeSupTag = (text) => {
   text = capitalize(text);
-  if(text[0].search(/\s/)>-1){
+  if(text && text[0].search(/\s/)>-1){
     text[0] = '';
   }
   return text.replace(/\<sup.*\<\/sup\>/g,'').replace(/\s\s+/g, ' ');
@@ -96,4 +96,4 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
 
 
 // Exports
-export default Single;
+export default SingleHadithCustom;

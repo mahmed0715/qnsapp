@@ -32,7 +32,6 @@ class BukhariList extends React.Component {
     const id =  props.navigation.getParam('id');
     // const playList = props.bukhariList[id].map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.book_name, id: ayah.id}));
     // console.log('playlist in bukharilist:', apiConfig.singleAudioFile(props.bukhariList[id][0], 'hadiths'), playList)
-    this.player = React.createRef();
     let playList = [];
     let i = 0;
     const regex = /([^<"]+).mp3/g;
@@ -80,7 +79,8 @@ class BukhariList extends React.Component {
      this.props.fetchBukhariList({id});
     }
   }
-  componentWillUnmount(){
+  UNSAFE_componentWillUnmount(){
+    console.log('bukharilist unmounting')
     this.state.player.stop();
   }
   componentWillReceiveProps(nextProps){
