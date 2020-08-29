@@ -5,6 +5,7 @@ import {
 	TouchableHighlight,
 	View,
 } from 'react-native';
+import {startLoading, stopLoading, setCurrentlyPlaying} from "../actions/common";
 import Slider from 'react-native-slider';
 import { Audio, Font } from 'expo-av';
 import { connect } from "react-redux";
@@ -54,7 +55,7 @@ class Player extends Component {
 			rate: 1.0,
 			index: 0
 		};
-		 console.log('player: playlist in constructor', this.state.PLAYLIST)
+		 console.log('player: playlist length in constructor', this.state.PLAYLIST.length)
 		// this.play = this.play.bind(this);
 	}
 // 	UNSAFE_componentWillMount(){
@@ -69,10 +70,10 @@ class Player extends Component {
 // }
 
 
-componentWillReceiveProps(nextProps){
-	console.log('Player: receieve playlist', nextProps.playList);
-	if(nextProps.playList != this.state.PLAYLIST){
-		this.setState({PLAYLIST: nextProps.playList}, ()=>{
+UNSAFE_componentWillReceiveProps(nextProps){
+	// console.log('Player: receieve playlist', nextProps.playList.length);
+	if(!this.state.PLAYLIST.length && nextProps.playList && nextProps.playList != this.state.PLAYLIST){
+		this.setState({PLAYLIST: nextProps.playList}, () => {
 			console.log('player: playlist updated in player', this.state.PLAYLIST);
 		//	this.loadSound(true);
 		});
@@ -89,6 +90,7 @@ componentWillUnmount() {
 		this.playbackInstance.setOnPlaybackStatusUpdate(null);
  	 }
 	this.playbackInstance = null;
+	this.props.setCurrentlyPlaying(null);
   }
 	componentDidMount() {
 		Audio.setAudioModeAsync({
@@ -128,9 +130,14 @@ componentWillUnmount() {
 	}
 
 	play(surah, dontPlay, mixed){
-		
-		this._onStopPressed();
-		 console.log('===========================================================playing new', surah, mixed);
+		// console.time('playandload')
+		if(!this.props.soundLoading){
+			this.props.startLoading();}
+		else{
+			return;
+		}
+		// this._onStopPressed();
+		//  console.log('===========================================================playing new', surah, mixed);
 			if(!this.state.PLAYLIST.length){
 				let PLAYITEM = new PlaylistItem(
 					surah.name,
@@ -142,7 +149,7 @@ componentWillUnmount() {
 				
 				const index = this.state.PLAYLIST.findIndex(({id}) => !mixed ? id == surah.id : id == (surah.start));
 				
-				console.log('===========================================================playing now', this.state.PLAYLIST[index]);
+				// console.log('===========================================================playing now', this.state.PLAYLIST[index]);
 				if(index != -1)
 					this.index = index;
 					// else {
@@ -161,8 +168,10 @@ componentWillUnmount() {
 			}
 			if(this.index > -1){
 				dontPlay?this._loadNewPlaybackInstance(false):this._loadNewPlaybackInstance(true);
+			}else{
+				this.props.stopLoading()
 			}
-			console.log('playlist in play method:', this.state.PLAYLIST);
+			// console.log('playlist in play method:', this.state.PLAYLIST);
 
 	}
 
@@ -193,15 +202,14 @@ componentWillUnmount() {
 	// 	// this.setState({PLAYLIST: soundPlaylist});
 	// }
 	async _loadNewPlaybackInstance(playing) {
-		//console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance);
-		console.log('loading index', this.index, this.state.PLAYLIST[this.index]);
-		if (this.playbackInstance != null) {
-			this.playbackInstance.stopAsync();
-			this.playbackInstance.unloadAsync();
-			this.playbackInstance.setOnPlaybackStatusUpdate(null);
-		
-			this.playbackInstance = null;
+		if(!this.props.soundLoading){
+			this.props.startLoading();}
+		else{
+			return;
 		}
+		//console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance);
+		// console.log('loading index', this.index, this.state.PLAYLIST[this.index]);
+		
 		let source;
 		if(this.state.PLAYLIST.length){
 			if(this.state.PLAYLIST[this.index].uri){
@@ -211,9 +219,19 @@ componentWillUnmount() {
 				//source = require('./assets/quran_1.mp3')
 			//}
 		}
-		else return;
-		if(this.state.source && source.uri == this.state.source.uri)return;
-		this.setState({source});
+		else {
+			setTimeout(this.props.stopLoading, 500);
+			// this.setState({isLoading: false});
+			return;
+		
+		}
+		if (this.playbackInstance != null) {
+			await this.playbackInstance.stopAsync();
+			await this.playbackInstance.unloadAsync();
+			this.playbackInstance.setOnPlaybackStatusUpdate(null);
+		
+			this.playbackInstance = null;
+		}
 		// if(this.state.PLAYLIST[this.index].sound)
 		// {
 		// 	 console.log('sound found, using');
@@ -221,7 +239,7 @@ componentWillUnmount() {
 		// 	this.playbackInstance = sound;
 		// 	playing && this.playbackInstance.playAsync();
 		// }else{
-			 console.log('_loadNewPlaybackInstance: ', source);
+			//  console.log('_loadNewPlaybackInstance: ', source);
 			const initialStatus = {
 				shouldPlay: playing,
 				rate: this.state.rate,
@@ -240,11 +258,19 @@ componentWillUnmount() {
 			console.log('sound loaded ', sound);
 			// this.sound = sound;
 			this.playbackInstance = sound;
+			this.setState({currentlyPlaying: this.state.PLAYLIST[this.index]});
+			if(playing){
+				this.props.setCurrentlyPlaying(this.state.PLAYLIST[this.index].id)
+			}
 		// }
 		
-		console.log('playback this.playbackInstance:', this.playbackInstance)
+		// console.log('playback this.playbackInstance:', this.playbackInstance)
 		this._updateScreenForLoading(false);
 		// this.loadSound(!playing);
+		// this.setState({isLoading: false});
+		// console.timeEnd('playandload')
+		// console.log('soundLoading: false in player')
+		setTimeout(this.props.stopLoading, 200);
 	}
 
 	_updateScreenForLoading(isLoading) {
@@ -315,9 +341,10 @@ componentWillUnmount() {
 		}
 	};
 
-	_onStopPressed = () => {
+	_onStopPressed = async () => {
 		if (this.playbackInstance != null) {
 			this.playbackInstance.stopAsync();
+			// this.setState({isPlaying: false});
 		}
 	};
 
@@ -422,7 +449,7 @@ componentWillUnmount() {
 	render() {
 		const iconColor = 'white';
 		const bgColor = '#e7e0e0';
-		const iconSize = 24;
+		const iconSize = 30;
 		if(this.props.abstract) 
 			return <View />;
 		return !this.state.fontLoaded ? (
@@ -494,15 +521,15 @@ componentWillUnmount() {
 							{this.state.isPlaying ? (
 								<Icon
 									name="pause"
-									size={iconSize+4}
-								style={{fontSize: iconSize+4, color: iconColor}}
+									size={iconSize+6}
+								style={{fontSize: iconSize+6, color: iconColor}}
 									color="#1f8ec6"
 								/>
 							) : (
 								<Icon
 									name="play"
-									size={iconSize+4}
-								style={{fontSize: iconSize+4, color: iconColor}}
+									size={iconSize+6}
+								style={{fontSize: iconSize+6, color: iconColor}}
 									color="#1f8ec6"
 								/>
 							)}
@@ -621,12 +648,17 @@ componentWillUnmount() {
 }
 const mapStateToProps = (state) => {
 	return {
-	  quranList: state.common.quranList
+		soundLoading: state.common.soundLoading,
+		currentlyPlaying: state.common.currentlyPlaying
+	  //quranList: state.common.quranList
 	};
   };
   
   const mapDispatchToProps = (dispatch) => {
 	return {
+		setCurrentlyPlaying: (query) =>{dispatch(setCurrentlyPlaying(query))},
+		startLoading: (query) =>{dispatch(startLoading(query))},
+		stopLoading: (query) =>{dispatch(stopLoading(query))},
 	//   fetchQuranList: (query)=> dispatch(fetchQuranList(query))
 	 };
   };

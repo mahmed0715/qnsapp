@@ -11,6 +11,18 @@ const common = (state = initialState.common, action) => {
         isLoading: action.isLoading,
       }
     }
+    case ActionTypes.SOUNDLOADING: {
+      return {
+        ...state,
+        soundLoading: action.soundLoading,
+      }
+    }
+    case ActionTypes.CURRENTLYPLAYING: {
+      return {
+        ...state,
+        currentlyPlaying: action.currentlyPlaying,
+      }
+    }
     case ActionTypes.SHOWMODAL: {
       return {
         ...state,

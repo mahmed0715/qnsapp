@@ -19,9 +19,10 @@ import {
 // import theme from '../styles';
 // import Player from './Player';
 // console.log('common styles',commonStyles)
-class RightPlayer extends React.Component {
+class RightPlayerHadith extends React.Component {
     constructor(props){
       super(props);
+      console.log('=============================================right player HADITH file');
       this.state = {
         player: props.player,
         isPlaying: false,
@@ -87,4 +88,4 @@ class RightPlayer extends React.Component {
     }
   }
 
-  export default RightPlayer;
+  export default RightPlayerHadith;

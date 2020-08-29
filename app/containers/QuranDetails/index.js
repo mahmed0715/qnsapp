@@ -81,7 +81,7 @@ class QuranDetails extends React.Component {
     this.state.player.stop();
     // this.state.player1.stop();
   }
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     // console.log('nextprops in quran details:', nextProps.quranDetails);
     const id = nextProps.navigation.getParam('id');
     if(!nextProps.quranDetails || !nextProps.quranDetails[id]){
@@ -140,7 +140,7 @@ class QuranDetails extends React.Component {
           {/* { this.state.playList.length ? 
           <Player abstract={true} book={'quran'} context={id} playList={this.state.playList} onRef={ref => (this.setState({ player1 : ref}))} />
       :null} */}
-        <Player book={'quran'} context={id} playList={this.state.playList} onRef={
+        <Player type={'quranDetails'} book={'quran'} context={id} playList={this.state.playList} onRef={
           ref => {
             // ref && ref.play({...this.state.surah}, true);
            this.setState({ player : ref})

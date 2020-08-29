@@ -18,7 +18,15 @@ export const fetchQuranList =  (payloads) =>  (dispatch) => {
     return error;
   });
 }
-
+export const startLoading =  (payloads) =>  (dispatch) => {   
+  dispatch({ type: ActionTypes.SOUNDLOADING, soundLoading: true });
+}
+export const stopLoading =  (payloads) =>  (dispatch) => {   
+  dispatch({ type: ActionTypes.SOUNDLOADING, soundLoading: false });
+}
+export const setCurrentlyPlaying =  (payloads) =>  (dispatch) => {   
+  dispatch({ type: ActionTypes.CURRENTLYPLAYING, currentlyPlaying: payloads });
+}
 export const fetchQuranDetails =  (payloads) =>  (dispatch) => {   
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
   console.log('got payloads to load quran details for id', payloads)
@@ -64,6 +72,10 @@ export const fetchBukhariDetails =  (payloads={}) =>  (dispatch) => {
   });
 }
 
+export const soundLoading = bool => ({
+  type: ActionTypes.SOUNDLOADING,
+  soundLoading: bool,
+});
 
 
 export const loading = bool => ({
