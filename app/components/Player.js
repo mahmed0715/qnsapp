@@ -92,18 +92,32 @@ componentWillUnmount() {
 	this.playbackInstance = null;
 	this.props.setCurrentlyPlaying(null);
   }
+  componentWillMount(){
+	Audio.setAudioModeAsync({
+		allowsRecordingIOS: false,
+		interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+		playsInSilentModeIOS: true,
+		shouldDuckAndroid: true,
+		interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+		staysActiveInBackground: true,
+		playsInBackgroundModeAndroid: false,
+		playThroughEarpieceAndroid: false
+	});
+	this.props.onRef(this);
+	this._loadNewPlaybackInstance(false);
+  }
 	componentDidMount() {
-		Audio.setAudioModeAsync({
-			allowsRecordingIOS: false,
-			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-			playsInSilentModeIOS: true,
-			shouldDuckAndroid: true,
-			interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-			staysActiveInBackground: true,
-			playsInBackgroundModeAndroid: false,
-			playThroughEarpieceAndroid: false
-		});
-		this.props.onRef(this)
+		// Audio.setAudioModeAsync({
+		// 	allowsRecordingIOS: false,
+		// 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+		// 	playsInSilentModeIOS: true,
+		// 	shouldDuckAndroid: true,
+		// 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+		// 	staysActiveInBackground: true,
+		// 	playsInBackgroundModeAndroid: false,
+		// 	playThroughEarpieceAndroid: false
+		// });
+		// this.props.onRef(this)
 	// if(this.props.book == 'quran'){
 		// play the first one
 		// let {id} = this.props;
@@ -112,9 +126,10 @@ componentWillUnmount() {
 		// current.length && this.play(current[0], true);
 	// }
 	
+		// this.play();
+		// load first one// tempo
+		// this._loadNewPlaybackInstance(false);
 		
-		this._loadNewPlaybackInstance(false);
-		// this.loadSound();
 	}
 	pause(){		// this._onPlayPausePressed();
 		if (this.state.isPlaying) {
@@ -131,11 +146,12 @@ componentWillUnmount() {
 
 	play(surah, dontPlay, mixed){
 		// console.time('playandload')
-		if(!this.props.soundLoading){
-			this.props.startLoading();}
-		else{
-			return;
-		}
+		// if(!this.props.soundLoading){
+		// 	this.props.startLoading();}
+		// else{
+		// 	console.log('IMP: sound loading in play returning',this.props.soundLoading)
+		// 	return;
+		// }
 		// this._onStopPressed();
 		//  console.log('===========================================================playing new', surah, mixed);
 			if(!this.state.PLAYLIST.length){
@@ -202,11 +218,10 @@ componentWillUnmount() {
 	// 	// this.setState({PLAYLIST: soundPlaylist});
 	// }
 	async _loadNewPlaybackInstance(playing) {
-		if(!this.props.soundLoading){
-			this.props.startLoading();}
-		else{
-			return;
-		}
+		
+		// else{
+		// 	return;
+		// }
 		//console.log('_loadNewPlaybackInstance: ', playing, this.playbackInstance);
 		// console.log('loading index', this.index, this.state.PLAYLIST[this.index]);
 		
@@ -220,10 +235,13 @@ componentWillUnmount() {
 			//}
 		}
 		else {
-			setTimeout(this.props.stopLoading, 500);
+			this.props.stopLoading();
 			// this.setState({isLoading: false});
 			return;
 		
+		}
+		if(!this.props.soundLoading){
+			this.props.startLoading();
 		}
 		if (this.playbackInstance != null) {
 			await this.playbackInstance.stopAsync();
@@ -344,7 +362,8 @@ componentWillUnmount() {
 	_onStopPressed = async () => {
 		if (this.playbackInstance != null) {
 			this.playbackInstance.stopAsync();
-			// this.setState({isPlaying: false});
+			this.setState({isPlaying: false});
+			// this.playbackInstance =
 		}
 	};
 

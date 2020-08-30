@@ -12,7 +12,7 @@ import {
 
 } from 'native-base';
 import { connect } from "react-redux";
-import {startLoading, stopLoading} from "../actions/common";
+import {startLoading} from "../actions/common";
 // import { connect } from "react-redux";
 // import * as userActions from "../actions/user";
 // import {fetchQuranDetails} from "../actions/common";
@@ -22,19 +22,18 @@ import {startLoading, stopLoading} from "../actions/common";
 // import Player from './Player';
 // console.log('common styles',commonStyles)
 class RightPlayer extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
+    // constructor(props){
+      // super(props);
+      // this.state = {
         // player: props.player,
-        isPlaying: false,
-        context : props.context,
+        // isPlaying: false,
         // isLoading: props.player.state.isLoading,
         // currentlyPlaying: props.currentlyPlaying
 
-      }
+      // }
       //  console.log('isplaying in right player:', props.isPlaying)
       // this.player = props.player;
-    }
+    // }
     // componentWillFocus(){
       // console.log('component did mound rightplayer', this.props.navigation);
     //   const {navigation} = this.props;
@@ -63,17 +62,17 @@ class RightPlayer extends React.Component {
         // console.log('player soundLoading: in rightplayer', this.state.player.state.soundLoading)
     // }
 
-    setPause(context){
-      this.props.pause()
-      this.setState({isPlaying: false});
-    }
+    // setPause(context){
+    //   this.props.pause()
+    //   this.setState({isPlaying: false});
+    // }
     async play(context){
       // await this.props.player.play;
       this.props.play(context)
     }
     componentWillUnmount(){
       // this.willFocus.remove();
-      this.setState({isPlaying: false})
+      // this.setState({isPlaying: false})
     }
     setPlaying = (context) => {
       // let { isPlaying } = this.state;
@@ -84,9 +83,9 @@ class RightPlayer extends React.Component {
       //   this.props.playPause();
       // } else{
         // this.props.play(this.state.context);
-        this.props.setCurrentlyPlaying(this.state.context.id) ;
+        this.props.setCurrentlyPlaying(this.props.context.id) ;
       // }
-      this.setState({isPlaying: true});
+      // this.setState({isPlaying: true});
     }
    
     render(){
@@ -136,7 +135,7 @@ class RightPlayer extends React.Component {
   const mapDispatchToProps = (dispatch) => {
     return {
       startLoading: (query) =>{dispatch(startLoading(query))},
-      stopLoading: (query) =>{dispatch(stopLoading(query))}
+      // stopLoading: (query) =>{dispatch(stopLoading(query))}
      };
   };
   

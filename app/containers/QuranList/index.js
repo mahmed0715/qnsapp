@@ -66,7 +66,7 @@ class QuranList extends React.Component {
         let { playList } = this.state;
         //  console.log('playlist in quran list', playList, playList1);
         this.setState({playList: [...playList, ...playList1]}, ()=>{
-          // this.state.player && this.state.player.play({...this.state.playList[0]}, true);
+          this.state.player && this.state.player.play({...this.state.playList[0]}, true);
         })
       }
   }

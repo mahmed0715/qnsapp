@@ -21,7 +21,7 @@ import Single from '../../components/Single';
 import {getAudioFileUrl} from '../../utils/common';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchQuranDetails} from "../../actions/common";
+import {fetchQuranDetails, startLoading, stopLoading} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
@@ -46,16 +46,16 @@ class QuranDetails extends React.Component {
       //{id: parseInt(id), name: surah.name, uri: getAudioFileUrl({...surah}), root: true}
     }
   }
-  setCurrentlyPlaying = (id) => {
+  // setCurrentlyPlaying = (id) => {
     // let { isPlaying } = this.state;
     // isPlaying && this.player.pause();
     // this.state.currentlyPlaying == context.id ? this.setState({isPlaying: true},() => {
     //   this.player.playPause();
     // }):
-     this.setState({currentlyPlaying : id});
+    //  this.setState({currentlyPlaying : id});
     
-  }
-  UNSAFE_componentWillMount(){  
+  // }
+  componentWillMount(){  
     const id = this.props.navigation.getParam('id');
       // const name = this.props.navigation.getParam('name');
       // this.state.player.play({id: id, name: name}, true);
@@ -63,23 +63,18 @@ class QuranDetails extends React.Component {
      if(!this.props.quranDetails || !this.props.quranDetails[id]){
       // console.log('dont have quran details in quran details screen, fetching');
       this.props.fetchQuranDetails({id:id});
-      }else {
+      }else if(!this.state.playList.length) {
         let playList1 = this.props.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
-          return {uri: apiConfig.singleAudioFile(ayah), name: id + ':' + ayah.verse_serial, id: parseInt(ayah.id)}
+          return {uri: apiConfig.singleAudioFile(ayah), name: this.state.surah.name + ' : ' + ayah.verse_serial, id: parseInt(ayah.id)}
         });
-        let { playList } = this.state;
         // console.log('playlist in quran details existing:', playList, playList1);
-        this.setState({playList: [...playList, ...playList1]})
+        this.setState({playList: playList1}, ()=>{
+          this.state.player && this.state.player.play(playList1[0], true);
+        })
       }
   }
   async componentWillUnmount(){
-    // if(!this.props.quranDetails || !this.props.quranDetails.length){
-    //   console.log('dont have quran list in quran list screen, fetching');
-    //   this.props.fetchQuranDetails({});
-    
-    // }
     this.state.player.stop();
-    // this.state.player1.stop();
   }
   UNSAFE_componentWillReceiveProps(nextProps){
     // console.log('nextprops in quran details:', nextProps.quranDetails);
@@ -87,24 +82,24 @@ class QuranDetails extends React.Component {
     if(!nextProps.quranDetails || !nextProps.quranDetails[id]){
       // console.log('dont have quran details in quran details screen, fetching');
       this.props.fetchQuranDetails({id});
-      }else{
+      }else if(!this.state.playList.length){
         let playList1 = nextProps.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
-          return {uri: apiConfig.singleAudioFile(ayah), name: id + ':' + ayah.verse_serial, id: parseInt(ayah.id)}
+          return {uri: apiConfig.singleAudioFile(ayah), name: this.state.surah.name + ' : ' + ayah.verse_serial, id: parseInt(ayah.id)}
         });
-        let { playList } = this.state;
-         console.log('playlist in quran details', playList, playList1);
-        this.setState({playList: [...playList, ...playList1]}, ()=>{
-          // this.state.player && this.state.player.play({...this.state.playList[0]}, true);
+        //  console.log('playlist in quran details', playList, playList1);
+        this.setState({playList: playList1}, ()=>{
+           this.state.player && this.state.player.play(playList1[0], true);
         })
       }
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item}) => {
-      return (<Single item={item} 
-      player={this.state.player} 
-     setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)} 
-     currentlyPlaying={this.state.currentlyPlaying} hidePlayer={false} />)
+    return (<Single item={item} 
+    startLoading={this.props.startLoading}
+    player={this.state.player} 
+    soundLoading={this.props.soundLoading}
+    hidePlayer={false} />)
   };
   
   render(){
@@ -137,16 +132,13 @@ class QuranDetails extends React.Component {
 
      </Content>
         <Footer>
-          {/* { this.state.playList.length ? 
-          <Player abstract={true} book={'quran'} context={id} playList={this.state.playList} onRef={ref => (this.setState({ player1 : ref}))} />
-      :null} */}
+          
         <Player type={'quranDetails'} book={'quran'} context={id} playList={this.state.playList} onRef={
           ref => {
-            // ref && ref.play({...this.state.surah}, true);
            this.setState({ player : ref})
           }} />
 
-          {/* :null} */}
+          
          
         </Footer>
         </View>
@@ -157,12 +149,15 @@ class QuranDetails extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
+    soundLoading: state.common.soundLoading,
     quranDetails: state.common.quranDetails,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    startLoading: (query) =>{dispatch(startLoading(query))},
+    stopLoading: (query) =>{dispatch(stopLoading(query))},
     fetchQuranDetails: (query)=> dispatch(fetchQuranDetails(query))
    };
 };

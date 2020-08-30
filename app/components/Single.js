@@ -12,8 +12,8 @@ import RightPlayer from './RightPlayer';
 import { I18nManager } from 'react-native';
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer})=> {
-  //  console.log('item in single:', player);
+const Single = ({item, player, startLoading, hidePlayer})=> {
+    // console.log('startloading in single:', startLoading);
   // console.log('hideplayer==============----=', hidePlayer, item.audio_embed)
   const BACKGROUND_COLOR = '#FFFFFF';
   const iconColor = '#1f8ec6';
@@ -24,6 +24,14 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
   const capitalize = (s) => {
     if (typeof s != 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1)
+  }
+
+ 
+  const setCurrentlyPlaying = (id) => {
+    
+    player.play({id});
+    startLoading();
+    
   }
  const removeSupTag = (text) => {
   if(!text)return '';
@@ -43,7 +51,8 @@ const Single = ({item, player, currentlyPlaying, setCurrentlyPlaying, hidePlayer
         <View style={{flexDirection:'row', alignItems:'space-between'}}>
         <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:3, paddingRight:0}]}>{item.hadith_serial||item.verse_serial}.</Text>
         {!hidePlayer && player  && (item.audio_file|| item.audio_embed) ? 
-        <RightPlayer context={item} player={player} currentlyPlaying={currentlyPlaying}
+        <RightPlayer 
+        context={item} 
         setCurrentlyPlaying={setCurrentlyPlaying}
         />
         : null
