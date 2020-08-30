@@ -65,19 +65,19 @@ class QuranList extends React.Component {
         });
         let { playList } = this.state;
         //  console.log('playlist in quran list', playList, playList1);
-        this.setState({playList: [...playList, ...playList1]}, ()=>{
-          this.state.player && this.state.player.play({...this.state.playList[0]}, true);
+        this.setState({playList: playList1}, ()=>{
+          // this.state.player && this.state.player.play({...this.state.playList[0]}, true);
         })
       }
   }
-  play(context){
-    this.state.player.play(context)
-  }
-  setPause(context){
-    this.setState({isPlaying: false}, ()=>{
-      this.state.player.pause()
-    });
-  }
+  // play(context){
+  //   this.state.player.play(context)
+  // }
+  // setPause(context){
+  //   this.setState({isPlaying: false}, ()=>{
+  //     this.state.player.pause()
+  //   });
+  // }
   // generatePlayList = ()=>{
   //   const playList = nextProps.quranDetails[id].map((ayah)=>{
   //     return {uri: getAudioFileUrl(ayah), name: ayah.verse_serial, id: ayah.id}
@@ -144,8 +144,6 @@ class QuranList extends React.Component {
   {this.state.player && this.state.player.play ?
        <RightPlayer style={{alignSelf:'flex-start'}} 
        context={surah} 
-       isPlaying={this.state.isPlaying}
-       setPause={this.setPause.bind(this)}
        setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
        />:null
   }

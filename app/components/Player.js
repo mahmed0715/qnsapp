@@ -76,6 +76,7 @@ UNSAFE_componentWillReceiveProps(nextProps){
 		this.setState({PLAYLIST: nextProps.playList}, () => {
 			console.log('player: playlist updated in player', this.state.PLAYLIST);
 		//	this.loadSound(true);
+			this._loadNewPlaybackInstance(false);
 		});
 	}
 }
@@ -104,7 +105,7 @@ componentWillUnmount() {
 		playThroughEarpieceAndroid: false
 	});
 	this.props.onRef(this);
-	this._loadNewPlaybackInstance(false);
+	this.state.PLAYLIST.length && this._loadNewPlaybackInstance(false);
   }
 	componentDidMount() {
 		// Audio.setAudioModeAsync({
@@ -328,7 +329,7 @@ componentWillUnmount() {
 			}
 		} else {
 			// if (status.error) {
-				console.log(`PLAYER ERROR:`, status);
+				console.log(`PLAYER ERROR:`, status, this.state.PLAYLIST, this.index);
 			// }
 		}
 	};

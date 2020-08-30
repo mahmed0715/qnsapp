@@ -19,71 +19,88 @@ import {
 } from 'native-base';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchBukhariList} from "../../actions/common";
+import {fetchBukhariList, startLoading, stopLoading} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
 import Player from '../../components/Player';
-import RightPlayerHadith from '../../components/RightPlayerHadith';
+import RightPlayer from '../../components/RightPlayer';
 class BukhariList extends React.Component {
   constructor(props) {
     super(props);
-    // this.player = React.createRef();
-    const id =  props.navigation.getParam('id');
-    // const playList = props.bukhariList[id].map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.book_name, id: ayah.id}));
-    // console.log('playlist in bukharilist:', apiConfig.singleAudioFile(props.bukhariList[id][0], 'hadiths'), playList)
-    let playList = [];
-    let i = 0;
-    const regex = /([^<"]+).mp3/g;
-    props.bukhariList[id] &&   props.bukhariList[id].length &&props.bukhariList[id].map((book) => {
-      book.start = '';
-      if(book.audio_embed){
-        const found = book.audio_embed.match(regex);
-        found.length && found
-        .map((aa, index) => {
-          if(aa.indexOf('>')==0)return;
-          aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
-          index == 0 && aa && (book.start = i);
-        });
-      }
-     
-    });
-     console.log('playlist found:', playList)
+    const id = this.props.navigation.getParam('id');
     this.state = {
       isPlaying: false,
       currentlyPlaying: 1,
       id: id,
       player: React.createRef(),
-      playList: playList
+      playList: []
     }
+    this.setCurrentlyPlaying = this.setCurrentlyPlaying.bind(this)
   }
   // generatePlayList = (nextProps, id)=>{
   //   const playList = nextProps.bukhariList[id].map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.book_name, id: ayah.id}));
   //   this.setState({playList: playList})
   // }
-  setCurrentlyPlaying = (context, pause) => {
-    let {isPlaying}  = this.state;
-    this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
-    pause ? this.state.player.pause(context) : this.state.player.play(context);
+  setCurrentlyPlaying = (start, pause) => {
+    // let {isPlaying}  = this.state;
+    // this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
+    // pause ? this.state.player.pause(context) : 
+    // this.props.startLoading();
+    
+    // mixed content
+    this.state.player.play({start: start}, false, true);
   }
   capitalize = (s) => {
     if (typeof s != 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1)
   }
-  componentDidMount(){
-    const id = this.props.navigation.getParam('id');
+  componentWillMount(){
+    const {id} = this.state;
     if(!this.props.bukhariList[id] || !this.props.bukhariList[id].length){
    
-     const id = this.props.navigation.getParam('id');
+    //  const id = this.props.navigation.getParam('id');
     //  console.log('dont have bukhari list fetching', id);
      this.props.fetchBukhariList({id});
+    }else if(!this.state.playList.length){
+      // const id =  this.props.navigation.getParam('id');
+      let playList = [];
+      let i = 0;
+      const regex = /([^<"]+).mp3/g;
+      this.props.bukhariList[id] &&   this.props.bukhariList[id].length &&this.props.bukhariList[id].map((book) => {
+        book.start = '';
+        if(book.audio_embed){
+          const found = book.audio_embed.match(regex);
+          found.length && found
+          .map((aa, index) => {
+            if(aa.indexOf('>')==0)return;
+            aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
+            index == 0 && aa && (book.start = i);
+          });
+        }
+       
+      });
+      this.setState({playList: playList}, () =>{
+        // this.state.player && this.state.player.play(playList[0], true)
+      })
     }
   }
+  // componentDidMount(){
+  //   const id = this.props.navigation.getParam('id');
+  //   if(!this.props.bukhariList[id] || !this.props.bukhariList[id].length){
+   
+  //    const id = this.props.navigation.getParam('id');
+  //   //  console.log('dont have bukhari list fetching', id);
+  //    this.props.fetchBukhariList({id});
+  //   }else if(this.state.playList.length){
+  //      this.state.player.play({...this.state.playList[0]}, true) 
+  //   }
+  // }
   UNSAFE_componentWillUnmount(){
     console.log('bukharilist unmounting')
     this.state.player.stop();
   }
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     if(!this.state.playList.length && nextProps.bukhariList[this.state.id]){
       let playList = [];
       const regex = /([^<"]+).mp3/g;
@@ -102,7 +119,9 @@ class BukhariList extends React.Component {
         }
       });
       // console.log('playlist found 2', playList)
-      this.setState({playList: playList})
+      this.setState({playList: playList}, () =>{
+        // this.state.player && this.state.player.play(playList[0], true)
+      })
     }
     
     
@@ -125,12 +144,10 @@ class BukhariList extends React.Component {
        
 {<Right> 
    {this.state.player && this.state.player.play && hadith_books.audio_embed ?
-       <RightPlayerHadith style={{alignSelf:'flex-start'}} 
+       <RightPlayer style={{alignSelf:'flex-start'}} 
        context={hadith_books} 
-       player={this.state.player} 
-       currentlyPlaying={this.state.currentlyPlaying}
-       setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
-       mixed={true}
+       setCurrentlyPlaying={this.setCurrentlyPlaying}
+       hadith={true}
        />:null
   }
  </Right> }
@@ -185,11 +202,14 @@ class BukhariList extends React.Component {
 const mapStateToProps = (state) => {
   return {
     bukhariList: state.common.bukhariList,
+    currentlyPlaying: state.common.currentlyPlaying
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    startLoading: (query)=> dispatch(startLoading(query)),
+    stopLoading: (query)=> dispatch(stopLoading(query)),
     fetchBukhariList: (query)=> dispatch(fetchBukhariList(query))
    };
 };

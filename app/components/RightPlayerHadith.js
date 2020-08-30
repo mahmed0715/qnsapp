@@ -32,29 +32,29 @@ class RightPlayerHadith extends React.Component {
       // this.player = props.player;
     }
     componentWillReceiveProps(nextProps){
-      if(nextProps.player && this.state.player != nextProps.player)
-        this.setState({player : nextProps.player});
+      // if(nextProps.player && this.state.player != nextProps.player)
+      //   this.setState({player : nextProps.player});
     }
-    setPause(context){
-      this.state.player.pause()
-      this.setState({isPlaying: false});
-    }
-    async play(context){
-      // await this.props.player.play;
-      this.props.player.play(context, false, true)// mixed data
-    }
+    // setPause(context){
+    //   this.state.player.pause()
+    //   this.setState({isPlaying: false});
+    // }
+    // async play(context){
+    //   // await this.props.player.play;
+    //   this.props.player.play(context, false, true)// mixed data
+    // }
     setPlaying = (context) => {
       // let { isPlaying } = this.state;
     //  let { player } =  this.props;
     //  console.log('play set', this.props, this.state, this.state.context)
     //  console.log('play set', this.props.player.play)
-      if(this.state.isPlaying &&  this.state.context.start == this.props.currentlyPlaying  ) { 
-        this.state.player.playPause();
-      } else{
-        this.props.player.play(this.state.context, false, true);
+      // if(this.state.isPlaying &&  this.state.context.start == this.props.currentlyPlaying  ) { 
+      //   this.state.player.playPause();
+      // } else{
+        // this.props.player.play(this.state.context, false, true);
         this.props.setCurrentlyPlaying(this.state.context.start) ;
-      }
-      this.setState({isPlaying: true});
+      // }
+      // this.setState({isPlaying: true});
     }
    
     render(){

@@ -18,7 +18,7 @@ import {
 } from 'native-base';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchBukhariDetails} from "../../actions/common";
+import {fetchBukhariDetails, startLoading, stopLoading} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
@@ -85,13 +85,32 @@ class BukhariDetails extends React.Component {
     
   }
 
-  componentDidMount(){
+  componentWillMount(){
     const contextBookId = this.props.navigation.getParam('contextBookId');
     
     const id = this.props.navigation.getParam('id');
     if(!this.props.bukhariDetails[contextBookId] || !this.props.bukhariDetails[contextBookId][id]){
       // console.log('dont have bukhari details, fetching', contextBookId, id);
       this.props.fetchBukhariDetails({contextBookId, id});
+    }else if(!this.state.playList.length){
+      const data = this.props.navigation.getParam('data');
+    let i = 0;
+    let playList = [];
+    const regex = /([^<"]+).mp3/g;
+   
+      if(data && data.audio_embed){
+        const found = data.audio_embed.match(regex);
+        found.length && found
+        .map((aa, index) => {
+          if(aa.indexOf('>')==0)return;
+          aa && playList.push({uri: aa, name: aa.split('/').pop(), id: ++i});
+         // index == 0 && aa && (book.start = i);
+        });
+
+      }
+      this.setState({playList: playList}, ()=>{
+
+      })
     }
   }
   componentWillReceiveProps(nextProps){
@@ -102,21 +121,22 @@ class BukhariDetails extends React.Component {
     if(!nextProps.bukhariDetails[contextBookId] || !nextProps.bukhariDetails[contextBookId][id]){
       // console.log('dont have bukhari details, fetching', contextBookId, id);
       this.props.fetchBukhariDetails({contextBookId, id});
-    } else if(nextProps.bukhariDetails && nextProps.bukhariDetails[contextBookId] && nextProps.bukhariDetails[contextBookId][id]){
+    } 
+    // else if(nextProps.bukhariDetails && nextProps.bukhariDetails[contextBookId] && nextProps.bukhariDetails[contextBookId][id]){
       // const playList = nextProps.bukhariDetails[contextBookId][id].filter(({audio_file}) => audio_file).map((ayah)=>({uri: apiConfig.singleAudioFile(ayah, 'hadiths'), name: ayah.hadith_serial, id: ayah.id}))
       // .filter(({uri})=>uri);
       // this.setState({playList: playList});
       // this.state.playList.length && this.state.player.play({...this.state.playList[0]}, true);
-    }
+    // }
+    
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item} ) => {
     return (
-     <SingleHadithCustom item={item}  player={this.state.player} 
-      setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)} 
-     currentlyPlaying={this.state.currentlyPlaying} 
-     hidePlayer={true} />
+     <SingleHadithCustom item={item}  
+     
+      />
 
     )
   };
@@ -148,7 +168,7 @@ class BukhariDetails extends React.Component {
           
           </Content>
           {
-          this.props.bukhariDetails && this.props.bukhariDetails[contextBookId]&& this.props.bukhariDetails[contextBookId][id] && this.state.playList.length ?
+           this.state.playList.length ?
         (  <Footer>
         <Player book={'hadiths'} context={id} playList={this.state.playList} onRef={
           ref => {
@@ -172,6 +192,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    startLoading: (query)=> dispatch(startLoading(query)),
+    stopLoading: (query)=> dispatch(stopLoading(query)),
     fetchBukhariDetails: (query)=> dispatch(fetchBukhariDetails(query))
    };
 };

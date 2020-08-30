@@ -69,7 +69,7 @@ class QuranDetails extends React.Component {
         });
         // console.log('playlist in quran details existing:', playList, playList1);
         this.setState({playList: playList1}, ()=>{
-          this.state.player && this.state.player.play(playList1[0], true);
+          // this.state.player && this.state.player.play(playList1[0], true);
         })
       }
   }
@@ -82,13 +82,13 @@ class QuranDetails extends React.Component {
     if(!nextProps.quranDetails || !nextProps.quranDetails[id]){
       // console.log('dont have quran details in quran details screen, fetching');
       this.props.fetchQuranDetails({id});
-      }else if(!this.state.playList.length){
+      }else if(!this.state.playList.length && nextProps.quranDetails[id]){
         let playList1 = nextProps.quranDetails[id].sort((a, b)=>{return a.id - b.id}).map((ayah)=>{
           return {uri: apiConfig.singleAudioFile(ayah), name: this.state.surah.name + ' : ' + ayah.verse_serial, id: parseInt(ayah.id)}
         });
         //  console.log('playlist in quran details', playList, playList1);
         this.setState({playList: playList1}, ()=>{
-           this.state.player && this.state.player.play(playList1[0], true);
+          //  this.state.player && this.state.player.play(playList1[0], true);
         })
       }
   }

@@ -22,18 +22,19 @@ import {startLoading} from "../actions/common";
 // import Player from './Player';
 // console.log('common styles',commonStyles)
 class RightPlayer extends React.Component {
-    // constructor(props){
-      // super(props);
-      // this.state = {
+     constructor(props){
+       super(props);
+      this.state = {
         // player: props.player,
         // isPlaying: false,
         // isLoading: props.player.state.isLoading,
         // currentlyPlaying: props.currentlyPlaying
-
-      // }
+        soundLoading: props.soundLoading
+      }
       //  console.log('isplaying in right player:', props.isPlaying)
       // this.player = props.player;
-    // }
+      this.setPlaying = this.setPlaying.bind(this);
+     }
     // componentWillFocus(){
       // console.log('component did mound rightplayer', this.props.navigation);
     //   const {navigation} = this.props;
@@ -45,7 +46,7 @@ class RightPlayer extends React.Component {
     // )  : function(){}
   //  console.log('mounting rightplayer ')  
   // }
-    // UNSAFE_componentWillReceiveProps(nextProps){
+    UNSAFE_componentWillReceiveProps(nextProps){
       //  console.log('next props in right player', nextProps.currentlyPlaying)
       // if(nextProps.player && this.state.player != nextProps.player)
         // this.setState({player : nextProps.player});
@@ -55,26 +56,26 @@ class RightPlayer extends React.Component {
       //   this.setState({isLoading : nextProps.player.state.isLoading});
       // if(nextProps.context && this.state.context != nextProps.context)
       //   this.setState({context : nextProps.context});
-      // if(this.state.currentlyPlaying != nextProps.currentlyPlaying)
-      //   this.setState({currentlyPlaying : nextProps.currentlyPlaying});
+     if(this.state.soundLoading != nextProps.soundLoading)
+        this.setState({soundLoading : nextProps.soundLoading});
       // console.log('nextprops isloading in rightplayer', nextProps.soundLoading)
        //  console.log('nextprops: isplaying: in rightplayer', nextProps.isPlaying);
         // console.log('player soundLoading: in rightplayer', this.state.player.state.soundLoading)
-    // }
+     }
 
     // setPause(context){
     //   this.props.pause()
     //   this.setState({isPlaying: false});
     // }
-    async play(context){
-      // await this.props.player.play;
-      this.props.play(context)
-    }
-    componentWillUnmount(){
+    // async play(context){
+    //   // await this.props.player.play;
+    //   this.props.play(context)
+    // }
+    // componentWillUnmount(){
       // this.willFocus.remove();
       // this.setState({isPlaying: false})
-    }
-    setPlaying = (context) => {
+    // }
+     setPlaying(context) {
       // let { isPlaying } = this.state;
     //  let { player } =  this.props;
     //  console.log('play set', this.props, this.state)
@@ -83,10 +84,13 @@ class RightPlayer extends React.Component {
       //   this.props.playPause();
       // } else{
         // this.props.play(this.state.context);
-        this.props.setCurrentlyPlaying(this.props.context.id) ;
+        this.props.startLoading();
+        this.setState({soundLoading: true})
+       
+        this.props.setCurrentlyPlaying(this.props.hadith ? this.props.context.start : this.props.context.id) ;
       // }
       // this.setState({isPlaying: true});
-    }
+     }
    
     render(){
       const iconColor = 'white';
@@ -108,7 +112,8 @@ class RightPlayer extends React.Component {
      {/* )  */}
      {/* : ( } */}
 
-       <TouchableOpacity  disabled={this.props.soundLoading} style={{padding: 10}} onPress={this.setPlaying.bind(this)} >   
+       <TouchableOpacity  disabled={this.state.soundLoading} style={{paddingLeft: 10, paddingTop:5, paddingBottom: 10, paddingRight: 10}} 
+       onPress={this.setPlaying} >   
         <Icon
      size={iconSize}
     
