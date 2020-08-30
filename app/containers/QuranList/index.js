@@ -56,7 +56,7 @@ class QuranList extends React.Component {
   //   )  
   // }
   UNSAFE_componentWillReceiveProps(nextProps){
-     console.log('nextprops.currentlyPlaying in quran list:', nextProps.currentlyPlaying);
+    //  console.log('nextprops.currentlyPlaying in quran list:', nextProps.currentlyPlaying);
     // const id = nextProps.navigation.getParam('id');
     if(!this.state.playList.length && nextProps.quranList && nextProps.quranList != this.state.quranList){
     

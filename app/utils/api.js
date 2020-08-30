@@ -8,7 +8,7 @@ import pathToRegExp from 'path-to-regexp';
 import { Platform } from 'react-native';
 
 axios.interceptors.request.use((config) => {
-  console.log(`Request [${ config.method }] ${ config.url }`, config);
+  // console.log(`Request [${ config.method }] ${ config.url }`, config);
   return config;
 });
 
@@ -51,7 +51,7 @@ const execute = async (path, method = 'GET', { params = {} , queries = {}, paylo
 
   options.url = url;
   options.baseURL = base;
-  console.log("Request",options)
+  // console.log("Request",options)
   return await axios(options);
 };
 

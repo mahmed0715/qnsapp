@@ -9,7 +9,7 @@ export const fetchQuranList =  (payloads) =>  (dispatch) => {
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
  return axios.get(url.apiBaseUrl + url.quranList)
   .then(res => {
-   console.log("res quran list:", res.data);
+  //  console.log("res quran list:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
     res.data && res.data.chapters && dispatch({ type: ActionTypes.QURANLIST, payload: res.data.chapters });
   })
@@ -29,10 +29,10 @@ export const setCurrentlyPlaying =  (payloads) =>  (dispatch) => {
 }
 export const fetchQuranDetails =  (payloads) =>  (dispatch) => {   
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
-  console.log('got payloads to load quran details for id', payloads)
+  // console.log('got payloads to load quran details for id', payloads)
  return axios.get(url.apiBaseUrl + url.quranDetails(payloads))
   .then(res => {
-   console.log("res quran list:", res.data);
+  //  console.log("res quran list:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
     res.data && res.data.translations && dispatch({ type: ActionTypes.QURANDETAILS, payload: {[payloads.id]: res.data.translations} });
   })
@@ -48,7 +48,7 @@ export const fetchBukhariList =  (payloads) =>  (dispatch) => {
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
  return axios.get(url.apiBaseUrl + url.bukhariList(payloads))
   .then(res => {
-   console.log("res bukhari list:", res.data, ActionTypes['1']);
+  //  console.log("res bukhari list:", res.data, ActionTypes['1']);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
     res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARILIST, payload: {[payloads.id]: res.data.hadith_books} });
   })
@@ -62,7 +62,7 @@ export const fetchBukhariDetails =  (payloads={}) =>  (dispatch) => {
   dispatch({ type: ActionTypes.LOADING, isLoading: true });
  return axios.get(url.apiBaseUrl + url.bukhariDetails(payloads))
   .then(res => {  
-   console.log("res bukhari details:", res.data);
+  //  console.log("res bukhari details:", res.data);
     dispatch({ type: ActionTypes.LOADING, isLoading: false });
     res.data && res.data.hadith_books && dispatch({ type: ActionTypes.BUKHARIDETAILS, payload: {[payloads.contextBookId]:{[payloads.id]: res.data.hadith_books }}});
   })

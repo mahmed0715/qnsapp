@@ -22,7 +22,7 @@ import {
 class RightPlayerHadith extends React.Component {
     constructor(props){
       super(props);
-      console.log('=============================================right player HADITH file');
+      // console.log('=============================================right player HADITH file');
       this.state = {
         player: props.player,
         isPlaying: false,

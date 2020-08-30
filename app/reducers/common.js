@@ -52,8 +52,8 @@ const common = (state = initialState.common, action) => {
     }
     case ActionTypes.BUKHARIDETAILS: {
       let newData = action.payload;//{1:{1:[{1:1},{2:2}]}}
-      console.log('reducer new data:', newData, state.bukhariDetails);
-      console.log('reducer merge:',  merge(state.bukhariDetails, newData))
+      // console.log('reducer new data:', newData, state.bukhariDetails);
+      // console.log('reducer merge:',  merge(state.bukhariDetails, newData))
       return {
         ...state,
         bukhariDetails: Object.assign({}, merge(state.bukhariDetails, newData)),

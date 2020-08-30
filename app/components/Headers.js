@@ -32,10 +32,10 @@ class Headers extends React.Component {
     return s.charAt(0).toUpperCase() + s.slice(1)
   }
   render() {
-    console.log('nav in header:', this.props.navigation);
+    // console.log('nav in header:', this.props.navigation);
     const title = this.props.navigation.getParam('title');
     const id = this.props.navigation.getParam('id', '')
-    console.log('nav in header:', title, id)
+    // console.log('nav in header:', title, id)
     return (
         <Header transparent style={{backgroundColor: '#228392'}}>
           {/* <Left style={[appStyles.row, {maxWidth:'20%'}]}> */}
