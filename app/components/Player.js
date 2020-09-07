@@ -55,7 +55,7 @@ class Player extends Component {
 			rate: 1.0,
 			index: 0
 		};
-		 console.log('player: playlist length in constructor', this.state.PLAYLIST.length)
+		// console.log('player: playlist length in constructor', this.state.PLAYLIST.length)
 		// this.play = this.play.bind(this);
 	}
 // 	UNSAFE_componentWillMount(){
@@ -74,7 +74,7 @@ UNSAFE_componentWillReceiveProps(nextProps){
 	// console.log('Player: receieve playlist', nextProps.playList.length);
 	if(!this.state.PLAYLIST.length && nextProps.playList && nextProps.playList != this.state.PLAYLIST){
 		this.setState({PLAYLIST: nextProps.playList}, () => {
-			console.log('player: playlist updated in player', this.state.PLAYLIST);
+	//		console.log('player: playlist updated in player', this.state.PLAYLIST);
 		//	this.loadSound(true);
 			this._loadNewPlaybackInstance(false);
 		});
@@ -83,7 +83,7 @@ UNSAFE_componentWillReceiveProps(nextProps){
 
 
 componentWillUnmount() {
-	  console.log('Player unmounting',);
+	 // console.log('Player unmounting',);
 	 this.props.onRef && this.props.onRef(undefined);
 	this.stop();
 	if(this.playbackInstance != null){
@@ -141,7 +141,7 @@ componentWillUnmount() {
 		this._onPlayPausePressed();
 	}
 	stop(){
-		console.log('stop pressed');
+		//console.log('stop pressed');
 		this._onStopPressed();
 	}
 
@@ -274,7 +274,7 @@ componentWillUnmount() {
 				initialStatus,
 				this._onPlaybackStatusUpdate
 			);
-			console.log('sound loaded ', sound);
+			//console.log('sound loaded ', sound);
 			// this.sound = sound;
 			this.playbackInstance = sound;
 			this.setState({currentlyPlaying: this.state.PLAYLIST[this.index]});
@@ -289,7 +289,7 @@ componentWillUnmount() {
 		// this.setState({isLoading: false});
 		// console.timeEnd('playandload')
 		// console.log('soundLoading: false in player')
-		setTimeout(this.props.stopLoading, 200);
+		setTimeout(this.props.stopLoading, 10);
 	}
 
 	_updateScreenForLoading(isLoading) {
