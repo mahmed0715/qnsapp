@@ -74,7 +74,7 @@ const store = createStore(
 let persistor = persistStore(store);
 
 // debug only====================================================================================
-// persistor.purge();
+persistor.purge();
 
 // Exports
 export {

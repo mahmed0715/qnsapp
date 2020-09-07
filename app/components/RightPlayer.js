@@ -34,6 +34,7 @@ class RightPlayer extends React.Component {
       //  console.log('isplaying in right player:', props.isPlaying)
       // this.player = props.player;
       this.setPlaying = this.setPlaying.bind(this);
+      //console.log('context in reight player:' ,props.context)
      }
     // componentWillFocus(){
       // console.log('component did mound rightplayer', this.props.navigation);
