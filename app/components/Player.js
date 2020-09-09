@@ -101,7 +101,7 @@ componentWillUnmount() {
 		shouldDuckAndroid: true,
 		interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
 		staysActiveInBackground: true,
-		playsInBackgroundModeAndroid: false,
+		playsInBackgroundModeAndroid: true,
 		playThroughEarpieceAndroid: false
 	});
 	this.props.onRef(this);
