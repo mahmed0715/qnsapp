@@ -95,7 +95,7 @@ class QuranList extends React.Component {
      this.props.startLoading();
     
   }
-  async componentWillUnmount(){
+  async UNSAFE_componentWillUnmount(){
     // if(!this.props.quranDetails || !this.props.quranDetails.length){
     //   console.log('dont have quran list in quran list screen, fetching');
     //   this.props.fetchQuranDetails({});

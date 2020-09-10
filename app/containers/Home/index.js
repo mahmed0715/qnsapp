@@ -27,7 +27,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
   }
-  async UNSAFE_componentWillMount(){
+  async componentDidMount(){
     if(!this.props.quranList || !this.props.quranList.length){
       // console.log('dont have quran list, fetching');
       this.props.fetchQuranList({});

@@ -93,21 +93,20 @@ componentWillUnmount() {
 	this.playbackInstance = null;
 	this.props.setCurrentlyPlaying(null);
   }
-  componentWillMount(){
-	Audio.setAudioModeAsync({
-		allowsRecordingIOS: false,
-		interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-		playsInSilentModeIOS: true,
-		shouldDuckAndroid: true,
-		interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-		staysActiveInBackground: true,
-		playsInBackgroundModeAndroid: true,
-		playThroughEarpieceAndroid: false
-	});
-	this.props.onRef(this);
-	this.state.PLAYLIST.length && this._loadNewPlaybackInstance(false);
-  }
+  
 	componentDidMount() {
+		Audio.setAudioModeAsync({
+			allowsRecordingIOS: false,
+			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+			playsInSilentModeIOS: true,
+			shouldDuckAndroid: true,
+			interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+			staysActiveInBackground: true,
+			playsInBackgroundModeAndroid: true,
+			playThroughEarpieceAndroid: false
+		});
+		this.props.onRef(this);
+		this.state.PLAYLIST.length && this._loadNewPlaybackInstance(false);
 		// Audio.setAudioModeAsync({
 		// 	allowsRecordingIOS: false,
 		// 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,

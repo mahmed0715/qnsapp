@@ -55,7 +55,7 @@ class BukhariList extends React.Component {
     if (typeof s != 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1)
   }
-  componentWillMount(){
+  componentDidMount(){
     const {id} = this.state;
     if(!this.props.bukhariList[id] || !this.props.bukhariList[id].length){
    

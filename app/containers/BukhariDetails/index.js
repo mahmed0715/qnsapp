@@ -85,7 +85,7 @@ class BukhariDetails extends React.Component {
     
   }
 
-  componentWillMount(){
+  componentDidMount(){
     const contextBookId = this.props.navigation.getParam('contextBookId');
     
     const id = this.props.navigation.getParam('id');
@@ -113,7 +113,7 @@ class BukhariDetails extends React.Component {
       })
     }
   }
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     // console.log('nexprops:', nextProps.bukhariDetails);
     const contextBookId = nextProps.navigation.getParam('contextBookId');
     

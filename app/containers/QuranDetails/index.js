@@ -55,7 +55,7 @@ class QuranDetails extends React.Component {
     //  this.setState({currentlyPlaying : id});
     
   // }
-  componentWillMount(){  
+  componentDidMount(){  
     const id = this.props.navigation.getParam('id');
       // const name = this.props.navigation.getParam('name');
       // this.state.player.play({id: id, name: name}, true);
