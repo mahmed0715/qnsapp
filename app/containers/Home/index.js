@@ -8,6 +8,9 @@ import imgs from '../../assets/images';
 import axios from 'axios';
 import {fetchQuranList, fetchBukhariList} from "../../actions/common";
 import url from '../../config/api';
+
+import TimerNotification from '../../components/Notification';
+
 import {
   Container,
   Content,
@@ -60,7 +63,7 @@ class Home extends React.Component {
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={[appStyles.content,{paddingTop: 10, backgroundColor: 'white'}]}>
-
+      <TimerNotification></TimerNotification>
             <View style={styles.container}>
               <TouchableOpacity 
               	underlayColor={BACKGROUND_COLOR}

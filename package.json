@@ -16,6 +16,7 @@
     "expo-av": "^8.6.0",
     "expo-constants": "~9.1.1",
     "expo-font": "~8.2.1",
+    "expo-keep-awake": "~8.2.1",
     "global": "^4.4.0",
     "native-base": "^2.13.4",
     "querystring": "^0.2.0",

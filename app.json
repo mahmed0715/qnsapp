@@ -25,11 +25,17 @@
       "app/assets/*"
     ],
     "android": {
-      "package": "org.qnsbd.qnsapp"
+      "package": "org.qnsbd.qnsapp",
+      "useNextNotificationsApi": true
     },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.qnsbd.qnsapp"
+    },
+    "notification": {
+      "color": "#FFFFFF",
+      "iosDisplayInForeground": true,
+      "androidMode": "default"
     },
     "githubUrl": "https://github.com/mahmed0715/qnsapp"
   }

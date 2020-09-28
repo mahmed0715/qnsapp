@@ -11,3 +11,4 @@ web-report/
 *.log
 *.lock
 .expo
+package-lock.json

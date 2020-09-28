@@ -9,6 +9,8 @@ import {startLoading, stopLoading, setCurrentlyPlaying} from "../actions/common"
 import Slider from 'react-native-slider';
 import { Audio, Font } from 'expo-av';
 import { connect } from "react-redux";
+import TimerNotification from './Notification';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import {getAudioFileUrl} from '../utils/common';
 // import { MaterialIcons } from '@expo/vector-icons';
 import {
@@ -83,7 +85,7 @@ UNSAFE_componentWillReceiveProps(nextProps){
 
 
 componentWillUnmount() {
-	 // console.log('Player unmounting',);
+	 console.log('Player unmounting',);
 	 this.props.onRef && this.props.onRef(undefined);
 	this.stop();
 	if(this.playbackInstance != null){
@@ -95,12 +97,13 @@ componentWillUnmount() {
   }
   
 	componentDidMount() {
+		activateKeepAwake();
 		Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
-			interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+			interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
 			staysActiveInBackground: true,
 			playsInBackgroundModeAndroid: true,
 			playThroughEarpieceAndroid: false
@@ -322,6 +325,7 @@ componentWillUnmount() {
 				volume: status.volume,
 			});
 			if (status.didJustFinish) {
+				//this.playbackInstance.unloadAsync();
 				this._advanceIndex(true);
 				// console.log('index after change:', this.index)
 				this._updatePlaybackInstanceForIndex(true);
@@ -476,6 +480,7 @@ componentWillUnmount() {
 		) : (
 			//f1f3f4
 			<View style={[styles.container, {flexDirection:'column', paddingLeft: 5, paddingRight: 15, backgroundColor:'#228392', paddingTop: 8}]}>
+				<TimerNotification></TimerNotification>
 				<View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', borderColor:'blue', borderWidth:0}}>
 				<View style={[styles.detailsContainer, {flex:1, borderColor:'yellow', borderWidth:0}]}>
 					<Text style={[styles.text, {color: 'white'}]}>

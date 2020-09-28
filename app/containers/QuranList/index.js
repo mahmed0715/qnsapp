@@ -24,8 +24,10 @@ import styles from './styles';
 import theme from '../styles';
 import Player from '../../components/Player';
 import {getAudioFileUrl} from '../../utils/common';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 // console.log('common styles',commonStyles)
 import RightPlayer from '../../components/RightPlayer';
+import TimerNotification from '../../components/Notification';
 class QuranList extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +42,9 @@ class QuranList extends React.Component {
       playList: playList
     }
     //  console.log('Qudranlist playlist in constructor', playList);
+  }
+  componentDidMount(){
+    activateKeepAwake();
   }
   // componentDidMount(){
   //   const {navigation} = this.props;
@@ -159,6 +164,8 @@ class QuranList extends React.Component {
     // console.log('isPlaying in quranlist render:', this.state.isPlaying)
     return (
       <Container style={appStyles.container}>
+        <TimerNotification></TimerNotification>
+        
         <View 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
