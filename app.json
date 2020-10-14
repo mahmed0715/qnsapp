@@ -9,7 +9,6 @@
       "android",
       "web"
     ],
-    
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
@@ -37,6 +36,7 @@
       "iosDisplayInForeground": true,
       "androidMode": "default"
     },
-    "githubUrl": "https://github.com/mahmed0715/qnsapp"
+    "githubUrl": "https://github.com/mahmed0715/qnsapp",
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
