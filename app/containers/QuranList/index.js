@@ -5,6 +5,8 @@ import commonStyles from '../styles';
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
 import imgs from '../../assets/images';
+import TrackPlayerComponent from '../../components/TrackPlayerComponent';
+import TrackPlayer, {TrackPlayerEvents} from 'react-native-track-player';
 import {
   Container,
   Content,
@@ -22,12 +24,9 @@ import {fetchQuranDetails, startLoading, stopLoading} from "../../actions/common
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
-import Player from '../../components/Player';
+// import Player from '../../components/Player';
 import {getAudioFileUrl} from '../../utils/common';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 // console.log('common styles',commonStyles)
-import RightPlayer from '../../components/RightPlayer';
-import TimerNotification from '../../components/Notification';
 class QuranList extends React.Component {
   constructor(props) {
     super(props);
@@ -36,15 +35,32 @@ class QuranList extends React.Component {
     });
     this.state = {
       isPlaying: false,
-      currentlyPlaying: 
-      {id:1},
-      player: React.createRef(),
+      currentlyPlaying: 1,
+      // player: React.createRef(),
       playList: playList
     }
     //  console.log('Qudranlist playlist in constructor', playList);
   }
-  componentDidMount(){
-    activateKeepAwake();
+ async componentDidMount(){
+    // await TrackPlayer.setupPlayer();
+    // TrackPlayer.addEventListener('playback-track-changed', async (data) => {
+    //   // console.log('track changed in quranlist:', data);
+    //   // TrackPlayer.seekTo(data.position);
+    //   if(data.nextTrack > 0 && data.nextTrack != this.state.currentlyPlaying){
+    //     this.setState({currentlyPlaying: data.nextTrack}, ()=>{
+    //       // console.log('track changed ', this.state.currentlyPlaying);
+    //     })
+    //   }
+    // });
+    // TrackPlayer.addEventListener('playback-state', async (data) => {
+    //   if(data.state == 3){
+    //     const current = await TrackPlayer.getCurrentTrack();
+    //    console.log('got current rtack', current);
+    //     this.setState({isPlaying: true, currentlyPlaying: current})
+    //   }else if(this.state.isPlaying){
+    //     this.setState({isPlaying: false})
+    //   }
+    // });
   }
   // componentDidMount(){
   //   const {navigation} = this.props;
@@ -95,11 +111,23 @@ class QuranList extends React.Component {
     // this.state.currentlyPlaying == context.id ? this.setState({isPlaying: true},() => {
     //   this.player.playPause();
     // }):
-    this.state.player.play({id});
-     this.setState({currentlyPlaying : {id}, isPlaying: true});
-     this.props.startLoading();
+    // this.state.player.play({id});
+     this.setState({currentlyPlaying : id, isPlaying: true});
+    //  this.props.startLoading();
     
   }
+  onButtonPressed = async (context) => {
+    if (!this.state.isPlaying) {
+      TrackPlayer.skip(context.id);
+      //setIsPlaying(true);
+    } else {
+      TrackPlayer.pause();
+      //setIsPlaying(false);
+    }
+    // console.log(await TrackPlayer.getQueue());
+    // console.log(await TrackPlayer.getCurrentTrack())
+    // console.log(await getTitle())
+  };
   async UNSAFE_componentWillUnmount(){
     // if(!this.props.quranDetails || !this.props.quranDetails.length){
     //   console.log('dont have quran list in quran list screen, fetching');
@@ -107,11 +135,13 @@ class QuranList extends React.Component {
     
     // }
     // this.willFocus && this.willFocus.remove();
-    this.state.player.stop();
+    // this.state.player.stop();
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item: surah} ) => {
+    const iconColor = 'white';
+          const iconSize = 34;
     // console.log('render item', surah);
     //  console.log('isloading in quranlist renderItem:', this.props.soundLoading)
     return (
@@ -146,11 +176,31 @@ class QuranList extends React.Component {
     /></TouchableOpacity>
 
   )} */}
-  {this.state.player && this.state.player.play ?
-       <RightPlayer style={{alignSelf:'flex-start'}} 
-       context={surah} 
-       setCurrentlyPlaying={this.setCurrentlyPlaying.bind(this)}
-       />:null
+  {/* <View>
+   <TouchableOpacity  
+       style={{paddingLeft: 10, paddingTop:5, paddingBottom: 10, paddingRight: 10}} 
+       onPress={this.onButtonPressed(surah)} >   
+        {this.state.isPlaying && this.state.currentlyPlaying == surah.id ? <Icon
+     size={iconSize}
+    
+     style={{fontSize: iconSize, color: iconColor}}
+         name="pause"
+       />:
+        <Icon
+     size={iconSize}
+    
+     style={{fontSize: iconSize,color: iconColor}}
+         name="play"
+       />}
+       </TouchableOpacity>
+   
+    </View> */}
+  {
+      //  <RightPlayer style={{alignSelf:'flex-start'}} 
+      //  context={surah} 
+      //  currentlyPlaying={this.state.currentlyPlaying}
+      //  isPlaying={this.state.isPlaying}
+      //  />
   }
        </Right>
 {/* <Right> 
@@ -164,7 +214,6 @@ class QuranList extends React.Component {
     // console.log('isPlaying in quranlist render:', this.state.isPlaying)
     return (
       <Container style={appStyles.container}>
-        <TimerNotification></TimerNotification>
         
         <View 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
@@ -182,19 +231,24 @@ class QuranList extends React.Component {
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
+        extraData={this.state.currentlyPlaying}
       />
           }
+          
+          
           </Content>
           <Footer>
-
+         {this.state.playList.length ? <TrackPlayerComponent 
+         queue={this.state.playList} type={'quranList'} 
+         book={'Al-Quran'} titlePrefix={'Surah'}/>:null}
             {/* just commented becaseu its getting slow, no need to load first one on load */}
-          <Player type={'quranList'} book={'quran'} onRef={ref => {
+          {/* <Player type={'quranList'} book={'quran'} onRef={ref => {
             this.setState({ player : ref}, ()=>{
              // ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true)
             })
             
           }
-            } playList={this.state.playList} />
+            } playList={this.state.playList} /> */}
         </Footer>
          </View>
       </Container>

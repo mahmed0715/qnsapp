@@ -480,7 +480,7 @@ componentWillUnmount() {
 		) : (
 			//f1f3f4
 			<View style={[styles.container, {flexDirection:'column', paddingLeft: 5, paddingRight: 15, backgroundColor:'#228392', paddingTop: 8}]}>
-				<TimerNotification></TimerNotification>
+				
 				<View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', borderColor:'blue', borderWidth:0}}>
 				<View style={[styles.detailsContainer, {flex:1, borderColor:'yellow', borderWidth:0}]}>
 					<Text style={[styles.text, {color: 'white'}]}>
