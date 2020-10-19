@@ -88,7 +88,7 @@ const TrackPlayerComponent = (props) => {
   const [sliderValue, setSliderValue] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
   const {position, duration} = useTrackPlayerProgress(250);
-const [stopped, setStopped] = useState(true);
+// const [stopped, setStopped] = useState(true);
    useEffect(() => {
    const startPlayer = async () => {
       let isInit =  await trackPlayerInit(props);
@@ -120,11 +120,12 @@ const [stopped, setStopped] = useState(true);
   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], (event) => {
 	  console.log('ebent changed', event)
     if (event.state === STATE_PLAYING) {
-      setIsPlaying(true);
+      !isPlaying && setIsPlaying(true);
     //   setTitle(await getTitle());
-      setStopped(false);
+    //   setStopped(false);
     } else {
 	  setIsPlaying(false);
+	//   setStopped(true);
 	//   TrackPlayer.getCurrentTrack().then((t)=>{
 	// 	t != trackId && getTrack();
 	// })
@@ -161,7 +162,7 @@ const stop = async ()=>{
     try {
         await TrackPlayer.stop();
         setSliderValue(0);
-         setStopped(true);
+        //  setStopped(true);
       } catch (error) {
         console.log(error);
         TrackPlayer.stop();
@@ -209,21 +210,25 @@ const stop = async ()=>{
   const slidingCompleted = async value => {
     await TrackPlayer.seekTo(value * duration);
     setSliderValue(value);
-    setIsSeeking(false);
+	setIsSeeking(false);
+	
   };
-  const getTitle = async () => {
-      try{
-		
-		 const trackId = await TrackPlayer.getCurrentTrack();
-	   const t = await TrackPlayer.getTrack(trackId);//
-	   console.log('in getTitle', trackId);
-	   setTrack(t)
-	   
-      }catch(err){
-        console.error(err);
-
-      }
-      return {};
+  const formatTime = (seconds) => {
+	// if(this.state.SliderDisable){
+	//   this.TrackSlider();
+	// }
+	return seconds > 3600 
+	?
+	  [
+		parseInt(seconds / 60 / 60),
+		parseInt(seconds / 60 % 60),
+		parseInt(seconds % 60)
+	  ].join(":").replace(/\b(\d)\b/g, "0$1")
+	:
+	  [
+		parseInt(seconds / 60 % 60),
+		parseInt(seconds % 60)
+	  ].join(":").replace(/\b(\d)\b/g, "0$1")
   }
   const iconColor = 'white';
 		const bgColor = '#e7e0e0';
@@ -238,7 +243,7 @@ const stop = async ()=>{
                        {props.titlePrefix && (props.titlePrefix + ' ')} {(track||{}).title || (props.queue && props.queue[0].title)}
 					</Text>
 					<Text style={[styles.text,{color: 'white'}]}>
-                    { !stopped ? (parseInt((position)/60) + '.' + Math.round((position)%60)):0} / {parseInt(duration/60)}.{Math.round(duration%60)}
+                    { isPlaying ? formatTime(position) : 0} / {formatTime(duration)}
 						
 					</Text>
 				</View>

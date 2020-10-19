@@ -39,6 +39,8 @@ class QuranList extends React.Component {
       // player: React.createRef(),
       playList: playList
     }
+    this.onButtonPressed = this.onButtonPressed.bind(this);
+
     //  console.log('Qudranlist playlist in constructor', playList);
   }
  async componentDidMount(){
@@ -46,21 +48,27 @@ class QuranList extends React.Component {
     // TrackPlayer.addEventListener('playback-track-changed', async (data) => {
     //   // console.log('track changed in quranlist:', data);
     //   // TrackPlayer.seekTo(data.position);
-    //   if(data.nextTrack > 0 && data.nextTrack != this.state.currentlyPlaying){
-    //     this.setState({currentlyPlaying: data.nextTrack}, ()=>{
-    //       // console.log('track changed ', this.state.currentlyPlaying);
-    //     })
-    //   }
+    //   // if(data.nextTrack > 0 && data.nextTrack != this.state.currentlyPlaying){
+    //   TrackPlayer.getCurrentTrack().then((t)=>{
+    //     this.setState({currentlyPlaying: t})
+    //   })  
+     
+    //   // }
     // });
-    // TrackPlayer.addEventListener('playback-state', async (data) => {
-    //   if(data.state == 3){
-    //     const current = await TrackPlayer.getCurrentTrack();
-    //    console.log('got current rtack', current);
-    //     this.setState({isPlaying: true, currentlyPlaying: current})
-    //   }else if(this.state.isPlaying){
-    //     this.setState({isPlaying: false})
-    //   }
-    // });
+    TrackPlayer.addEventListener('playback-state', (data) => {
+      check = async ()=> {
+
+      
+      if(data.state == 3){
+        const current = await TrackPlayer.getCurrentTrack();
+       console.log('got current rtack', current);
+        this.setState({isPlaying: true, currentlyPlaying: current})
+      }else {
+        this.setState({isPlaying: false})
+      }
+    }
+    check();
+    });
   }
   // componentDidMount(){
   //   const {navigation} = this.props;
@@ -117,17 +125,24 @@ class QuranList extends React.Component {
     
   }
   onButtonPressed = async (context) => {
-    if (!this.state.isPlaying) {
-      TrackPlayer.skip(context.id);
-      //setIsPlaying(true);
-    } else {
+    if (this.state.isPlaying && this.state.currentlyPlaying == context.id) {
       TrackPlayer.pause();
-      //setIsPlaying(false);
-    }
+       this.setState({isPlaying: false})
+   
+    }else {
+      TrackPlayer.skip(context.id);
+      TrackPlayer.play();
+      this.setState({isPlaying: true})
+      this.setState({currentlyPlaying: context.id})
+    } 
+    
     // console.log(await TrackPlayer.getQueue());
     // console.log(await TrackPlayer.getCurrentTrack())
     // console.log(await getTitle())
   };
+  // setIsPlaying = (v)=>{
+  //   this.setState({isPlaying: v});
+  // }
   async UNSAFE_componentWillUnmount(){
     // if(!this.props.quranDetails || !this.props.quranDetails.length){
     //   console.log('dont have quran list in quran list screen, fetching');
@@ -176,25 +191,25 @@ class QuranList extends React.Component {
     /></TouchableOpacity>
 
   )} */}
-  {/* <View>
+  <View>
    <TouchableOpacity  
        style={{paddingLeft: 10, paddingTop:5, paddingBottom: 10, paddingRight: 10}} 
-       onPress={this.onButtonPressed(surah)} >   
-        {this.state.isPlaying && this.state.currentlyPlaying == surah.id ? <Icon
+       onPress={()=>{this.onButtonPressed(surah)}} >   
+         {this.state.isPlaying && this.state.currentlyPlaying == surah.id ? <Icon
      size={iconSize}
     
      style={{fontSize: iconSize, color: iconColor}}
-         name="pause"
+         name='pause'
        />:
-        <Icon
+         <Icon
      size={iconSize}
     
      style={{fontSize: iconSize,color: iconColor}}
          name="play"
-       />}
+       />} 
        </TouchableOpacity>
    
-    </View> */}
+    </View>
   {
       //  <RightPlayer style={{alignSelf:'flex-start'}} 
       //  context={surah} 
