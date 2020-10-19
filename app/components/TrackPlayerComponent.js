@@ -81,13 +81,13 @@ const playList = [...props.queue.map((q)=>{
 
 const TrackPlayerComponent = (props) => {
   const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
-   const [trackId, setTrackId] = useState(0); 
+   const [trackId, setTrackId] = useState('0'); 
   const [track, setTrack] = useState({});
 //   const [title, setTitle] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
-  const {position, duration} = useTrackPlayerProgress(250);
+  const {position, duration} = useTrackPlayerProgress(500);
 // const [stopped, setStopped] = useState(true);
    useEffect(() => {
    const startPlayer = async () => {
@@ -101,29 +101,39 @@ const TrackPlayerComponent = (props) => {
 
   //this hook updates the value of the slider whenever the current position of the song changes
  useEffect(() => {
-	 console.log(position, duration, trackId)
+	// console.log(position, duration, trackId)
    if (!isSeeking && position && duration) {
      setSliderValue(position / duration);
    }
    TrackPlayer.getCurrentTrack().then((t)=>{
-	   console.log('Got track id:', t, trackId);
+	 //  console.log('Got track id:', t, trackId);
 	if(t!=trackId ) 
 
-	{//setTrack()
-	// setTrackId(t);
-	// getTrack();
-		updateTrack();
+	{
+		try{
+			const f = async () =>{
+				setTrackId(t);
+				const tr = await TrackPlayer.getTrack(t);
+				setTrack(tr);
+			}
+			f();
+		 }catch(err){
+			console.warn(err);
+			// undefined;
+		 }
 	}
    })
  }, [position, duration]);
  
   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], (event) => {
-	  console.log('ebent changed', event)
+	//   console.log('ebent changed', event)
     if (event.state === STATE_PLAYING) {
       !isPlaying && setIsPlaying(true);
     //   setTitle(await getTitle());
     //   setStopped(false);
-    } else {
+    } else if(event.state == 6){
+        // buffereing dont do anything...
+      }else {
 	  setIsPlaying(false);
 	//   setStopped(true);
 	//   TrackPlayer.getCurrentTrack().then((t)=>{
@@ -213,7 +223,7 @@ const stop = async ()=>{
 	setIsSeeking(false);
 	
   };
-  const formatTime = (seconds) => {
+  const formatTime = (seconds=0) => {
 	// if(this.state.SliderDisable){
 	//   this.TrackSlider();
 	// }
@@ -243,7 +253,7 @@ const stop = async ()=>{
                        {props.titlePrefix && (props.titlePrefix + ' ')} {(track||{}).title || (props.queue && props.queue[0].title)}
 					</Text>
 					<Text style={[styles.text,{color: 'white'}]}>
-                    { isPlaying ? formatTime(position) : 0} / {formatTime(duration)}
+                    { isPlaying ? formatTime(position) : '00:00' } / {formatTime(duration)}
 						
 					</Text>
 				</View>

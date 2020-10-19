@@ -1,32 +1,24 @@
-import React, { PureComponent } from 'react'
-import { StyleSheet, ScrollView, View, ImageBackground, Image, FlatList, TouchableHighlight,ActivityIndicator,TouchableOpacity} from 'react-native'
+import React from 'react'
+import { View, FlatList, ActivityIndicator,TouchableOpacity} from 'react-native'
 import _ from 'lodash'; 
 import commonStyles from '../styles';
-import { Layout, Colors, Screens } from '../../constants';
-import { Logo, Svgicon, Headers } from '../../components';
-import imgs from '../../assets/images';
+import { Layout} from '../../constants';
+import { Headers } from '../../components';
 import TrackPlayerComponent from '../../components/TrackPlayerComponent';
-import TrackPlayer, {TrackPlayerEvents} from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 import {
   Container,
   Content,
   Icon,
-  Spinner,
-  Button,
   Text,
-  Header, Left, Body, Title, Right,Footer, FooterTab,
+  Left, Body, Right,Footer,
   ListItem,
-  List
+  
 } from 'native-base';
 import { connect } from "react-redux";
-import * as userActions from "../../actions/user";
-import {fetchQuranDetails, startLoading, stopLoading} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
-import styles from './styles';
 import theme from '../styles';
-// import Player from '../../components/Player';
 import {getAudioFileUrl} from '../../utils/common';
-// console.log('common styles',commonStyles)
 class QuranList extends React.Component {
   constructor(props) {
     super(props);
@@ -35,130 +27,72 @@ class QuranList extends React.Component {
     });
     this.state = {
       isPlaying: false,
-      currentlyPlaying: 1,
-      // player: React.createRef(),
+      currentlyPlaying: '1',
       playList: playList
     }
     this.onButtonPressed = this.onButtonPressed.bind(this);
 
-    //  console.log('Qudranlist playlist in constructor', playList);
   }
- async componentDidMount(){
-    // await TrackPlayer.setupPlayer();
-    // TrackPlayer.addEventListener('playback-track-changed', async (data) => {
-    //   // console.log('track changed in quranlist:', data);
-    //   // TrackPlayer.seekTo(data.position);
-    //   // if(data.nextTrack > 0 && data.nextTrack != this.state.currentlyPlaying){
-    //   TrackPlayer.getCurrentTrack().then((t)=>{
-    //     this.setState({currentlyPlaying: t})
-    //   })  
-     
-    //   // }
-    // });
+ componentDidMount(){
+  // TrackPlayer.setupPlayer();
+  TrackPlayer.addEventListener('playback-track-changed', (data) => {
+    console.log('track changed in list', data);
+    TrackPlayer.getCurrentTrack().then((t)=>{
+      console.log('got current rtack in list', t);
+      this.setState({isPlaying: true, currentlyPlaying: t})
+    });
+  })
     TrackPlayer.addEventListener('playback-state', (data) => {
-      check = async ()=> {
+      // check = async ()=> {
 
-      
+        console.log('got state rtack in list', data);
       if(data.state == 3){
-        const current = await TrackPlayer.getCurrentTrack();
-       console.log('got current rtack', current);
-        this.setState({isPlaying: true, currentlyPlaying: current})
-      }else {
+        TrackPlayer.getCurrentTrack().then((t)=>{
+          console.log('got current rtack in list', t);
+          this.setState({isPlaying: true, currentlyPlaying: t})
+        });
+   
+      
+      }else if(data.state == 6){
+        // buffereing dont do anything...
+      }
+      else {
         this.setState({isPlaying: false})
       }
-    }
-    check();
+    // }
+    // check();
     });
   }
-  // componentDidMount(){
-  //   const {navigation} = this.props;
-  //   if(navigation)
-  //     this.willFocus = navigation.addListener(
-  //       'didFocus',
-  //       () => {
-  //         console.log('did focus====================================================================================');
-  //           this.setState({isPlaying: false})
-  //           this.forceUpdate();
-  //           this.setState({currentlyPlaying: {id:null}}, ()=>{console.log('state updated in quranlist', this.state)}
-  //             )
-  //       }
-  //   )  
-  // }
   UNSAFE_componentWillReceiveProps(nextProps){
-    //  console.log('nextprops.currentlyPlaying in quran list:', nextProps.currentlyPlaying);
-    // const id = nextProps.navigation.getParam('id');
     if(!this.state.playList.length && nextProps.quranList && nextProps.quranList != this.state.quranList){
     
         let playList1 = nextProps.quranList.map((surah)=>{
           return {uri: getAudioFileUrl(surah), name: surah.name, id: parseInt(surah.id)}
         });
-        let { playList } = this.state;
-        //  console.log('playlist in quran list', playList, playList1);
-        this.setState({playList: playList1}, ()=>{
-          // this.state.player && this.state.player.play({...this.state.playList[0]}, true);
-        })
+        this.setState({playList: playList1});
       }
   }
-  // play(context){
-  //   this.state.player.play(context)
-  // }
-  // setPause(context){
-  //   this.setState({isPlaying: false}, ()=>{
-  //     this.state.player.pause()
-  //   });
-  // }
-  // generatePlayList = ()=>{
-  //   const playList = nextProps.quranDetails[id].map((ayah)=>{
-  //     return {uri: getAudioFileUrl(ayah), name: ayah.verse_serial, id: ayah.id}
-  //   });
-  //   this.setState({playList: playList})
-  // }
-  setCurrentlyPlaying = (id) => {
-    // let { isPlaying } = this.state;
-    // isPlaying && this.player.pause();
-    // this.state.currentlyPlaying == context.id ? this.setState({isPlaying: true},() => {
-    //   this.player.playPause();
-    // }):
-    // this.state.player.play({id});
-     this.setState({currentlyPlaying : id, isPlaying: true});
-    //  this.props.startLoading();
-    
-  }
+ 
   onButtonPressed = async (context) => {
     if (this.state.isPlaying && this.state.currentlyPlaying == context.id) {
       TrackPlayer.pause();
-       this.setState({isPlaying: false})
+      this.setState({isPlaying: false})
    
     }else {
       TrackPlayer.skip(context.id);
       TrackPlayer.play();
-      this.setState({isPlaying: true})
-      this.setState({currentlyPlaying: context.id})
+      this.setState({isPlaying: true, currentlyPlaying: context.id})
     } 
     
-    // console.log(await TrackPlayer.getQueue());
-    // console.log(await TrackPlayer.getCurrentTrack())
-    // console.log(await getTitle())
   };
-  // setIsPlaying = (v)=>{
-  //   this.setState({isPlaying: v});
-  // }
-  async UNSAFE_componentWillUnmount(){
-    // if(!this.props.quranDetails || !this.props.quranDetails.length){
-    //   console.log('dont have quran list in quran list screen, fetching');
-    //   this.props.fetchQuranDetails({});
-    
-    // }
-    // this.willFocus && this.willFocus.remove();
-    // this.state.player.stop();
+  componentWillUnmount(){
+    // this.remove && this.remove();
   }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item: surah} ) => {
     const iconColor = 'white';
           const iconSize = 34;
-    // console.log('render item', surah);
-    //  console.log('isloading in quranlist renderItem:', this.props.soundLoading)
     return (
      <ListItem onPress={()=>{!this.props.soundLoading && this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}`, surah: surah, player: this.state.player })}}>
         <Left style={{maxWidth:35, alignItems:'flex-start', justifyContent:'flex-start'}}>
@@ -169,28 +103,7 @@ class QuranList extends React.Component {
           <Text style={theme.textColor}>({surah.meaning}) Verse {surah.verse_number}</Text>
        </Body>
        <Right>
-{/*       
-       {this.state.currentlyPlaying == surah.id && this.state.isPlaying ? (
-   <TouchableOpacity onPress={()=>{this.setPause(surah)}}> 
-   <Icon
-  size={38}
-   
-    style={{fontSize: 38}}
-      name="pause"
-      color="#56D5FA"
-    />
-    </TouchableOpacity>
-  ) : (
-    <TouchableOpacity  onPress={()=>{this.setCurrentlyPlaying(surah)}} >   
-     <Icon
-  size={38}
- 
-    style={{fontSize: 38}}
-      name="play-circle"
-      color="#56D5FA"
-    /></TouchableOpacity>
 
-  )} */}
   <View>
    <TouchableOpacity  
        style={{paddingLeft: 10, paddingTop:5, paddingBottom: 10, paddingRight: 10}} 
@@ -210,23 +123,13 @@ class QuranList extends React.Component {
        </TouchableOpacity>
    
     </View>
-  {
-      //  <RightPlayer style={{alignSelf:'flex-start'}} 
-      //  context={surah} 
-      //  currentlyPlaying={this.state.currentlyPlaying}
-      //  isPlaying={this.state.isPlaying}
-      //  />
-  }
+  
        </Right>
-{/* <Right> 
-  <Text>Verse {surah.verse_number}</Text>
- </Right> */}
-       {/* <RightPlayer style={{alignSelf:'flex-start'}} surah={surah} player={this.player} /> */}
+
       </ListItem> 
     )
   };
   render(){
-    // console.log('isPlaying in quranlist render:', this.state.isPlaying)
     return (
       <Container style={appStyles.container}>
         
@@ -246,7 +149,7 @@ class QuranList extends React.Component {
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
-        extraData={this.state.currentlyPlaying}
+        extraData={[this.state]}
       />
           }
           
@@ -256,14 +159,7 @@ class QuranList extends React.Component {
          {this.state.playList.length ? <TrackPlayerComponent 
          queue={this.state.playList} type={'quranList'} 
          book={'Al-Quran'} titlePrefix={'Surah'}/>:null}
-            {/* just commented becaseu its getting slow, no need to load first one on load */}
-          {/* <Player type={'quranList'} book={'quran'} onRef={ref => {
-            this.setState({ player : ref}, ()=>{
-             // ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true)
-            })
-            
-          }
-            } playList={this.state.playList} /> */}
+        
         </Footer>
          </View>
       </Container>
@@ -273,18 +169,9 @@ class QuranList extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    soundLoading: state.common.soundLoading,
     quranList: state.common.quranList,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    startLoading: (query) =>{dispatch(startLoading(query))},
-    stopLoading: (query) =>{dispatch(stopLoading(query))},
-    fetchQuranDetails: (query)=> dispatch(fetchQuranDetails(query))
-   };
-};
-
 // Exports
-export default connect(mapStateToProps, mapDispatchToProps)(QuranList);
+export default connect(mapStateToProps)(QuranList);
