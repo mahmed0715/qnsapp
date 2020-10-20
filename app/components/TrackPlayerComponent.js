@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Button, View, Image, StyleSheet, Dimensions, TouchableHighlight} from 'react-native';
+import {Text, Button, View, ActivityIndicator, Image, StyleSheet, Dimensions, TouchableHighlight} from 'react-native';
+import commonStyles from '../containers/styles';
 import TrackPlayer, {
   TrackPlayerEvents,
   STATE_PLAYING,
@@ -91,49 +92,35 @@ const TrackPlayerComponent = (props) => {
   const {position, duration} = useTrackPlayerProgress(250);
 // const [stopped, setStopped] = useState(true);
    useEffect(() => {
+	   
    const startPlayer = async () => {
 	   console.log('start player called in track player component');
       let isInit =  await trackPlayerInit(props);
 	  setIsTrackPlayerInit(isInit);
+	  setSliderValue(0);
 	//   console.log(props.queue[0]);
 	  props.queue && props.queue.length && setTrack(props.queue[0]);
 	  const d = await TrackPlayer.getDuration();
 	  setFirstDuration(d);
-	  setSliderValue(0);
+	 
    }
    startPlayer();
    props.navigation.addListener('willFocus', () => {
+	//setIsTrackPlayerInit(false);
 	startPlayer();
   });
  }, []);
 
- useEffect(()=>{
-	console.log('queue changed', props.queue.length);
-}, [props.queue])
+//  useEffect(()=>{
+// 	console.log('queue changed', props.queue.length);
+// }, [props.queue])
   //this hook updates the value of the slider whenever the current position of the song changes
  useEffect(() => {
 	// console.log(position, duration, trackId)
    if (!isSeeking && position && duration) {
      setSliderValue(position / duration);
    }
-   TrackPlayer.getCurrentTrack().then((t)=>{
-	 //  console.log('Got track id:', t, trackId);
-	if(t!=trackId ) 
-
-	{
-		try{
-			const f = async () =>{
-				setTrackId(t);
-				const tr = await TrackPlayer.getTrack(t);
-				setTrack(tr);
-			}
-			f();
-		 }catch(err){
-			console.warn(err);
-			// undefined;
-		 }
-	}
-   })
+  
  }, [position, duration]);
  
   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], (event) => {
@@ -152,20 +139,27 @@ const TrackPlayerComponent = (props) => {
 	// })
     }
   });
-//   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_TRACK_CHANGED], (event) => {
-// 	console.log('event  track changed on component', event)
-//   if (event.nextTrack > 0) {
-// 	// setIsPlaying(true);
-//   //   setTitle(await getTitle());
-// 	// setStopped(false);
-// 	// setTrack()
-// 	setTrackId(event.nextTrack);
-
-// 	getTitle();
-//   } else {
-// 	// setIsPlaying(false);
-//   }
-// });
+  useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_TRACK_CHANGED], (event) => {
+	console.log('event  track changed on component', event)
+	TrackPlayer.getCurrentTrack().then((t)=>{
+		//  console.log('Got track id:', t, trackId);
+	   if(t!=trackId ) 
+   
+	   {
+		   try{
+			   const f = async () =>{
+				   setTrackId(t);
+				   const tr = await TrackPlayer.getTrack(t);
+				   setTrack(tr);
+			   }
+			   f();
+			}catch(err){
+			   console.warn(err);
+			   // undefined;
+			}
+	   }
+	  })
+});
   const onButtonPressed = () => {
     if (!isPlaying) {
       TrackPlayer.play();
@@ -255,9 +249,10 @@ const stop = async ()=>{
   const iconColor = 'white';
 		const bgColor = '#e7e0e0';
 		const iconSize = 30;
-  return (
-      
-      <View style={[styles.container, {flexDirection:'column', paddingLeft: 5, paddingRight: 15, backgroundColor:'#228392', paddingTop: 8}]}>
+  return  (!isTrackPlayerInit ? (<View style={commonStyles.loading}>
+		<ActivityIndicator size='large' color="white" />
+	  </View>) :
+      (<View style={[styles.container, {flexDirection:'column', paddingLeft: 5, paddingRight: 15, backgroundColor:'#228392', paddingTop: 8}]}>
 				
 				<View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', borderColor:'blue', borderWidth:0}}>
 				<View style={[styles.detailsContainer, {flex:1, borderColor:'yellow', borderWidth:0}]}>
@@ -396,10 +391,10 @@ const stop = async ()=>{
 				
 				
 			
-			</View>
+			</View>)
 
-    
-  );
+  )
+  
 };
 
 export default TrackPlayerComponent;
