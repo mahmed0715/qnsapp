@@ -33,7 +33,6 @@ class BukhariList extends React.Component {
       isPlaying: false,
       currentlyPlaying: 1,
       id: id,
-      player: React.createRef(),
       playList: []
     }
     this.setCurrentlyPlaying = this.setCurrentlyPlaying.bind(this)
@@ -43,13 +42,8 @@ class BukhariList extends React.Component {
   //   this.setState({playList: playList})
   // }
   setCurrentlyPlaying = (start, pause) => {
-    // let {isPlaying}  = this.state;
-    // this.setState({currentlyPlaying : context.id, isPlaying: pause? !isPlaying: true});
-    // pause ? this.state.player.pause(context) : 
-    // this.props.startLoading();
-    
     // mixed content
-    this.state.player.play({start: start}, false, true);
+    // this.state.player.play({start: start}, false, true);
   }
   capitalize = (s) => {
     if (typeof s != 'string') return '';
@@ -98,7 +92,7 @@ class BukhariList extends React.Component {
   // }
   UNSAFE_componentWillUnmount(){
     console.log('bukharilist unmounting')
-    this.state.player.stop();
+    // this.state.player.stop();
   }
   UNSAFE_componentWillReceiveProps(nextProps){
     const {id} =  this.state;

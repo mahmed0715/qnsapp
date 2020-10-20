@@ -31,15 +31,21 @@ class QuranList extends React.Component {
       playList: playList
     }
     this.onButtonPressed = this.onButtonPressed.bind(this);
-
+    
   }
  componentDidMount(){
+  console.log('mounted list compoenent')
+  this.willFocus = this.props.navigation.addListener('willFocus', () => {
+    // do something
+    console.log('called will focus listener on list');
+    this.forceUpdate();
+  });
   // TrackPlayer.setupPlayer();
   TrackPlayer.addEventListener('playback-track-changed', (data) => {
     console.log('track changed in list', data);
     TrackPlayer.getCurrentTrack().then((t)=>{
       console.log('got current rtack in list', t);
-      this.setState({isPlaying: true, currentlyPlaying: t})
+      this.setState({ currentlyPlaying: t})
     });
   })
     TrackPlayer.addEventListener('playback-state', (data) => {
@@ -87,6 +93,10 @@ class QuranList extends React.Component {
   };
   componentWillUnmount(){
     // this.remove && this.remove();
+    TrackPlayer.stop();
+    this.setState({isPlaying: false});
+    // TrackPlayer.destroy();
+    
   }
   _keyExtractor = item => item.id.toString();
 
@@ -94,7 +104,7 @@ class QuranList extends React.Component {
     const iconColor = 'white';
           const iconSize = 34;
     return (
-     <ListItem onPress={()=>{!this.props.soundLoading && this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}`, surah: surah, player: this.state.player })}}>
+     <ListItem onPress={()=>{this.props.navigation.push('QuranDetails', { id: surah.id, title: `Surah ${surah.name}`, surah: surah, player: this.state.player })}}>
         <Left style={{maxWidth:35, alignItems:'flex-start', justifyContent:'flex-start'}}>
           <Text style={theme.textColor}>{surah.id}</Text>
         </Left>
@@ -157,7 +167,7 @@ class QuranList extends React.Component {
           </Content>
           <Footer>
          {this.state.playList.length ? <TrackPlayerComponent 
-         queue={this.state.playList} type={'quranList'} 
+         queue={this.state.playList} type={'quranList'}  navigation={this.props.navigation}
          book={'Al-Quran'} titlePrefix={'Surah'}/>:null}
         
         </Footer>

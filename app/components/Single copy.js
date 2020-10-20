@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { View, TouchableWithoutFeedback ,Dimensions, Icon, TouchableHighlight, TouchableOpacity} from 'react-native';
+import { View, TouchableWithoutFeedback ,Dimensions, Icon, TouchableHighlight, } from 'react-native';
 import { connect } from "react-redux";
 import * as Animatable from 'react-native-animatable';
 import theme from '../containers/styles';
@@ -8,15 +8,18 @@ import {
   Text,
   Header, Left, Body, Title, Right
 } from 'native-base';
+import RightPlayer from './RightPlayer';
 import { I18nManager } from 'react-native';
 const screenWidth = Math.round(Dimensions.get('window').width);
-import TrackPlayerComponentSingle from './TrackPlayerComponentSingle';
-const Single = ({item, hidePlayer})=> {
+import TrackPlayer from 'react-native-track-player';
+const Single = ({item, startLoading, hidePlayer})=> {
     // console.log('startloading in single:', startLoading);
   // console.log('hideplayer==============----=', hidePlayer, item.audio_embed)
   const BACKGROUND_COLOR = '#FFFFFF';
   const iconColor = '#1f8ec6';
   const iconSize = 24;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const capitalize = (s) => {
     if (typeof s != 'string') return '';
@@ -24,6 +27,13 @@ const Single = ({item, hidePlayer})=> {
   }
 
  
+  const setCurrentlyPlaying = (id) => {
+    
+    TrackPlayer.skip(id);
+    // startLoading();
+    // setCurrentlyPlaying(id)
+    
+  }
  const removeSupTag = (text) => {
   if(!text)return '';
   text = capitalize(text);
@@ -39,8 +49,10 @@ const Single = ({item, hidePlayer})=> {
         <View style={{flexDirection:'row', alignItems:'space-between'}}>
         <Text style={[theme.textColor, {alignSelf:'flex-start', textAlign:'left', paddingLeft:3, paddingRight:0}]}>{item.hadith_serial||item.verse_serial}.</Text>
         {!hidePlayer && (item.audio_file|| item.audio_embed) ? 
-       
-        <TrackPlayerComponentSingle context={item} />
+        <RightPlayer 
+        context={item} 
+        setCurrentlyPlaying={setCurrentlyPlaying}
+        />
         : null
         
       

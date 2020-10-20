@@ -83,22 +83,33 @@ const TrackPlayerComponent = (props) => {
   const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
    const [trackId, setTrackId] = useState('0'); 
   const [track, setTrack] = useState({});
+  const [firstDuration, setFirstDuration] = useState(0);
 //   const [title, setTitle] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
-  const {position, duration} = useTrackPlayerProgress(500);
+  const {position, duration} = useTrackPlayerProgress(250);
 // const [stopped, setStopped] = useState(true);
    useEffect(() => {
    const startPlayer = async () => {
+	   console.log('start player called in track player component');
       let isInit =  await trackPlayerInit(props);
 	  setIsTrackPlayerInit(isInit);
-	  console.log(props.queue[0]);
+	//   console.log(props.queue[0]);
 	  props.queue && props.queue.length && setTrack(props.queue[0]);
+	  const d = await TrackPlayer.getDuration();
+	  setFirstDuration(d);
+	  setSliderValue(0);
    }
    startPlayer();
+   props.navigation.addListener('willFocus', () => {
+	startPlayer();
+  });
  }, []);
 
+ useEffect(()=>{
+	console.log('queue changed', props.queue.length);
+}, [props.queue])
   //this hook updates the value of the slider whenever the current position of the song changes
  useEffect(() => {
 	// console.log(position, duration, trackId)
@@ -155,7 +166,7 @@ const TrackPlayerComponent = (props) => {
 // 	// setIsPlaying(false);
 //   }
 // });
-  const onButtonPressed = async () => {
+  const onButtonPressed = () => {
     if (!isPlaying) {
       TrackPlayer.play();
       updateTrack();
@@ -164,8 +175,8 @@ const TrackPlayerComponent = (props) => {
       TrackPlayer.pause();
       //setIsPlaying(false);
     }
-    console.log(await TrackPlayer.getQueue());
-    console.log(await TrackPlayer.getCurrentTrack())
+    // console.log(await TrackPlayer.getQueue());
+    // console.log(await TrackPlayer.getCurrentTrack())
   
   };
 const stop = async ()=>{
@@ -190,7 +201,7 @@ const stop = async ()=>{
     }
     // this.UpdateTrack();
     // this.UpdateTrackUI();
-    console.log(await TrackPlayer.getCurrentTrack())
+    // console.log(await TrackPlayer.getCurrentTrack())
   }
  const updateTrack = async ()=>{
 	
@@ -240,6 +251,7 @@ const stop = async ()=>{
 		parseInt(seconds % 60)
 	  ].join(":").replace(/\b(\d)\b/g, "0$1")
   }
+  
   const iconColor = 'white';
 		const bgColor = '#e7e0e0';
 		const iconSize = 30;
@@ -253,7 +265,7 @@ const stop = async ()=>{
                        {props.titlePrefix && (props.titlePrefix + ' ')} {(track||{}).title || (props.queue && props.queue[0].title)}
 					</Text>
 					<Text style={[styles.text,{color: 'white'}]}>
-                    { isPlaying ? formatTime(position) : '00:00' } / {formatTime(duration)}
+                    { isPlaying ? formatTime(position) : '00:00' } / {formatTime(duration>0?duration:firstDuration)}
 						
 					</Text>
 				</View>
@@ -378,7 +390,7 @@ const stop = async ()=>{
           maximumTrackTintColor="#000000"
           onSlidingStart={slidingStarted}
           onSlidingComplete={slidingCompleted}
-          thumbTintColor="#000"
+          thumbTintColor="#fff"
         />
 				 </View> 
 				
