@@ -21,7 +21,7 @@ import Single from '../../components/Single';
 import {getAudioFileUrl} from '../../utils/common';
 import { connect } from "react-redux";
 import * as userActions from "../../actions/user";
-import {fetchQuranDetails, startLoading, stopLoading} from "../../actions/common";
+import {fetchQuranDetails} from "../../actions/common";
 import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
@@ -119,7 +119,9 @@ class QuranDetails extends React.Component {
         <Footer>
         {this.state.playList.length ? <TrackPlayerComponent 
          queue={this.state.playList} type={'quranDetails'} navigation={this.props.navigation}
-         book={'Al-Quran'} titlePrefix={`Surah`} />:null}
+         book={this.props.navigation.getParam('title')} titlePrefix={`Surah`} />:<View style={commonStyles.loading}>
+         <ActivityIndicator size='large' color="white" />
+       </View>}
         {/* <Player type={'quranDetails'} book={'quran'} context={id} playList={this.state.playList} onRef={
           ref => {
            this.setState({ player : ref})
@@ -136,15 +138,12 @@ class QuranDetails extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    soundLoading: state.common.soundLoading,
     quranDetails: state.common.quranDetails,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    startLoading: (query) =>{dispatch(startLoading(query))},
-    stopLoading: (query) =>{dispatch(stopLoading(query))},
     fetchQuranDetails: (query)=> dispatch(fetchQuranDetails(query))
    };
 };

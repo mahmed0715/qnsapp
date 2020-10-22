@@ -23,10 +23,9 @@ import appStyles from '../../theme/appStyles';
 import styles from './styles';
 import theme from '../styles';
 import SingleHadithCustom from '../../components/SingleHadithCustom';
-import Player from '../../components/Player';
 import apiConfig from '../../config/api';
-
-
+import TrackPlayer from 'react-native-track-player';
+import TrackPlayerComponent from '../../components/TrackPlayerComponent';
 class BukhariDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -69,22 +68,10 @@ class BukhariDetails extends React.Component {
     // });
     this.state = {
       data: data,
-      playList: playList,
-      player: React.createRef(),
-      isPlaying: false,
-      currentlyPlaying: 1
+      playList: playList
     }
   }
-  setCurrentlyPlaying = (id) => {
-    // let { isPlaying } = this.state;
-    // isPlaying && this.player.pause();
-    // this.state.currentlyPlaying == context.id ? this.setState({isPlaying: true},() => {
-    //   this.player.playPause();
-    // }):
-     this.setState({currentlyPlaying : id});
-    
-  }
-
+ 
   componentDidMount(){
     const contextBookId = this.props.navigation.getParam('contextBookId');
     
@@ -130,6 +117,12 @@ class BukhariDetails extends React.Component {
     // }
     
   }
+  componentWillUnmount(){
+    
+     TrackPlayer.stop();
+    // this.setState({isPlaying: false});
+    // TrackPlayer.destroy();
+  }
   _keyExtractor = item => item.id.toString();
 
   _renderItem = ( {item} ) => {
@@ -164,17 +157,18 @@ class BukhariDetails extends React.Component {
         keyExtractor={this._keyExtractor}
         // eslint-disable-next-line no-underscore-dangle
         renderItem={this._renderItem}
+        extraData={this.state}
       />}
           
           </Content>
           {
            this.state.playList.length ?
         (  <Footer>
-        <Player book={'hadiths'} context={id} playList={this.state.playList} onRef={
-          ref => {
-            //ref && this.state.playList.length && ref.play({...this.state.playList[0]}, true);
-           this.setState({ player : ref})
-          }} />
+
+          <TrackPlayerComponent 
+         queue={this.state.playList} type={'Hadith'} navigation={this.props.navigation}
+         book={this.props.navigation.getParam('title')} titlePrefix={`File`} />
+        
           
         </Footer>):null}
          </View>

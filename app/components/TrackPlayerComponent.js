@@ -107,7 +107,14 @@ const TrackPlayerComponent = (props) => {
    startPlayer();
    props.navigation.addListener('willFocus', () => {
 	//setIsTrackPlayerInit(false);
-	startPlayer();
+	TrackPlayer.stop();
+	const f = async () => {
+		await startPlayer();
+		
+		const d = await TrackPlayer.getDuration();
+		setFirstDuration(d);
+	}
+	f();
   });
  }, []);
 

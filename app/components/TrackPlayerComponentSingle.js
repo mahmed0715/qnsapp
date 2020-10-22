@@ -23,12 +23,12 @@ export default TrackPlayerComponentSingle = (props) => {
 
  useEffect(()=>{
 	checker()
-	
+
  }, [])
  
   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], (event) => {
     if (event.state === STATE_PLAYING) {
-      !isPlaying && setIsPlaying(true);
+      setIsPlaying(true);
     } else if(event.state == 6){
         // buffereing dont do anything...
       }else {
@@ -37,7 +37,7 @@ export default TrackPlayerComponentSingle = (props) => {
   });
   const checker = () => {
 	 TrackPlayer.getCurrentTrack().then((current)=>{
-		 console.log('checker in single', current, trackId);
+		//  console.log('checker in single', current, trackId);
 		current != trackId && setTrackId(current);
 		//await TrackPlayer.getState() == 3 && setIsPlaying(true);
 	});
@@ -46,15 +46,15 @@ export default TrackPlayerComponentSingle = (props) => {
   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_TRACK_CHANGED], checker);
 
 	const onButtonPressed = async () => {
-		if (isPlaying && trackId == props.context.id) {
+		if (isPlaying && trackId == (props.hadith?props.start:props.context.id)) {
 		  TrackPlayer.pause();
 		  setIsPlaying(false)
 	   
 		}else {
-		  TrackPlayer.skip(props.context.id);
+		  TrackPlayer.skip(props.hadith?props.start:props.context.id);
 		  TrackPlayer.play();
-		  setIsPlaying(false)
-		  setTrackId(props.context.id)
+		  setIsPlaying(true)
+		  setTrackId(props.hadith?props.start:props.context.id)
 		} 
 		
 	  };
@@ -67,7 +67,8 @@ export default TrackPlayerComponentSingle = (props) => {
 	<TouchableOpacity  
 		style={{paddingLeft: 10, paddingTop:5, paddingBottom: 10, paddingRight: 10}} 
 		onPress={onButtonPressed} >   
-		  {isPlaying && trackId == props.context.id ? <Icon
+		
+		  {!!isPlaying && (!!props.hadith ? (trackId >= props.start && trackId <= props.end) : (trackId == props.context.id)) ? <Icon
 	  size={iconSize}
 	 
 	  style={{fontSize: iconSize, color: iconColor}}

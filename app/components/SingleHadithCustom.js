@@ -8,12 +8,11 @@ import {
   Text,
   Header, Left, Body, Title, Right
 } from 'native-base';
-import RightPlayer from './RightPlayer';
 import { I18nManager } from 'react-native';
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 const SingleHadithCustom = ({item})=> {
-
+console.log(item);
   const capitalize = (s) => {
     if (typeof s != 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1)
