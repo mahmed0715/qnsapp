@@ -7,7 +7,7 @@ import { Colors, Screens } from "../constants";
 
 const transitionConfig = () => ({
       transitionSpec: {
-        duration: 300,
+        duration: 100,
         easing: Easing.out(Easing.poly(4)),
         timing: Animated.timing,
       },

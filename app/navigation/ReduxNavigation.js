@@ -6,7 +6,7 @@ import { NavigationActions } from "react-navigation";
 import { App } from "../store/store";
 import { getCurrentRoute } from '../utils/common';
 import { Screens } from "../constants";
-
+import TrackPlayer from 'react-native-track-player';
 // common statless class variable.
 let backHandlerClickCount = 0;
 
@@ -19,7 +19,7 @@ class ReduxNavigation extends React.Component {
     BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
   }
 
-  onBackPress = () => {
+  onBackPress = async () => {
     const { state, dispatch } = this.props;
     const currentRoute = getCurrentRoute(state);
     // console.log("getCurrentRoute", currentRoute);
@@ -38,6 +38,9 @@ class ReduxNavigation extends React.Component {
       }*/
       return false;
     }
+
+    TrackPlayer.stop();
+    // TrackPlayer.reset();
     dispatch(NavigationActions.back());
     return true;
   };

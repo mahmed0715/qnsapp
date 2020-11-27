@@ -16,6 +16,7 @@ import {
   } from 'native-base';
 
 import Slider from '@react-native-community/slider';
+import { ForceTouchGestureHandler } from 'react-native-gesture-handler';
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 const BACKGROUND_COLOR = '#8bb0cb';
 const DISABLED_OPACITY = 0.5;
@@ -26,7 +27,7 @@ const RATE_SCALE = 3.0;
 
 
 const trackPlayerInit = async (props) => {
-  await TrackPlayer.setupPlayer();
+  await TrackPlayer.setupPlayer({playBuffer: 1.5, minBuffer: 5});
   TrackPlayer.updateOptions({
     stopWithApp: true,
     capabilities: [
@@ -41,9 +42,7 @@ const trackPlayerInit = async (props) => {
       TrackPlayer.CAPABILITY_PLAY,
       TrackPlayer.CAPABILITY_PAUSE,
       TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-      TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-      TrackPlayer.CAPABILITY_STOP, 
-      TrackPlayer.CAPABILITY_SEEK_TO
+      TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS
   ],
     notificationCapabilities: [
       TrackPlayer.CAPABILITY_PLAY,
@@ -75,16 +74,17 @@ const playList = [...props.queue.map((q)=>{
 	// q.album = q.book;
 	return q;
 })];
-
+	await TrackPlayer.reset();
   await TrackPlayer.add(playList);
   return true;
 };
 
 const TrackPlayerComponent = (props) => {
+	const [focus, setRefocus] = useState(false);
   const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
    const [trackId, setTrackId] = useState('0'); 
   const [track, setTrack] = useState({});
-  const [firstDuration, setFirstDuration] = useState(0);
+  const [firstDuration, setFirstDuration] = useState(props.initialDuration);
 //   const [title, setTitle] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
@@ -94,28 +94,46 @@ const TrackPlayerComponent = (props) => {
    useEffect(() => {
 	   
    const startPlayer = async () => {
+		setSliderValue(0);
 	   console.log('start player called in track player component');
-      let isInit =  await trackPlayerInit(props);
-	  setIsTrackPlayerInit(isInit);
-	  setSliderValue(0);
+	  	if(!isTrackPlayerInit) {
+			let isInit =  await trackPlayerInit(props);
+			setIsTrackPlayerInit(isInit);
+		}else {
+			trackPlayer.remove();
+			TrackPlayer.add(props.queue);
+		}
+	  
 	//   console.log(props.queue[0]);
-	  props.queue && props.queue.length && setTrack(props.queue[0]);
-	  const d = await TrackPlayer.getDuration();
-	  setFirstDuration(d);
+	  	props.queue && props.queue.length && setTrack(props.queue[0]);
+	 TrackPlayer.getDuration().then((d)=>{
+		setFirstDuration(d);
+	  });
+	 
 	 
    }
    startPlayer();
-   props.navigation.addListener('willFocus', () => {
+   const r = [props.navigation.addListener('willFocus', () => {
 	//setIsTrackPlayerInit(false);
+	setRefocus(true);
+	setSliderValue(0);
 	TrackPlayer.stop();
 	const f = async () => {
-		await startPlayer();
+		await startPlayer(true);
 		
 		const d = await TrackPlayer.getDuration();
-		setFirstDuration(d);
+		setFirstDuration(d||props.initialDuration);
+		setRefocus(false);
 	}
 	f();
-  });
+  })];
+  return () => {
+
+
+	
+	r.forEach(rr=>rr.remove());
+	TrackPlayer.destroy();
+  }
  }, []);
 
 //  useEffect(()=>{
@@ -261,15 +279,16 @@ const stop = async ()=>{
 	  </View>) :
       (<View style={[styles.container, {flexDirection:'column', paddingLeft: 5, paddingRight: 15, backgroundColor:'#228392', paddingTop: 8}]}>
 				
-				<View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', borderColor:'blue', borderWidth:0}}>
+				<View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', borderColor:'blue', borderWidth:0, marginRight: 5}}>
 				<View style={[styles.detailsContainer, {flex:1, borderColor:'yellow', borderWidth:0}]}>
 					<Text style={[styles.text, {color: 'white'}]}>
-                       {props.titlePrefix && (props.titlePrefix + ' ')} {(track||{}).title || (props.queue && props.queue[0].title)}
+                       {props.titlePrefix && (props.titlePrefix + ' ')} { !focus  ? ((track||{}).title || (props.queue && props.queue[0].title)) : '...'}
 					</Text>
+					{(duration>0||firstDuration>0||props.initialDuration>0) && !focus ?
 					<Text style={[styles.text,{color: 'white'}]}>
-                    { isPlaying ? formatTime(position) : '00:00' } / {formatTime(duration>0?duration:firstDuration)}
+                    { isPlaying ? formatTime(position) : '00:00' } / {formatTime(duration>0?duration:(firstDuration||props.initialDuration))}
 						
-					</Text>
+					</Text>:<Text>'...'</Text>}
 				</View>
 			
 			
@@ -378,13 +397,14 @@ const stop = async ()=>{
 						styles.buttonsContainerMiddleRow,
 						{
 							borderColor:'black',
-							borderWidth:0
+							borderWidth:0,
+							marginRight: 0
 						}
 					]}
 				> 
-				
+				 
                     <Slider
-          style={styles.progressBar}
+          style={styles.playbackSlider}
           minimumValue={0}
           maximumValue={1}
           value={sliderValue}
@@ -438,9 +458,11 @@ const styles = StyleSheet.create({
 	},
 	playbackSlider: {
 		 alignSelf: 'stretch',
-		marginLeft: 10,
-		marginRight: 1,
-		marginBottom: 5
+		marginLeft: 0,
+		marginRight: 0,
+		marginBottom: 0
+		, borderWidth:0,
+		borderColor: 'red'
 	},
 	text: {
 		fontSize: FONT_SIZE,
@@ -460,8 +482,10 @@ const styles = StyleSheet.create({
 	},
 	buttonsContainerMiddleRow: {
 		// maxHeight: 20,
+		flex: 1,
 		alignSelf: 'stretch',
 		// paddingRight: 20,
+		width: 100+'%'
 	},
 	volumeContainer: {
 		flex: 1,

@@ -168,7 +168,7 @@ class QuranList extends React.Component {
           <Footer>
          {this.state.playList.length ? <TrackPlayerComponent 
          queue={this.state.playList} type={'quranList'}  navigation={this.props.navigation}
-         book={'Al-Quran'} titlePrefix={'Surah'}/>:<View style={commonStyles.loading}>
+         book={'Al-Quran'} titlePrefix={'Surah'} initialDuration={77}/>:<View style={commonStyles.loading}>
          <ActivityIndicator size='large' color="white" />
        </View>}
         

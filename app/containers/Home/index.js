@@ -56,10 +56,10 @@ class Home extends React.Component {
     const BACKGROUND_COLOR = 'green';
     return (
       <Container style={appStyles.container}>
-      
+       {/* <Headers {...this.props} /> */}
         <View 
             style={ { width: Layout.window.width, height: Layout.window.height }}>
-          <Headers {...this.props} />
+          <Headers home={true} {...this.props}  />
           <Content enableOnAndroid style={[appStyles.content,{paddingTop: 10, backgroundColor: 'white'}]}>
             <View style={styles.container}>
               <TouchableOpacity 

@@ -31,7 +31,6 @@ import TrackPlayer from 'react-native-track-player';
 class QuranDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.player = React.createRef();
     const id = props.navigation.getParam('id');
   
     let surah = props.navigation.getParam('surah');

@@ -3,8 +3,8 @@ import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { Provider } from 'react-redux';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { AppLoading } from 'expo';
+import TrackPlayer from 'react-native-track-player';
 import * as Font from 'expo-font';
 // import * as Font from 'expo-font';
 
@@ -52,7 +52,7 @@ export default class App extends React.Component {
   }
 
   async componentWillMount() {
-    activateKeepAwake();
+    TrackPlayer.registerPlaybackService(() => require('./app/components/service.js'));
     await Font.loadAsync({
       // 'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
       ...Ionicons.font,
