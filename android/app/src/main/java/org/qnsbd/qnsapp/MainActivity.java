@@ -1,4 +1,4 @@
-package org.qnsbd.qnsapp;
+package org.qnsapp;
 
 import android.os.Bundle;
 

@@ -1,4 +1,4 @@
-package org.qnsbd.qnsapp.generated;
+package org.qnsapp.generated;
 
 import java.util.Arrays;
 import java.util.List;
