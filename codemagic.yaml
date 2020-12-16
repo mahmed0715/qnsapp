@@ -12,10 +12,7 @@ workflows:
         scripts:
             - npm install
             - echo "sdk.dir=$HOME/programs/android-sdk-macosx" > "$FCI_BUILD_DIR/android/local.properties"
-            - |
-                # build Android
-                cd android
-                ./gradlew assembleDebug
+         
             - |
                 # build iOS
                 cd ios
