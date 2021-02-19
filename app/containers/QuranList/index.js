@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, FlatList, ActivityIndicator,TouchableOpacity} from 'react-native'
+import { View, FlatList, ActivityIndicator} from 'react-native';
+import { TouchableOpacity} from 'react-native-gesture-handler';
 import _ from 'lodash'; 
 import commonStyles from '../styles';
 import { Layout} from '../../constants';

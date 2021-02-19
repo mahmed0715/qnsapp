@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Button, View, Image, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity} from 'react-native';
+import {Text, Button, View, Image, StyleSheet, Dimensions, TouchableHighlight} from 'react-native';
 import TrackPlayer, {
   TrackPlayerEvents,
   STATE_PLAYING,
 } from 'react-native-track-player';
+import { TouchableOpacity} from 'react-native-gesture-handler'
 import {
   useTrackPlayerEvents,
 } from 'react-native-track-player/lib/hooks';

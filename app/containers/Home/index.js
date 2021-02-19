@@ -1,7 +1,8 @@
 
 import React from 'react'
-import { StyleSheet, View, ImageBackground, Image, TouchableHighlight, TouchableOpacity} from 'react-native'
+import { StyleSheet, View, ImageBackground, Image, TouchableHighlight} from 'react-native'
 import _ from 'lodash'; 
+import { TouchableOpacity} from 'react-native-gesture-handler'
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
 import imgs from '../../assets/images';

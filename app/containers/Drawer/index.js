@@ -1,6 +1,7 @@
 import React from "react";
-import { AppRegistry, Image, StatusBar, ImageBackground, TouchableOpacity } from "react-native";
-import { NavigationActions, DrawerItems } from 'react-navigation'
+import { AppRegistry, Image, StatusBar, ImageBackground } from "react-native";
+import { NavigationActions, DrawerItems } from 'react-navigation';
+import { TouchableOpacity} from 'react-native-gesture-handler'
 import {
   Button, View,
   Text,

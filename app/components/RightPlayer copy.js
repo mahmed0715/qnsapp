@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
-import { View, TouchableOpacity, Text} from 'react-native'
+import { View,  Text} from 'react-native'
 import _ from 'lodash'; 
+import { TouchableOpacity} from 'react-native-gesture-handler'
 import commonStyles from '../containers/styles';
 import TrackPlayer from 'react-native-track-player';
 import {

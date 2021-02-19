@@ -1,6 +1,7 @@
 import React,{useState} from "react";
-import { View, TouchableWithoutFeedback ,Dimensions, Icon, TouchableHighlight, TouchableOpacity} from 'react-native';
+import { View, TouchableWithoutFeedback ,Dimensions, Icon, TouchableHighlight} from 'react-native';
 import { connect } from "react-redux";
+import { TouchableOpacity} from 'react-native-gesture-handler'
 import * as Animatable from 'react-native-animatable';
 import theme from '../containers/styles';
 import {
