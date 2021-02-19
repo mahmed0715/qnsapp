@@ -36,7 +36,8 @@ class ReduxNavigation extends React.Component {
       /*if(backHandlerClickCount==1){
         BackHandler.exitApp();
       }*/
-      return false;
+      // return false;
+      BackHandler.exitApp();
     }
 
     TrackPlayer.stop();

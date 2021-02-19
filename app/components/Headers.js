@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { View, TouchableWithoutFeedback, BackHandler } from 'react-native';
 import { connect } from "react-redux";
 import * as Animatable from 'react-native-animatable';
 
@@ -37,9 +37,11 @@ class Headers extends React.Component {
     backHandlerClickCount++;
     setTimeout(() => {
       backHandlerClickCount = 0;
-    }, 200);
+    }, 100);
     if (currentRoute == Screens.Home.route || currentRoute == Screens.SignIn.route || backHandlerClickCount > 1) {
-      return false;
+      console.log('exiting app')
+      BackHandler.exitApp();
+      return true;
     }
     TrackPlayer.stop();
 
