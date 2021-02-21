@@ -29,7 +29,12 @@
         },
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "org.qnsapp"
+            "bundleIdentifier": "org.qnsapp",
+            "infoPlist": {
+                "UIBackgroundModes": [
+                    "audio"
+                ]
+            }
         },
         "notification": {
             "color": "#FFFFFF",
