@@ -10,7 +10,7 @@ workflows:
                 XCODE_SCHEME: "qnsApp"
             node: latest
         scripts:
-            - npm install
+            - yarn install
             - echo "sdk.dir=$HOME/programs/android-sdk-macosx" > "$FCI_BUILD_DIR/android/local.properties"
          
             - |
