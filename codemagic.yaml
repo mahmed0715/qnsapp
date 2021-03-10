@@ -6,8 +6,8 @@ workflows:
         name: React Native App
         environment:
             vars:
-                XCODE_WORKSPACE: "$BITRISE_PROJECT_PATH"
-                XCODE_SCHEME: "$BITRISE_PROJECT_PATH"
+                XCODE_WORKSPACE: "project"
+                XCODE_SCHEME: "QNSApp.app"
             node: latest
         scripts:
             - yarn install
