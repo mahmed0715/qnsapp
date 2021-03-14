@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { View, TouchableOpacity, Text} from 'react-native'
+import { View, Text} from 'react-native'
+import {  TouchableOpacity} from 'react-native-gesture-handler'
 import _ from 'lodash'; 
 import commonStyles from '../containers/styles';
 import TrackPlayer , {TrackPlayerEvents, STATE_PLAYING} from 'react-native-track-player';
