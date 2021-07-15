@@ -1,6 +1,8 @@
 import React from 'react'
 import { Text, Animated, Easing } from 'react-native'
-import { createStackNavigator, createDrawerNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+
 
 import { SignIn, SignUp, Forgotpassword, Home, Drawer, Settings, QuranList, QuranDetails, BukhariList, BukhariDetails } from "../containers";
 import { Colors, Screens } from "../constants";

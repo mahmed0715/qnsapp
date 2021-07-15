@@ -25,26 +25,7 @@ class AppIntro extends React.Component {
     super(props);
 
     const { language } = this.props;
-    this.slides = [
-      {
-        key: 'slide1',
-        title: language.slide1Title,
-        text: language.slide1Text,
-        image: imgs.placeholder,
-      },
-      {
-        key: 'slide2',
-        title: language.slide2Title,
-        text: language.slide2Text,
-        image: imgs.placeholder,
-      },
-      {
-        key: 'slide3',
-        title: language.slide3Title,
-        text: language.slide3Text,
-        image: imgs.placeholder,
-      }
-    ];
+    
   }
   renderItem = ({ item }) => {
     return (
@@ -81,6 +62,7 @@ class AppIntro extends React.Component {
     );
   };
   render() {
+    return <View />
     return <AppIntroSlider 
       renderItem={this.renderItem} 
       slides={this.slides} 

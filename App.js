@@ -1,6 +1,6 @@
 // Imports: Dependencies
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
@@ -70,14 +70,14 @@ export default class App extends React.Component {
   render() {
     if (!this.state.isReady) {
       return (
-        <AppLoading />
+        <ActivityIndicator />
       );
     }
     return (
       // Redux: Global Store
       <Provider store={store}>
         <PersistGate 
-          loading={<AppLoading />}
+          loading={<ActivityIndicator />}
           persistor={persistor}
         >
           <StyleProvider style={getTheme(material)}>
