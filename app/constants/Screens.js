@@ -6,7 +6,7 @@ export default {
   Title: 'QNS App',
   SignInStack : {
     route: 'SignInStack'
-  }, 
+  },
   DrawerStack : {
     route: 'DrawerStack'
   },
@@ -33,7 +33,7 @@ export default {
   BukhariDetails : {
     route: 'BukhariDetails'
   },
- 
+
   Settings : {
     route: 'Settings',
     icon:'settings',
@@ -42,14 +42,19 @@ export default {
 
   SignOutStack : {
     route: 'SignOutStack'
-  }, 
+  },
   SignIn : {
     route: 'SignIn'
-  }, 
+  },
   SignUp : {
     route: 'SignUp'
-  }, 
+  },
   ForgotPassword : {
     route: 'ForgotPassword'
-  }, 
+  },
+  About : {
+    route: 'About',
+    icon:'book',
+    label: Strings.About,
+  },
 };

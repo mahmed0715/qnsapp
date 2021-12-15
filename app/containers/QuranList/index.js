@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, FlatList, ActivityIndicator,TouchableOpacity} from 'react-native'
-import _ from 'lodash'; 
+import _ from 'lodash';
 import commonStyles from '../styles';
 import { Layout} from '../../constants';
 import { Headers } from '../../components';
@@ -13,7 +13,7 @@ import {
   Text,
   Left, Body, Right,Footer,
   ListItem,
-  
+
 } from 'native-base';
 import { connect } from "react-redux";
 import appStyles from '../../theme/appStyles';
@@ -31,34 +31,34 @@ class QuranList extends React.Component {
       playList: playList
     }
     this.onButtonPressed = this.onButtonPressed.bind(this);
-    
+
   }
  componentDidMount(){
-  console.log('mounted list compoenent')
+  //console.log('mounted list compoenent')
   this.willFocus = this.props.navigation.addListener('willFocus', () => {
     // do something
-    console.log('called will focus listener on list');
+    //console.log('called will focus listener on list');
     this.forceUpdate();
   });
   // TrackPlayer.setupPlayer();
   TrackPlayer.addEventListener('playback-track-changed', (data) => {
-    console.log('track changed in list', data);
+   // console.log('track changed in list', data);
     TrackPlayer.getCurrentTrack().then((t)=>{
-      console.log('got current rtack in list', t);
+    //  console.log('got current rtack in list', t);
       this.setState({ currentlyPlaying: t})
     });
   })
     TrackPlayer.addEventListener('playback-state', (data) => {
       // check = async ()=> {
 
-        console.log('got state rtack in list', data);
+     //   console.log('got state rtack in list', data);
       if(data.state == 3){
         TrackPlayer.getCurrentTrack().then((t)=>{
-          console.log('got current rtack in list', t);
+       //   console.log('got current rtack in list', t);
           this.setState({isPlaying: true, currentlyPlaying: t})
         });
-   
-      
+
+
       }else if(data.state == 6){
         // buffereing dont do anything...
       }
@@ -71,32 +71,32 @@ class QuranList extends React.Component {
   }
   UNSAFE_componentWillReceiveProps(nextProps){
     if(!this.state.playList.length && nextProps.quranList && nextProps.quranList != this.state.quranList){
-    
+
         let playList1 = nextProps.quranList.map((surah)=>{
           return {uri: getAudioFileUrl(surah), name: surah.name, id: parseInt(surah.id)}
         });
         this.setState({playList: playList1});
       }
   }
- 
+
   onButtonPressed = async (context) => {
     if (this.state.isPlaying && this.state.currentlyPlaying == context.id) {
       TrackPlayer.pause();
       this.setState({isPlaying: false})
-   
+
     }else {
       TrackPlayer.skip(context.id);
       TrackPlayer.play();
       this.setState({isPlaying: true, currentlyPlaying: context.id})
-    } 
-    
+    }
+
   };
   componentWillUnmount(){
     // this.remove && this.remove();
     TrackPlayer.stop();
     this.setState({isPlaying: false});
     // TrackPlayer.destroy();
-    
+
   }
   _keyExtractor = item => item.id.toString();
 
@@ -115,35 +115,35 @@ class QuranList extends React.Component {
        <Right>
 
   <View>
-   <TouchableOpacity  
-       style={{paddingLeft: 10, paddingTop:5, paddingBottom: 10, paddingRight: 10}} 
-       onPress={()=>{this.onButtonPressed(surah)}} >   
+   <TouchableOpacity
+       style={{paddingLeft: 10, paddingTop:5, paddingBottom: 10, paddingRight: 10}}
+       onPress={()=>{this.onButtonPressed(surah)}} >
          {this.state.isPlaying && this.state.currentlyPlaying == surah.id ? <Icon
      size={iconSize}
-    
+
      style={{fontSize: iconSize, color: iconColor}}
          name='pause'
        />:
          <Icon
      size={iconSize}
-    
+
      style={{fontSize: iconSize,color: iconColor}}
          name="play"
-       />} 
+       />}
        </TouchableOpacity>
-   
+
     </View>
-  
+
        </Right>
 
-      </ListItem> 
+      </ListItem>
     )
   };
   render(){
     return (
       <Container style={appStyles.container}>
-        
-        <View 
+
+        <View
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers {...this.props} />
           <Content enableOnAndroid style={[appStyles.content, {backgroundColor: '#399aa9'}]}>
@@ -153,7 +153,7 @@ class QuranList extends React.Component {
     </View>)
          :
           <FlatList
-          
+
         data={this.props.quranList}
         // eslint-disable-next-line no-underscore-dangle
         keyExtractor={this._keyExtractor}
@@ -162,20 +162,20 @@ class QuranList extends React.Component {
         extraData={this.state}
       />
           }
-          
-          
+
+
           </Content>
           <Footer>
-         {this.state.playList.length ? <TrackPlayerComponent 
+         {this.state.playList.length ? <TrackPlayerComponent
          queue={this.state.playList} type={'quranList'}  navigation={this.props.navigation}
          book={'Al-Quran'} titlePrefix={'Surah'} initialDuration={77}/>:<View style={commonStyles.loading}>
          <ActivityIndicator size='large' color="white" />
        </View>}
-        
+
         </Footer>
          </View>
       </Container>
-     
+
     );
   }
 }

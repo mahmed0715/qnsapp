@@ -18,7 +18,7 @@ import Svgicon from './Svgicon';
 import { getCurrentRoute } from '../utils/common';
 import ModalBox from './ModalBox';
 import SetLanguage from './SetLanguage';
-import { NavigationActions } from "react-navigation";
+import { DrawerActions, NavigationActions } from "react-navigation";
 import TrackPlayer from 'react-native-track-player';
 import { Screens } from "../constants";
 let backHandlerClickCount = 0;
@@ -29,15 +29,18 @@ class Headers extends React.Component {
       visibleModal:false
     }
   }
- 
+
   onBackPress = () => {
     const { state } = this.props;
     const currentRoute = getCurrentRoute(state);
-    // console.log("getCurrentRoute", currentRoute);
+     console.log("getCurrentRoute", currentRoute);
     backHandlerClickCount++;
     setTimeout(() => {
       backHandlerClickCount = 0;
     }, 100);
+    if (currentRoute == Screens.DrawerStack.route && backHandlerClickCount < 2) {
+      dispatchEvent(DrawerActions.closeDrawer);
+    }
     if (currentRoute == Screens.Home.route || currentRoute == Screens.SignIn.route || backHandlerClickCount > 1) {
       console.log('exiting app')
       BackHandler.exitApp();
@@ -70,9 +73,9 @@ class Headers extends React.Component {
   }
           </Left>
           <Body>
-         
+
           <Text style={{fontSize: 20 , color: 'white', textAlign:'center'}}> {title?this.capitalize(title) : 'QNS Academy'}</Text>
-        
+
           </Body>
           {/* <Right>
             <Button transparent>
@@ -82,7 +85,7 @@ class Headers extends React.Component {
         </Header>
       // </Container>
     //     <Header transparent style={{backgroundColor: '#228392', borderColor:'black', borderWidth:3}}>
-    //       <View style={[appStyles.row, {maxWidth:'20%', borderWidth: 1, borderColor:'red'}]}> 
+    //       <View style={[appStyles.row, {maxWidth:'20%', borderWidth: 1, borderColor:'red'}]}>
     //         <Button transparent style={appStyles.menuBtn} onPress={() => {
     //           alert('back')
     //         }}>

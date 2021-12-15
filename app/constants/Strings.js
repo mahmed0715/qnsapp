@@ -19,6 +19,7 @@ export default[
 		home: 'Home',
 		categories: 'Categories',
 		settings: 'Settings',
+    about: 'About',
 
 		// App intro sliders
 		slide1Title: 'SAMPLE TITLE 1',

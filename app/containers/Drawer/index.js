@@ -29,7 +29,7 @@ import { Svgicon } from '../../components';
 class Drawer extends React.Component {
   constructor(props) {
     super(props);
-    this.listItems = [ Screens.Home,Screens.Settings];
+    this.listItems = [Screens.Home, Screens.About];
   }
 
   render() {
@@ -44,13 +44,13 @@ class Drawer extends React.Component {
             <List>
               <ListItem avatar noBorder>
                 <Left>
-                  <Svgicon name="useravatar" 
-                    color={Colors.white} 
-                    width={Layout.bigIconSize} 
+                  <Svgicon name="useravatar"
+                    color={Colors.white}
+                    width={Layout.bigIconSize}
                     height={Layout.bigIconSize} />
                 </Left>
                 <Body>
-                  <Text style={appStyles.profileName} >{userName}</Text>
+                  <Text style={appStyles.profileName} >{userName} </Text>
                 </Body>
               </ListItem>
             </List>
@@ -59,19 +59,19 @@ class Drawer extends React.Component {
         <Content>
           <List
               dataArray={this.listItems}
-              keyExtractor={(item, index) => index.toString()} 
+              keyExtractor={(item, index) => index.toString()}
               style={appStyles.drawerList}
               renderRow={(data) => {
                 return (
-                  <ListItem 
+                  <ListItem
                   button full
                   noIndent
                   style={[appStyles.drawerItem, data.route==currentRoute ? appStyles.activeDrawerItem : {}]}
-                  onPress={() => this.props.navigation.navigate(data.route)}>
-                      <Svgicon 
-                        style={appStyles.drawerIcon} 
-                        color={(data.route==currentRoute) ? Colors.secondary:Colors.black} 
-                        name={data.icon} 
+                  onPress={() => this.props.navigation.push(data.route)}>
+                      <Svgicon
+                        style={appStyles.drawerIcon}
+                        color={(data.route==currentRoute) ? Colors.secondary:Colors.black}
+                        name={data.icon}
                         />
                       <Text
                       style={appStyles.drawerText}>

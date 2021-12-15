@@ -1,7 +1,7 @@
 import React from "react";
 import { BackHandler, ToastAndroid, Alert } from "react-native";
 import { connect } from "react-redux";
-import { NavigationActions } from "react-navigation";
+import { DrawerActions, NavigationActions } from "react-navigation";
 
 import { App } from "../store/store";
 import { getCurrentRoute } from '../utils/common';
@@ -22,7 +22,10 @@ class ReduxNavigation extends React.Component {
   onBackPress = async () => {
     const { state, dispatch } = this.props;
     const currentRoute = getCurrentRoute(state);
-    // console.log("getCurrentRoute", currentRoute);
+    if (currentRoute == Screens.DrawerStack.route) {
+      dispatch(DrawerActions.closeDrawer());
+    }
+     console.log("getCurrentRoute", currentRoute);
     backHandlerClickCount = 1;
     setTimeout(() => {
       backHandlerClickCount = 0;

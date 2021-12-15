@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, Animated, Easing } from 'react-native'
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation'
 
-import { SignIn, SignUp, Forgotpassword, Home, Drawer, Settings, QuranList, QuranDetails, BukhariList, BukhariDetails } from "../containers";
+import { SignIn, SignUp, Forgotpassword, Home, Drawer, Settings, QuranList, About, QuranDetails, BukhariList, BukhariDetails } from "../containers";
 import { Colors, Screens } from "../constants";
 
 const transitionConfig = () => ({
@@ -37,22 +37,25 @@ const transitionConfig = () => ({
 
 // drawer stack
 const DrawerStack = createDrawerNavigator({
-  [Screens.Home.route]: { 
-    screen: Home 
-  }, [Screens.Settings.route]: { 
-    screen: Settings 
+  [Screens.Home.route]: {
+    screen: Home
+  }, [Screens.Settings.route]: {
+    screen: Settings
   },
-  [Screens.QuranList.route]: { 
-    screen: QuranList 
+  [Screens.QuranList.route]: {
+    screen: QuranList
   },
-  [Screens.QuranDetails.route]: { 
+  [Screens.QuranDetails.route]: {
     screen: QuranDetails
   },
-  [Screens.BukhariList.route]: { 
-    screen: BukhariList 
+  [Screens.BukhariList.route]: {
+    screen: BukhariList
   },
-  [Screens.BukhariDetails.route]: { 
-    screen: BukhariDetails 
+  [Screens.BukhariDetails.route]: {
+    screen: BukhariDetails
+  },
+  [Screens.About.route]: {
+    screen: About
   },
 }, {
   gesturesEnabled: true,
@@ -71,17 +74,20 @@ const DrawerStack = createDrawerNavigator({
 
 const DrawerNavigation = createStackNavigator({
   [Screens.DrawerStack.route]: { screen: DrawerStack },
-  [Screens.QuranList.route]: { 
-    screen: QuranList 
+  [Screens.QuranList.route]: {
+    screen: QuranList
   },
-  [Screens.QuranDetails.route]: { 
+  [Screens.QuranDetails.route]: {
     screen: QuranDetails
   },
-  [Screens.BukhariList.route]: { 
-    screen: BukhariList 
+  [Screens.BukhariList.route]: {
+    screen: BukhariList
   },
-  [Screens.BukhariDetails.route]: { 
-    screen: BukhariDetails 
+  [Screens.BukhariDetails.route]: {
+    screen: BukhariDetails
+  },
+  [Screens.About.route]: {
+    screen: About
   },
 }, {
   headerMode: 'none',
@@ -124,7 +130,8 @@ const PrimaryNav = createStackNavigator({
   [Screens.SignOutStack.route]: { screen: LoginStack },
   [Screens.SignInStack.route]: { screen: DrawerNavigation },
   [Screens.QuranStack.route]: {screen: QuranStack},
-  [Screens.BukhariStack.route]: {screen: BukhariStack}
+  [Screens.BukhariStack.route]: {screen: BukhariStack},
+
 }, {
   headerMode: 'none',
   title: Screens.Title,
