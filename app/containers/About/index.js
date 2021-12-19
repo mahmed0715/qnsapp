@@ -3,7 +3,7 @@ import React from 'react'
 import { StyleSheet, View, ImageBackground, Image, TouchableHighlight, TouchableOpacity, Linking} from 'react-native'
 import _ from 'lodash';
 import { Layout, Colors, Screens } from '../../constants';
-import { Logo, Svgicon, Headers } from '../../components';
+import { Logo, Svgicon, Headers,TabNavigation } from '../../components';
 import imgs from '../../assets/images';
 import axios from 'axios';
 import {fetchQuranList, fetchBukhariList} from "../../actions/common";

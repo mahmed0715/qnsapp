@@ -54,7 +54,7 @@ export default {
   },
   About : {
     route: 'About',
-    icon:'book',
+    icon: 'book',
     label: Strings.About,
   },
 };

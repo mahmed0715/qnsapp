@@ -22,10 +22,10 @@ class ReduxNavigation extends React.Component {
   onBackPress = async () => {
     const { state, dispatch } = this.props;
     const currentRoute = getCurrentRoute(state);
-    if (currentRoute == Screens.DrawerStack.route) {
-      dispatch(DrawerActions.closeDrawer());
-    }
-     console.log("getCurrentRoute", currentRoute);
+     if (currentRoute == Screens.About.route) {
+      dispatch(DrawerActions.toggleDrawer());
+     }
+     console.log("getCurrentRoute", currentRoute,);
     backHandlerClickCount = 1;
     setTimeout(() => {
       backHandlerClickCount = 0;

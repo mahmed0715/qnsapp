@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { StyleSheet, View, ImageBackground, Image, TouchableHighlight, TouchableOpacity} from 'react-native'
-import _ from 'lodash'; 
+import _ from 'lodash';
 import { Layout, Colors, Screens } from '../../constants';
 import { Logo, Svgicon, Headers } from '../../components';
 import imgs from '../../assets/images';
@@ -57,12 +57,13 @@ class Home extends React.Component {
     return (
       <Container style={appStyles.container}>
        {/* <Headers {...this.props} /> */}
-        <View 
+        <View
             style={ { width: Layout.window.width, height: Layout.window.height }}>
           <Headers home={true} {...this.props}  />
           <Content enableOnAndroid style={[appStyles.content,{paddingTop: 10, backgroundColor: 'white'}]}>
             <View style={styles.container}>
-              <TouchableOpacity 
+
+              <TouchableOpacity
               	underlayColor={BACKGROUND_COLOR}
               style={[styles.item,{paddingBottom:10}]} onPress={()=>{this.props.navigation.push('QuranList', {title: 'Al Quran'})}}>
              {/* <View> */}
@@ -71,7 +72,7 @@ class Home extends React.Component {
              {/* <Text style={{color:'black', textAlign:'center'}}>Quran Majid</Text> */}
           {/* </View> */}
              </TouchableOpacity>
-              <TouchableOpacity style={styles.item} 
+              <TouchableOpacity style={styles.item}
               onPress={()=>{this.props.navigation.push('BukhariList', {id: 1, title: 'Sahih Bukhari'})}}>
                 {/* <View> */}
              <Image source={require('./../assets/icons/Sahih-Bukhari.png')}
@@ -79,7 +80,7 @@ class Home extends React.Component {
              {/* <Text style={{color:'white', textAlign:'center'}}>Sahih Bukhari</Text> */}
           {/* </View> */}
               </TouchableOpacity>
-              <TouchableOpacity style={styles.item} 
+              <TouchableOpacity style={styles.item}
               onPress={()=>{this.props.navigation.push('BukhariList', {id:2, title: 'Sahih Muslim'})}}>
                  {/* <View> */}
              <Image source={require('./../assets/icons/Sahih-Muslim.png')}
@@ -87,7 +88,7 @@ class Home extends React.Component {
              {/* <Text style={{color:'white', textAlign:'center'}}>Sahih Muslim</Text> */}
           {/* </View> */}
               </TouchableOpacity>
-              <TouchableOpacity style={styles.item} 
+              <TouchableOpacity style={styles.item}
               onPress={()=>{this.props.navigation.push('BukhariList', {id:3, title: 'Jami At Tirmidhi'})}}>
                  {/* <View> */}
              <Image source={require('./../assets/icons/Jami-At-Tirmidhi.png')}
@@ -95,7 +96,7 @@ class Home extends React.Component {
              {/* <Text style={{color:'white', textAlign:'center'}}>Jami At Tirmidhi</Text> */}
           {/* </View> */}
               </TouchableOpacity>
-              <TouchableOpacity style={styles.item} 
+              <TouchableOpacity style={styles.item}
               onPress={()=>{this.props.navigation.push('BukhariList', {id:4,title: 'Sunan An Nasai'})}}>
                  {/* <View style={{padding:10}}> */}
              <Image source={require('./../assets/icons/Sunan-An-Nasai.png')}
@@ -103,7 +104,7 @@ class Home extends React.Component {
              {/* <Text style={{color:'white', textAlign:'center'}}>Sunan An Nasai</Text> */}
           {/* </View> */}
               </TouchableOpacity>
-              <TouchableOpacity style={styles.item} 
+              <TouchableOpacity style={styles.item}
               onPress={()=>{this.props.navigation.push('BukhariList', {id:5, title: 'Sunan Abu Dawud'})}}>
                  <View style={{padding:10}}>
              <Image source={require('./../assets/icons/Sunan-Abu-Dawud.png')}
@@ -111,22 +112,28 @@ class Home extends React.Component {
              {/* <Text style={{color:'white', textAlign:'center'}}>Sunan Abu Dawud</Text> */}
           </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.item} 
+              <TouchableOpacity style={styles.item}
               onPress={()=>{this.props.navigation.push('BukhariList', {id: 6, title: 'Sunan Ibn Majah'})}}>
              <Image source={require('./../assets/icons/Sunan-Ibn-Majah.png')}
        style={styles.image} />
              {/* <Text style={{color:'white', textAlign:'center'}}>Sunan Ibn Majah</Text> */}
               </TouchableOpacity>
               <View style={styles.item}></View>
+
             </View>
-           
+            <View style={{marginTop: 20,backgroundColor: 'green', width: Layout.window.width}}>
+           <Button
+           style={{color: 'red', textAlign: 'center'}}
+        onPress={() => { this.props.navigation.push('About') }}
+      ><Text style={{fontWeight: 'bold',width: Layout.window.width, textAlign: 'center'}}>About</Text></Button>
+           </View>
             {/* <AudioPlayer /> */}
             {/* <Player /> */}
             {/* <TrackPlayerComponent/> */}
           </Content>
          </View>
       </Container>
-     
+
     );
   }
 }
@@ -138,7 +145,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {  
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchQuranList: (query)=> dispatch(fetchQuranList(query)),
     fetchBukhariList: (query)=> dispatch(fetchBukhariList(query)),
